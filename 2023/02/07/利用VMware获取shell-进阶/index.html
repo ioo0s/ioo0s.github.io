@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>利用VMware获取shell-进阶 | ioo0s&#39;s blog</title>
+
+    <meta name="description" content="&lt;h2 id=&#34;解包&#34;&gt;&lt;a href=&#34;#解包&#34; class=&#34;headerlink&#34; title=&#34;解包&#34;&gt;&lt;/a&gt;解包&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;gzip -d rootfs.gz
+sudo cpio -idmv &amp;lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;Patch-init-文件&#34;&gt;&lt;a href=&#34;#Patch-init-文件&#34; class=&#34;headerlink&#34; title=&#34;Patch init 文件&#34;&gt;&lt;/a&gt;Patch init 文件&lt;/h2&gt;&lt;p&gt;文件所在位置 &lt;code&gt;/bin/init&lt;/code&gt; ,注意这个是解包后才能拿到的文件&lt;/p&gt;
+&lt;p&gt;patch 位置在 &lt;code&gt;0x04518E5&lt;/code&gt;&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="zh" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "利用VMware获取shell-进阶 | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "&lt;h2 id=&#34;解包&#34;&gt;&lt;a href=&#34;#解包&#34; class=&#34;headerlink&#34; title=&#34;解包&#34;&gt;&lt;/a&gt;解包&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;gzip -d rootfs.gz
+sudo cpio -idmv &amp;lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;Patch-init-文件&#34;&gt;&lt;a href=&#34;#Patch-init-文件&#34; class=&#34;headerlink&#34; title=&#34;Patch init 文件&#34;&gt;&lt;/a&gt;Patch init 文件&lt;/h2&gt;&lt;p&gt;文件所在位置 &lt;code&gt;/bin/init&lt;/code&gt; ,注意这个是解包后才能拿到的文件&lt;/p&gt;
+&lt;p&gt;patch 位置在 &lt;code&gt;0x04518E5&lt;/code&gt;&lt;/p&gt;" />
+    <meta property="og:url" content="http://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="ios" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;h2 id=&#34;解包&#34;&gt;&lt;a href=&#34;#解包&#34; class=&#34;headerlink&#34; title=&#34;解包&#34;&gt;&lt;/a&gt;解包&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;gzip -d rootfs.gz
+sudo cpio -idmv &amp;lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;Patch-init-文件&#34;&gt;&lt;a href=&#34;#Patch-init-文件&#34; class=&#34;headerlink&#34; title=&#34;Patch init 文件&#34;&gt;&lt;/a&gt;Patch init 文件&lt;/h2&gt;&lt;p&gt;文件所在位置 &lt;code&gt;/bin/init&lt;/code&gt; ,注意这个是解包后才能拿到的文件&lt;/p&gt;
+&lt;p&gt;patch 位置在 &lt;code&gt;0x04518E5&lt;/code&gt;&lt;/p&gt;" />
+    <meta name="twitter:title" content="利用VMware获取shell-进阶 | ioo0s&#39;s blog"/>
+    <meta name="twitter:description" content="&lt;h2 id=&#34;解包&#34;&gt;&lt;a href=&#34;#解包&#34; class=&#34;headerlink&#34; title=&#34;解包&#34;&gt;&lt;/a&gt;解包&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;gzip -d rootfs.gz
+sudo cpio -idmv &amp;lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;Patch-init-文件&#34;&gt;&lt;a href=&#34;#Patch-init-文件&#34; class=&#34;headerlink&#34; title=&#34;Patch init 文件&#34;&gt;&lt;/a&gt;Patch init 文件&lt;/h2&gt;&lt;p&gt;文件所在位置 &lt;code&gt;/bin/init&lt;/code&gt; ,注意这个是解包后才能拿到的文件&lt;/p&gt;
+&lt;p&gt;patch 位置在 &lt;code&gt;0x04518E5&lt;/code&gt;&lt;/p&gt;"/>
+    <script type="application/ld+json">
+        {
+            "description": "&lt;h2 id=&#34;解包&#34;&gt;&lt;a href=&#34;#解包&#34; class=&#34;headerlink&#34; title=&#34;解包&#34;&gt;&lt;/a&gt;解包&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;gzip -d rootfs.gz
+sudo cpio -idmv &amp;lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;Patch-init-文件&#34;&gt;&lt;a href=&#34;#Patch-init-文件&#34; class=&#34;headerlink&#34; title=&#34;Patch init 文件&#34;&gt;&lt;/a&gt;Patch init 文件&lt;/h2&gt;&lt;p&gt;文件所在位置 &lt;code&gt;/bin/init&lt;/code&gt; ,注意这个是解包后才能拿到的文件&lt;/p&gt;
+&lt;p&gt;patch 位置在 &lt;code&gt;0x04518E5&lt;/code&gt;&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "ios" },
+            "@type": "BlogPosting",
+            "url": "http://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://ioo0s.art/images/avatar.jpg"
+            },
+            "name": "ios"
+            },
+            "headline": "利用VMware获取shell-进阶 | ioo0s&#39;s blog",
+            "datePublished": "2023-02-07T02:24:18.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦈</text></svg>">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = true
+        window.aomori_search_algolia = false
+
+    </script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-avatar avatar avatar-sm">
+                <img src="/images/avatar.jpg" alt="ios">
+            </div>
+            
+            <div class="header-type-inner">
+                
+                    <div id="typed-strings" style="display:none">
+                        <p>ioo0s&#39;s blog</p>
+                    </div>
+                    <a class="header-type-title" id="typed" href="/"></a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">主页</a>
+                
+                <a href="/archives">存档</a>
+                
+                <a href="/collection">收藏</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+    <a class="social" target="_blank" href="https://github.com/ioo0s">
+        <ion-icon name="logo-github"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="http://ioo0s.art/atom.xml">
+        <ion-icon name="logo-rss"></ion-icon>
+    </a>
+
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">主页</a>
+                    
+                    <a href="/archives">存档</a>
+                    
+                    <a href="/collection">收藏</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-cldtmxlz10002akv00y3n74a4" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      利用VMware获取shell-进阶
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2023-02-07T02:24:18.000Z" itemprop="datePublished">2023-02-07</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                <span id="busuanzi_value_page_pv">N</span> 人看过
+            </div>
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <h2 id="解包"><a href="#解包" class="headerlink" title="解包"></a>解包</h2><pre><code>gzip -d rootfs.gz
+sudo cpio -idmv &lt; ./rootfs
+sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
+sudo chroot . /sbin/ftar -xf /bin.tar
+</code></pre>
+<h2 id="Patch-init-文件"><a href="#Patch-init-文件" class="headerlink" title="Patch init 文件"></a>Patch init 文件</h2><p>文件所在位置 <code>/bin/init</code> ,注意这个是解包后才能拿到的文件</p>
+<p>patch 位置在 <code>0x04518E5</code></p>
+<span id="more"></span>
+
+<p><strong>将</strong><strong>jnz loc_451BB4</strong><strong> 改为 </strong><strong>jz loc_451BB4 </strong></p>
+<p>下图是 patch 后的</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnp12KkCPJsgrJoFZ8uaZX15.png"></p>
+<p>伪代码</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnPKVLs7SFq7xOzvSBaOiSTd.png"></p>
+<p>另外一处也需要 patch</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnWZnG85SRFKyyydsEcCbI8b.png"></p>
+<p>修改前</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnbIEedUGu0ily5S5emt7sL2.png"></p>
+<p>修改后</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnwP6k0sGEU7X8Vi7zbcJHZc.png"></p>
+<p>导出后替换原来的./bin/init 文件</p>
+<h2 id="Patch-shell"><a href="#Patch-shell" class="headerlink" title="Patch shell"></a>Patch shell</h2><ol>
+<li>下载编译 busybox</li>
+</ol>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://busybox.net/downloads/">https://busybox.net/downloads/</a></p>
+<ol>
+<li>预编译配置</li>
+</ol>
+<pre><code>make menuconfig
+</code></pre>
+<ol>
+<li>修改配置信息</li>
+</ol>
+<ul>
+<li>Build Options —&gt; 选择[*] Build Busybox as a static binary（no shared libs）</li>
+<li>去掉 Coreutils—&gt;sync 选项</li>
+</ul>
+<ol>
+<li>编译</li>
+</ol>
+<pre><code>make 
+make install
+</code></pre>
+<p>编译成功 busybox 文件会在 <code>./_install/bin/busybox</code></p>
+<ol>
+<li>复制 busybox 到 rootfs 的/bin 目录下</li>
+</ol>
+<pre><code>cp ../busybox/busybox-1.35.0/_install/bin/busybox ./bin/
+chmod 777 ./bin/busybox
+</code></pre>
+<ol>
+<li>删除原 sh 软链并创建 busybox 软链</li>
+</ol>
+<pre><code>rm -rf ./bin/sh
+ls -n /bin/busybox sh
+</code></pre>
+<h2 id="后门制作"><a href="#后门制作" class="headerlink" title="后门制作"></a>后门制作</h2><p>编译一段命令执行的 elf 文件，采用静态链接,这里最好使用 system 而不是 execv，因为 system 会附加 init 后的环境，execv 不会。前两条用于测试 busybox 是否正常，后一条用于添加个 shell</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int tcp_port = 22;
+char *ip = &quot;192.168.109.143&quot;;
+
+void shell()&#123;
+        
+        
+        system(&quot;/bin/busybox ls&quot;, 0, 0);
+        system(&quot;/bin/busybox id&quot;, 0, 0);
+        system(&quot;/bin/busybox killall sshd &amp;&amp; /bin/busybox telnetd -l /bin/sh -b 0.0.0.0 -p 22&quot;, 0, 0);
+        return;
+&#125;
+
+int main(int argc, char const *argv[])
+&#123;
+        shell();
+        return 0;
+&#125;
+</code></pre>
+<p>编译</p>
+<pre><code>gcc -g shell.c -static -o shell
+</code></pre>
+<h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><pre><code>sudo chroot . /sbin/ftar -cf bin.tar ./bin
+sudo chroot . /sbin/xz --check=sha256 -e bin.tar
+su root
+find . -path &#39;./bin&#39; -prune -o -print |cpio -H newc -o &gt; ../make/rootfs.raw
+cd ../make
+cat rootfs.raw | gzip &gt; rootfs.gz
+</code></pre>
+<h2 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h2><p>使用新虚拟机挂载当前 fortigate 的虚拟磁盘，<code>添加-&gt;现有虚拟磁盘</code>。</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnapM1bapHSvqn0lW4C9yKrb.png"></p>
+<p>启动该虚拟机后，搜索应用 disk，选择对应大小的虚拟机磁盘，这里是 2G 的，然后选择启动挂载</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcn7WU2xW82Oj1p5Hbwnay0pc.png"></p>
+<p>替换 rootfs.gz 文件</p>
+<pre><code>sudo su
+cp path/to/rootfs.gz ./
+</code></pre>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnUsHHryGKKYw1ESbN0QQQic.png"></p>
+<p>关闭挂载或者挂起虚拟机</p>
+<h2 id="GDB-内核-Patch"><a href="#GDB-内核-Patch" class="headerlink" title="GDB 内核 Patch"></a>GDB 内核 Patch</h2><p>绕过 fgt_verify，需要绕过下方跳转 jnz，可以在此处下断点并修改 rax=0 绕过</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcn5sAHD8KFpwProizAdJzQef.png"></p>
+<p>配置 vm 调试<a href="./%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell.md">利用VMware获取shell</a></p>
+<pre><code>gdb
+pwndbg&gt; file /home/ios/Fortigate/vmlinuz_elf
+pwndbg&gt; b*0xFFFFFFFF807AC11C
+pwndbg&gt; target remote 192.168.109.1:12345
+pwndbg&gt; c
+</code></pre>
+<p>这里讲解一个技巧：什么时候执行 <code>target remote 192.168.109.1:12345</code> 下断，由于我们要 patch 的是 vmlinuz 中的验证，所以需要在屏幕输出 <code>Bootting the kernel</code> 后 1-2 秒再执行，如下图</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcn7xNskTYXxPLewpZI9qYZgh.png"></p>
+<p>触发断点</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnBipQCMHQH0iaVktQHTemDe.png"></p>
+<p>修改 rax=0</p>
+<pre><code>set $rax=0
+</code></pre>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnStvMa3M1EAJ5EPzp81Pijd.png"></p>
+<p>测试能成功运行启动</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcn9KGAaBQA5ul9xowbeeWnEe.png"></p>
+<h2 id="运行到-shell"><a href="#运行到-shell" class="headerlink" title="运行到 shell"></a>运行到 shell</h2><p>登录到 cli，执行 <code>diag hardware smartctl</code></p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnzkFMwkKiJ46wEidtckK0Yc.png"></p>
+<p>查看结果</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnd0fwycUWKwy9OLeWct0ozb.png"></p>
+<p>尝试用 telnet 连接后门，注意端口是 22！！！！需要指定一下端口</p>
+<pre><code>telnet 192.168.109.111 22
+</code></pre>
+<p>这里的 ip 是在 cli 中配置后的，可以参考基础配置文章</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnurjgBpjiLl8gmglgbyGXoh.png"></p>
+<p>注意：获取 shell 后还需要借助 busybox 来执行其他命令，如图，直接执行会找不到软链</p>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="EDD：Error-0400-reading-sector"><a href="#EDD：Error-0400-reading-sector" class="headerlink" title="EDD：Error 0400 reading sector"></a>EDD：Error 0400 reading sector</h3><p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnHOHJZiPH1zqyAitv9rD4Oc.png"></p>
+<h4 id="造成原因"><a href="#造成原因" class="headerlink" title="造成原因"></a>造成原因</h4><p>使用 windows 下的 diskgenius 替换 rootfs 导致</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>使用另一台 linux 虚拟机 挂载虚拟磁盘，并复制进去</p>
+<h3 id="偶尔出现-cpio-打包-blocks-打包前后不相同的问题"><a href="#偶尔出现-cpio-打包-blocks-打包前后不相同的问题" class="headerlink" title="偶尔出现 cpio 打包 blocks 打包前后不相同的问题"></a>偶尔出现 cpio 打包 blocks 打包前后不相同的问题</h3><h3 id="同上-该问题会导致虚拟机启动后-无任何提示-无限重启"><a href="#同上-该问题会导致虚拟机启动后-无任何提示-无限重启" class="headerlink" title="同上 该问题会导致虚拟机启动后 无任何提示 无限重启"></a>同上 该问题会导致虚拟机启动后 无任何提示 无限重启</h3><h4 id="造成原因-1"><a href="#造成原因-1" class="headerlink" title="造成原因"></a>造成原因</h4><p>在 vmlinuz 中存在一处 fgtsum 校验,具体位置在 <code>0xFFFFFFFF807AC117</code> 。</p>
+<p><img src="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/boxcnPqwpD4h8M029MQkMiPh9Kc.png"></p>
+<h4 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h4><p>在 <code>0xFFFFFFFF807AC117</code> 处下断，用 gdb 修改 eax 值为 0，即可绕过验证</p>
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+  
+    <a href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">precedente</div>
+      <div class="article-nav-title">利用VMware获取shell</div>
+    </a>
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">share</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=利用VMware获取shell-进阶 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F07%2F%25E5%2588%25A9%25E7%2594%25A8VMware%25E8%258E%25B7%25E5%258F%2596shell-%25E8%25BF%259B%25E9%2598%25B6%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=利用VMware获取shell-进阶 - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F07%2F%25E5%2588%25A9%25E7%2594%25A8VMware%25E8%258E%25B7%25E5%258F%2596shell-%25E8%25BF%259B%25E9%2598%25B6%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=利用VMware获取shell-进阶 - ioo0s's blog&url=http://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-cate">
+    <div class="widget-title"><span>Categories</span></div>
+    <div class="widget-inner">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/">利用VMware获取shell-进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/">利用VMware获取shell</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/">王铲铲的致富之路-逆向分析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            ioo0s&#39;s blog &copy; 2023<br>
+            Powered By Hexo · Theme By Aomori
+        </div>
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+<!-- 百度链接提交 -->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

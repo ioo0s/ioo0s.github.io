@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>王铲铲的致富之路-逆向分析 | ioo0s&#39;s blog</title>
+
+    <meta name="description" content="&lt;h2 id=&#34;游戏介绍&#34;&gt;&lt;a href=&#34;#游戏介绍&#34; class=&#34;headerlink&#34; title=&#34;游戏介绍&#34;&gt;&lt;/a&gt;游戏介绍&lt;/h2&gt;&lt;p&gt;版本：1.2.4&lt;br&gt;设备：xsmax&lt;br&gt;游戏环境：Unity&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="zh" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "王铲铲的致富之路-逆向分析 | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "&lt;h2 id=&#34;游戏介绍&#34;&gt;&lt;a href=&#34;#游戏介绍&#34; class=&#34;headerlink&#34; title=&#34;游戏介绍&#34;&gt;&lt;/a&gt;游戏介绍&lt;/h2&gt;&lt;p&gt;版本：1.2.4&lt;br&gt;设备：xsmax&lt;br&gt;游戏环境：Unity&lt;/p&gt;" />
+    <meta property="og:url" content="http://ioo0s.art/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="ios" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;h2 id=&#34;游戏介绍&#34;&gt;&lt;a href=&#34;#游戏介绍&#34; class=&#34;headerlink&#34; title=&#34;游戏介绍&#34;&gt;&lt;/a&gt;游戏介绍&lt;/h2&gt;&lt;p&gt;版本：1.2.4&lt;br&gt;设备：xsmax&lt;br&gt;游戏环境：Unity&lt;/p&gt;" />
+    <meta name="twitter:title" content="王铲铲的致富之路-逆向分析 | ioo0s&#39;s blog"/>
+    <meta name="twitter:description" content="&lt;h2 id=&#34;游戏介绍&#34;&gt;&lt;a href=&#34;#游戏介绍&#34; class=&#34;headerlink&#34; title=&#34;游戏介绍&#34;&gt;&lt;/a&gt;游戏介绍&lt;/h2&gt;&lt;p&gt;版本：1.2.4&lt;br&gt;设备：xsmax&lt;br&gt;游戏环境：Unity&lt;/p&gt;"/>
+    <script type="application/ld+json">
+        {
+            "description": "&lt;h2 id=&#34;游戏介绍&#34;&gt;&lt;a href=&#34;#游戏介绍&#34; class=&#34;headerlink&#34; title=&#34;游戏介绍&#34;&gt;&lt;/a&gt;游戏介绍&lt;/h2&gt;&lt;p&gt;版本：1.2.4&lt;br&gt;设备：xsmax&lt;br&gt;游戏环境：Unity&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "ios" },
+            "@type": "BlogPosting",
+            "url": "http://ioo0s.art/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://ioo0s.art/images/avatar.jpg"
+            },
+            "name": "ios"
+            },
+            "headline": "王铲铲的致富之路-逆向分析 | ioo0s&#39;s blog",
+            "datePublished": "2023-02-06T03:10:52.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://ioo0s.art/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦈</text></svg>">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = true
+        window.aomori_search_algolia = false
+
+    </script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-avatar avatar avatar-sm">
+                <img src="/images/avatar.jpg" alt="ios">
+            </div>
+            
+            <div class="header-type-inner">
+                
+                    <div id="typed-strings" style="display:none">
+                        <p>ioo0s&#39;s blog</p>
+                    </div>
+                    <a class="header-type-title" id="typed" href="/"></a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">主页</a>
+                
+                <a href="/archives">存档</a>
+                
+                <a href="/collection">收藏</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+    <a class="social" target="_blank" href="https://github.com/ioo0s">
+        <ion-icon name="logo-github"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="http://ioo0s.art/atom.xml">
+        <ion-icon name="logo-rss"></ion-icon>
+    </a>
+
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">主页</a>
+                    
+                    <a href="/archives">存档</a>
+                    
+                    <a href="/collection">收藏</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-cldtmxlz60005akv0g51jfpyz" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      王铲铲的致富之路-逆向分析
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2023-02-06T03:10:52.000Z" itemprop="datePublished">2023-02-06</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                <span id="busuanzi_value_page_pv">N</span> 人看过
+            </div>
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <h2 id="游戏介绍"><a href="#游戏介绍" class="headerlink" title="游戏介绍"></a>游戏介绍</h2><p>版本：1.2.4<br>设备：xsmax<br>游戏环境：Unity</p>
+<span id="more"></span>
+<h3 id="游戏玩法"><a href="#游戏玩法" class="headerlink" title="游戏玩法"></a>游戏玩法</h3><p>看着他挖，但是你需要钱去升级设备、场子等等，总之有钱！这个游戏就是你的天下！！！</p>
+<p>游戏不需要额外充钱，但是会一直有广告</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnJ17FucdZKSiH6x0ChWdZQd.png"></p>
+<h2 id="逆向过程"><a href="#逆向过程" class="headerlink" title="逆向过程"></a>逆向过程</h2><h3 id="砸壳"><a href="#砸壳" class="headerlink" title="砸壳"></a>砸壳</h3><p>获取未加密APP</p>
+<h4 id="砸壳环境"><a href="#砸壳环境" class="headerlink" title="砸壳环境"></a>砸壳环境</h4><ol>
+<li>实体机 xsmax 系统版本 14.8 已经越狱</li>
+<li>Mac os 环境 需要装<strong>usbmuxd</strong><strong>，</strong><em>Windows 下没找到能解决该问题的方法</em></li>
+<li>均安装 frida 同一版本就行</li>
+<li>Frida-ios-dump</li>
+</ol>
+<h4 id="开始砸壳"><a href="#开始砸壳" class="headerlink" title="开始砸壳"></a>开始砸壳</h4><ol>
+<li>确保 frida 能正常连通</li>
+</ol>
+<p>使用 usb 连接手机设备，使用命令 <code>frida-ps -U</code> 该命令用于查看 USB 连接设备当前运行的进程。</p>
+<p>待补充图</p>
+<ol>
+<li>使用 iproxy 命令转发 22 端口，<code>iproxy 2222 22</code></li>
+</ol>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcn0RZDt8j3nK46J3dKip84Le.png"></p>
+<ol>
+<li>修改 Frida-ios-dump 脚本中的 root 密码</li>
+<li>输入命令 <code>python dump.py -l</code> 列出当前设备中的应用程序</li>
+</ol>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcncd3lDAxThVjkRnfRXbvT7e.png"></p>
+<ol>
+<li>输入命令 <code>python dump.py com.mojike.digearth</code> ，开始砸壳</li>
+</ol>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnBdRrzbav42e0hDHn1Stvx1.png"></p>
+<h3 id="解包分析"><a href="#解包分析" class="headerlink" title="解包分析"></a>解包分析</h3><p>复制 dump 中的 ipa 文件到 Windows 下，进行下一步分析。</p>
+<p>首先重命名.ipa 为.zip 并解压</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnag2Z25uOhh6sj96vHGjINe.png"></p>
+<p>简单说明一下重要的目录结构，该游戏是 Unity 开发。</p>
+<h4 id="Data-目录"><a href="#Data-目录" class="headerlink" title="Data 目录"></a>Data 目录</h4><p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnqU56Sk9q7lCmgiS47dD58f.png"></p>
+<p><code>data.unity3d</code> 文件是游戏的资源文件，可以通过 <code>AssetStudio.net6</code>  或者 <code>AssetRipper_win_x64</code> 进行查看或者分析</p>
+<p><code>RaW</code> 文件夹里面放着一些分享时的图片资源</p>
+<p><code>Managed</code> 文件夹放着 ll2cpp 生成后的文件 非常重要！！！</p>
+<p><code>mono</code> 放着数据库相关文件</p>
+<h4 id="Frameworks-目录"><a href="#Frameworks-目录" class="headerlink" title="Frameworks 目录"></a>Frameworks 目录</h4><p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnyfJ63JIN5VypLEzOF4uMwb.png"></p>
+<p><code>UnityFramework.framework</code> 里面放着游戏编译后的 object-c 程序 很重要</p>
+<p><code>KSAdSDK.framework</code> 广告框架，没有详细 研究</p>
+<p><code>TTNetworkManager.framework</code> 网络相关，没有详细研究</p>
+<h3 id="ll2cpp-反编译"><a href="#ll2cpp-反编译" class="headerlink" title="ll2cpp 反编译"></a>ll2cpp 反编译</h3><p>利用 <code>Il2CppDumper-net6-v6.7.25 </code> 进行反编译</p>
+<p><strong>可执行文件位置</strong></p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnPDeYAgcm7Zt8BWMEW6Mbtc.png"></p>
+<p>符号表数据位置 <code>global-metadata.dat</code></p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnSVoilDB8tTBfvFls9MAnvb.png"></p>
+<p>反编译后的数据信息</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnEYnzNfzvqp6n1wPbWL1mYf.png"></p>
+<p>其中 stringliteral.json 是字符串表信息，包含着游戏字符串和对应偏移地址，il2cpp.h 是 object-c 的结构体信息</p>
+<p>dump.cs 是.net 反编译后的源码信息，DummyDll 中包含的是提取出来的所有游戏 DLL 信息与 dump.cs 内容一致。</p>
+<h3 id="逆向分析主程序"><a href="#逆向分析主程序" class="headerlink" title="逆向分析主程序"></a>逆向分析主程序</h3><p>首先通过 ida 打开程序</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcniqSbnOWZcULEuB3k3HwGeg.png"></p>
+<p>接着利用脚本导入之前得到的 il2cpp.h 文件，和字符串文件信息</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnoXIzcO49IjqQ8GIovJC9qh.png"></p>
+<p>这几个都可以导入，等待 20-30 分钟（函数量非常大！！）</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcndmfo2D6CT5zJ6psKdIOfMg.png"></p>
+<p>接着就能看到 字符串已经可以分析出来了，函数名称也已经恢复，接着通过字符串文件，搜索我们的需求 `<strong>钱！！！！</strong></p>
+<p>通过关键字 <code>money</code> 、<code>coin</code> 搜索到一个关键信息</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnSEqS3Y2DVAz35ebdDAKWfh.png"></p>
+<p>ida 中输入 g，复制地址跳转</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcntjU2nDRNbOY7PzxaZQTG7d.png"></p>
+<p>发现有几个函数引用了该字符串，get_GameCoin、set_GameCoin，因为目的是要改钱，所以 set 对我们更重要</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcn2Kno7Ua0UpgaVKRcbDnwjc.png"></p>
+<p>根据 value 进行设置，看看哪里用了 set</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnAyS6owBybEtXazcymb3QBh.png"></p>
+<p>发现有 CostCoin 函数和 AddCoin 函数都用到了该函数，所以这里有两种改法，一个是修改 AddCoin 时设置钱的数量，一个是修改花费时不扣钱。</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnKkHB5rmPAMzZB5mVkiGJvg.png"></p>
+<p>可以看到增加钱的逻辑，是查询现有的钱然后加上获得的钱，这里修改的话就会造成一个问题！！！初始化的时候钱为 0.不太好改动，所以我打算改动了花费处</p>
+<p><img src="/sboxcnPkalcvB4EGjGtobm8QO1Lg.png"></p>
+<p>可以看到，我把花费时应该-coin 的位置改成了 +coin，这样的话每次花钱都会价钱，达到了一个修改金钱的目的</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnHQ0fZiEBkztENJWLUvNRpd.png"></p>
+<p>改法比较简单，把原本 FSUB 改成 FADD 就可以了，除了钱还有个新出的模式 月球模式</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnMw4S8i3IwH7yPhVMPaKXie.png"></p>
+<p>这个也是一种钞票，我们用同样的方式进行逆向</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnHHYqNfT6fSCBfILVSgOkue.png"></p>
+<p>又看到熟悉的 ADD 和 Cost，同样减改成加</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcngxewsshIQZWUU7WVuc2bre.png"></p>
+<p>改法相同 FSUB 改成 FADD</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnOqTyizqMdPAhYZDUwHZZtf.png"></p>
+<h2 id="打包重签名"><a href="#打包重签名" class="headerlink" title="打包重签名"></a>打包重签名</h2><p>这个过程方法有太多太多，这里为了能尽快玩上游戏，我们就走最朴实无华的路线。</p>
+<p>首先将 patched 后的游戏文件替换掉原本的文件</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcn85zIE4jPqwOQpFs34t50vc.png"></p>
+<p>把该文件复制到对应位置，并且进入这个位置，右键压缩文件</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcn4va9IAGB96jX3K2ALaCv4d.png"></p>
+<p>压缩后，重命名 Payload.zip 为 Payload.ipa</p>
+<p>打开爱思助手！！！，使用里面的签名工具</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcniyY5OAGkwqvNpc8dQirz7c.png"></p>
+<p>签名完成后，就能安装使用了</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcn468hrv1wyvIDPVhopTFDBd.png"></p>
+<p>安装即可</p>
+<p><img src="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/boxcnmoH9OE4T9C8bGEJGfmlC7g.png"></p>
+<h2 id="成功截图"><a href="#成功截图" class="headerlink" title="成功截图"></a>成功截图</h2>
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+    <a href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-caption">prossimo</div>
+      <div class="article-nav-title">
+        
+          利用VMware获取shell
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">share</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=王铲铲的致富之路-逆向分析 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F06%2F%25E7%258E%258B%25E9%2593%25B2%25E9%2593%25B2%25E7%259A%2584%25E8%2587%25B4%25E5%25AF%258C%25E4%25B9%258B%25E8%25B7%25AF-%25E9%2580%2586%25E5%2590%2591%25E5%2588%2586%25E6%259E%2590%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=王铲铲的致富之路-逆向分析 - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F06%2F%25E7%258E%258B%25E9%2593%25B2%25E9%2593%25B2%25E7%259A%2584%25E8%2587%25B4%25E5%25AF%258C%25E4%25B9%258B%25E8%25B7%25AF-%25E9%2580%2586%25E5%2590%2591%25E5%2588%2586%25E6%259E%2590%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=王铲铲的致富之路-逆向分析 - ioo0s's blog&url=http://ioo0s.art/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-cate">
+    <div class="widget-title"><span>Categories</span></div>
+    <div class="widget-inner">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/">利用VMware获取shell-进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/">利用VMware获取shell</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/06/%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF-%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/">王铲铲的致富之路-逆向分析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            ioo0s&#39;s blog &copy; 2023<br>
+            Powered By Hexo · Theme By Aomori
+        </div>
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+<!-- 百度链接提交 -->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
