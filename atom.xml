@@ -6,7 +6,7 @@
   <link href="http://ioo0s.art/atom.xml" rel="self"/>
   
   <link href="http://ioo0s.art/"/>
-  <updated>2023-02-09T05:10:47.206Z</updated>
+  <updated>2023-02-20T01:37:54.787Z</updated>
   <id>http://ioo0s.art/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>libnvram.so编译教程</title>
+    <link href="http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/"/>
+    <id>http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/</id>
+    <published>2023-02-20T01:29:15.000Z</published>
+    <updated>2023-02-20T01:37:54.787Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>使用交叉编译环境</li><li>进行符号链接配置</li></ol><pre><code>sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-armecho &quot;PATH=\$PATH:/opt/brcm-arm/bin&quot; &gt;&gt; ~/.profilesource ~/.profile</code></pre><span id="more"></span><ol><li>下载 libnvram 项目</li><li>配置编译相关依赖</li></ol><pre><code>export CC=arm-uclibc-gcc&lt;em&gt;export LD_LIBRARY_PATH=$&#123;LD_LIBRARY_PATH&#125;:/opt/brcm-arm/lib:/usr/local/lib:/usr/lib&lt;/em&gt;</code></pre><ol start="5"><li>使用 ldd 命令查看依赖是否补全</li></ol><pre><code>ldd arm-uclibc-gcc</code></pre><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnI29TiwEnChYepLkxqsjkuh.png"></p><p>发现还缺少 libelf 库，<strong>32 位版本</strong></p><ol><li>对 kali 添加 32 架构支持</li></ol><pre><code>sudo dpkg --add-architecture i386sudo apt update</code></pre><ol><li>安装 libelf1:i386</li></ol><pre><code>sudo apt-get install libelf1:i386</code></pre><ol><li>修改 config.h 中的配置文件</li></ol><p>为了初始化 nvram 时能够正确的配置信息，需要对 config.h 修改</p><p>修改图中参数为 eth0 网卡 ip 地址与广播地址</p><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnCoz7jxnEDvRcZTXUGqy4Wc.png"></p><p>修改挂载点，修改后需要在文件系统中创建目录 <code>mkdir ./mnt/libnvram</code></p><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnGvWyu3Hn0fgI6TQfz5oSmb.png"></p><p>如果需要加其他 nvram 的启动配置参数，也在这里进行添加</p><ol><li>尝试编译</li></ol><pre><code>make</code></pre><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcntGWsN5d5TDcqxPCjIHaGRh.png"></p><p>提示一个 warning</p><ol><li>修改 Makefile，添加 gnu，修复 warning</li></ol><pre><code>-D_GNU_SOURCE</code></pre><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcn7Kw93iKU1n89tekpUgJ9Uf.png"></p><p>9.再次编译，大功告成</p><p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcndV2iixPchqAVePmZz7c6Be.png"></p>]]></content>
+    
+    
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    <category term="基础知识" scheme="http://ioo0s.art/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    
+    <category term="IOT" scheme="http://ioo0s.art/tags/IOT/"/>
+    
+    <category term="ASUS" scheme="http://ioo0s.art/tags/ASUS/"/>
+    
+  </entry>
   
   <entry>
     <title>CVE-2022-42475</title>

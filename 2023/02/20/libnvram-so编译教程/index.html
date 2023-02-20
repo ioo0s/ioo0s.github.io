@@ -6,30 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     
-    <title>Note | ioo0s&#39;s blog</title>
+    <title>libnvram.so编译教程 | ioo0s&#39;s blog</title>
 
-    <meta name="description" content="ioo0s&#39;s blog">
+    <meta name="description" content="&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;">
     <meta name="keywords" content="">
 
     
 
     <meta property="og:locale" content="zh" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content= "Note | ioo0s&#39;s blog"  />
-    <meta property="og:description" content= "ioo0s&#39;s blog" />
-    <meta property="og:url" content="http://ioo0s.art/2023/02/07/Note/index.html" />
+    <meta property="og:title" content= "libnvram.so编译教程 | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;" />
+    <meta property="og:url" content="http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="ios" />
     <meta property="article:publisher" content="" />
-    <meta property="og:description" content="ioo0s&#39;s blog" />
-    <meta name="twitter:title" content="Note | ioo0s&#39;s blog"/>
-    <meta name="twitter:description" content="ioo0s&#39;s blog"/>
+    <meta property="og:description" content="&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;" />
+    <meta name="twitter:title" content="libnvram.so编译教程 | ioo0s&#39;s blog"/>
+    <meta name="twitter:description" content="&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;"/>
     <script type="application/ld+json">
         {
-            "description": "ioo0s&#39;s blog",
+            "description": "&lt;ol&gt;
+&lt;li&gt;使用交叉编译环境&lt;/li&gt;
+&lt;li&gt;进行符号链接配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &amp;quot;PATH=\$PATH:/opt/brcm-arm/bin&amp;quot; &amp;gt;&amp;gt; ~/.profile
+source ~/.profile
+&lt;/code&gt;&lt;/pre&gt;",
             "author": { "@type": "Person", "name": "ios" },
             "@type": "BlogPosting",
-            "url": "http://ioo0s.art/2023/02/07/Note/index.html",
+            "url": "http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/index.html",
             "publisher": {
             "@type": "Organization",
             "logo": {
@@ -38,11 +73,11 @@
             },
             "name": "ios"
             },
-            "headline": "Note | ioo0s&#39;s blog",
-            "datePublished": "2023-02-07T07:18:26.000Z",
+            "headline": "libnvram.so编译教程 | ioo0s&#39;s blog",
+            "datePublished": "2023-02-20T01:29:15.000Z",
             "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": "http://ioo0s.art/2023/02/07/Note/index.html"
+                "@id": "http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/index.html"
             },
             "@context": "http://schema.org"
         }
@@ -171,8 +206,8 @@
         <div class="main">
             <section class="inner">
                 <section class="inner-main">
-                    <div class="tweet">
-    <article id="tweet-clec5f5oz0002ksv02aope395" class="article article-type-tweet" itemscope
+                    <div class="post">
+    <article id="post-clec5f5p90006ksv092vu3k14" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -184,15 +219,33 @@
         
 
         
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      libnvram.so编译教程
+    </h1>
+  
 
-        <div class="article-more-info article-more-info-tweet hairline">
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
 
             <div class="article-date">
-  <time datetime="2023-02-07T07:18:26.000Z" itemprop="datePublished">2023-02-07</time>
+  <time datetime="2023-02-20T01:29:15.000Z" itemprop="datePublished">2023-02-20</time>
 </div>
 
             
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </div>
+            
 
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
+            </div>
             
 
             
@@ -204,11 +257,64 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <h2 id="开博原因"><a href="#开博原因" class="headerlink" title="开博原因"></a>开博原因</h2><p>最近突然想分享几篇好玩的文章，尝试在csdn中发布（涂省事），但频繁提示我审核失败最终选择重新开一下博客，后续不定期更新😆😆😆</p>
-<h2 id="历史博客"><a href="#历史博客" class="headerlink" title="历史博客"></a>历史博客</h2><p>有几篇还不错的历史文章，但因为原文.md丢失的原因在这里贴一下之前发布的链接</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yinxuanwl/article/details/104583615">ios逆向入门笔记（详细到哭）</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yinxuanwl/article/details/93474278">Reveal调试笔记</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yinxuanwl/article/details/107724670">ios逆向入门笔记-HOOK-QQ登录</a></p>
+            <ol>
+<li>使用交叉编译环境</li>
+<li>进行符号链接配置</li>
+</ol>
+<pre><code>sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+echo &quot;PATH=\$PATH:/opt/brcm-arm/bin&quot; &gt;&gt; ~/.profile
+source ~/.profile
+</code></pre>
+<span id="more"></span>
+<ol>
+<li>下载 libnvram 项目</li>
+<li>配置编译相关依赖</li>
+</ol>
+<pre><code>export CC=arm-uclibc-gcc
+&lt;em&gt;export LD_LIBRARY_PATH=$&#123;LD_LIBRARY_PATH&#125;:/opt/brcm-arm/lib:/usr/local/lib:/usr/lib&lt;/em&gt;
+</code></pre>
+<ol start="5">
+<li>使用 ldd 命令查看依赖是否补全</li>
+</ol>
+<pre><code>ldd arm-uclibc-gcc
+</code></pre>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnI29TiwEnChYepLkxqsjkuh.png"></p>
+<p>发现还缺少 libelf 库，<strong>32 位版本</strong></p>
+<ol>
+<li>对 kali 添加 32 架构支持</li>
+</ol>
+<pre><code>sudo dpkg --add-architecture i386
+sudo apt update
+</code></pre>
+<ol>
+<li>安装 libelf1:i386</li>
+</ol>
+<pre><code>sudo apt-get install libelf1:i386
+</code></pre>
+<ol>
+<li>修改 config.h 中的配置文件</li>
+</ol>
+<p>为了初始化 nvram 时能够正确的配置信息，需要对 config.h 修改</p>
+<p>修改图中参数为 eth0 网卡 ip 地址与广播地址</p>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnCoz7jxnEDvRcZTXUGqy4Wc.png"></p>
+<p>修改挂载点，修改后需要在文件系统中创建目录 <code>mkdir ./mnt/libnvram</code></p>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcnGvWyu3Hn0fgI6TQfz5oSmb.png"></p>
+<p>如果需要加其他 nvram 的启动配置参数，也在这里进行添加</p>
+<ol>
+<li>尝试编译</li>
+</ol>
+<pre><code>make
+</code></pre>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcntGWsN5d5TDcqxPCjIHaGRh.png"></p>
+<p>提示一个 warning</p>
+<ol>
+<li>修改 Makefile，添加 gnu，修复 warning</li>
+</ol>
+<pre><code>-D_GNU_SOURCE
+</code></pre>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcn7Kw93iKU1n89tekpUgJ9Uf.png"></p>
+<p>9.再次编译，大功告成</p>
+<p><img src="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/boxcndV2iixPchqAVePmZz7c6Be.png"></p>
 
         </div>
 
@@ -217,21 +323,20 @@
     
 
     
+
+    
+
+    
+
+    
+
+    
 <nav class="article-nav">
   
-    <a href="/2023/02/09/gdb-server%E9%85%8D%E7%BD%AE/" id="article-nav-newer" class="article-nav-link-wrap">
-      <div class="article-nav-caption">prossimo</div>
-      <div class="article-nav-title">
-        
-          gdb-server配置
-        
-      </div>
-    </a>
   
-  
-    <a href="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/02/09/CVE-2022-42475/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-caption">precedente</div>
-      <div class="article-nav-title">利用VMware获取shell-进阶</div>
+      <div class="article-nav-title">CVE-2022-42475</div>
     </a>
   
 </nav>
@@ -240,15 +345,15 @@
     <section class="share">
         <div class="share-title">share</div>
         <a class="share-item" target="_blank"
-            href="https://twitter.com/share?text=Note - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F07%2FNote%2F">
+            href="https://twitter.com/share?text=libnvram.so编译教程 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F20%2Flibnvram-so%25E7%25BC%2596%25E8%25AF%2591%25E6%2595%2599%25E7%25A8%258B%2F">
             <ion-icon name="logo-twitter"></ion-icon>
         </a>
         <a class="share-item" target="_blank"
-            href="https://www.facebook.com/sharer.php?title=Note - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F07%2FNote%2F">
+            href="https://www.facebook.com/sharer.php?title=libnvram.so编译教程 - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F20%2Flibnvram-so%25E7%25BC%2596%25E8%25AF%2591%25E6%2595%2599%25E7%25A8%258B%2F">
             <ion-icon name="logo-facebook"></ion-icon>
         </a>
         <!-- <a class="share-item" target="_blank"
-            href="https://service.weibo.com/share/share.php?title=Note - ioo0s's blog&url=http://ioo0s.art/2023/02/07/Note/&pic=">
+            href="https://service.weibo.com/share/share.php?title=libnvram.so编译教程 - ioo0s's blog&url=http://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/&pic=">
             <div class="n-icon n-icon-weibo"></div>
         </a> -->
     </section>
@@ -284,6 +389,12 @@
 <div class="widget" id="widget">
     
       
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
     
       
   <div class="widget-wrap widget-cate">
