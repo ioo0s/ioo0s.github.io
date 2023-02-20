@@ -6,7 +6,7 @@
   <link href="http://ioo0s.art/atom.xml" rel="self"/>
   
   <link href="http://ioo0s.art/"/>
-  <updated>2023-02-20T01:37:54.787Z</updated>
+  <updated>2023-02-20T02:03:17.003Z</updated>
   <id>http://ioo0s.art/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>RT-AX55环境搭建</title>
+    <link href="http://ioo0s.art/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>http://ioo0s.art/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
+    <published>2023-02-20T01:59:59.000Z</published>
+    <updated>2023-02-20T02:03:17.003Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><pre><code>sudo chroot . ./qemu-arm-static -E LD_PRELOAD=&quot;./libnvram.so&quot; ./usr/sbin/httpd</code></pre><span id="more"></span><h3 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h3><ol><li>复制 qemu-arm-static 到 squashfs-root 中</li></ol><pre><code>where qemu-arm-staticcp /usr/bin/qemu-arm-static ./squashfs-root/</code></pre><ol><li>启动</li></ol><pre><code>cd squashfs-rootsudo chroot . ./qemu-arm-static ./usr/sbin/httpd</code></pre><h3 id="启动时的错误处理"><a href="#启动时的错误处理" class="headerlink" title="启动时的错误处理"></a>启动时的错误处理</h3><h4 id="遇见-openssl-相关错误"><a href="#遇见-openssl-相关错误" class="headerlink" title="遇见 openssl 相关错误"></a>遇见 openssl 相关错误</h4><p>错误原因代码：</p><p>运行 gencert.sh</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnvKJ5i51SRuJqtb1UGIJabf.png"></p><p>在调用 nvram 相关命令时出错，原因不存在 nvram</p><pre><code>#!/bin/shSECS=1262278080cd /etcNVCN=`nvram get https_crt_cn`if [ &quot;$NVCN&quot; == &quot;&quot; ]; then        NVCN=&quot;router.asus.com&quot;ficp -L openssl.cnf openssl.configI=0for CN in $NVCN; do        echo &quot;$I.commonName=CN&quot; &gt;&gt; openssl.config        echo &quot;$I.commonName_value=$CN&quot; &gt;&gt; openssl.config        I=$(($I + 1))done........ 以上是部分代码</code></pre><p>报错截图：</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnl3dulqHfHWoU4hPu8AxK6c.png"></p><h5 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h5><p>nvram 中保存了设备的一些配置信息，而程序运行时需要读取配置信息，由于缺少对应的外设，因此会报错。要编译 nvram 文件，可以使用 Firmadyne 提供的 libnvram 库，因为其支持很多的 api。</p><p><a href="https://ioo0s.art/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/">libnvram.so 编译</a></p><h4 id="libnvram-运行中其他错误"><a href="#libnvram-运行中其他错误" class="headerlink" title="libnvram 运行中其他错误"></a>libnvram 运行中其他错误</h4><p>运行后，发现仍然缺少一些键值对，</p><p>错误截图：</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcndvxlJcQMG25ouQzRdwrwSc.png"></p><h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p>返回修改 libnvarm 的 config.h 文件添加对应的键值对</p><p>通过 ida 中 strings 搜索对应的 key 进行 value 的查找</p><p>time_zone_x</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnCanMJ27GB8hlgZsJuAcWfc.png"></p><p>value</p><pre><code>PST8PDT</code></pre><p>HTTPD_DBG</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnHLGlcIPJuI1HotrIZhMaIe.png"></p><p>Value</p><pre><code>0 or 1</code></pre><p>https_crt_gen</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnDlsWW2oaMlwoBYKuiNJvS0.png"></p><p>Value</p><pre><code>0 or 1</code></pre><p>https_crt_save</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn2qNTiJLAlCDobc2IIyOR1c.png"></p><p>Value</p><pre><code>0 or 1</code></pre><p>修改后</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnaD7h9vCpuz7WOzzM80upwf.png"></p><h4 id="nvram-init-Unable-to-touch-Ralink-PID-file-var-run-nvramd-pid"><a href="#nvram-init-Unable-to-touch-Ralink-PID-file-var-run-nvramd-pid" class="headerlink" title="nvram_init: Unable to touch Ralink PID file: /var/run/nvramd.pid!"></a>nvram_init: Unable to touch Ralink PID file: /var/run/nvramd.pid!</h4><p>错误截图：</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnTpbPxxZFdfeOvlEs05gjJh.png"></p><h5 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h5><p>手动 touch 一个文件进去</p><pre><code>touch var/run/nvramd.pid</code></pre><h4 id="cp-can’t-stat-‘-mnt-libnvram-override-’-No-such-file-or-directory"><a href="#cp-can’t-stat-‘-mnt-libnvram-override-’-No-such-file-or-directory" class="headerlink" title="cp: can’t stat ‘/mnt/libnvram.override/*’: No such file or directory"></a>cp: can’t stat ‘/mnt/libnvram.override/*’: No such file or directory</h4><p>一样创建一个</p><pre><code>mkdir mnt/libnvram.override</code></pre><h4 id="ssl-相关错误，例如-lib-2-func-1-reason-2-NA-0-fopen-‘-etc-cert-pem’-’r’-等一系列问题"><a href="#ssl-相关错误，例如-lib-2-func-1-reason-2-NA-0-fopen-‘-etc-cert-pem’-’r’-等一系列问题" class="headerlink" title="ssl 相关错误，例如 lib(2):func(1):reason(2):NA:0:fopen(‘/etc/cert.pem’,’r’) 等一系列问题"></a>ssl 相关错误，例如 lib(2):func(1):reason(2):NA:0:fopen(‘/etc/cert.pem’,’r’) 等一系列问题</h4><h5 id="解决方法-2"><a href="#解决方法-2" class="headerlink" title="解决方法"></a>解决方法</h5><p>根据错误搜索/etc/cert.pem</p><p><img src="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnMx8s3873k7745ii1x40hmd.png"></p><p>通过分析上下文 + 本地文件生成可以知道，脚本 gencert.sh 并没有良好工作，需要我们在本地利用 openssl 生成对应的文件并 copy 到 etc 文件夹下即可</p><ol><li>生成 privkey.pem 及 cert.csr</li></ol><pre><code>openssl req -new -out /tmp/cert.csr -keyout /tmp/privkey.pem -newkey rsa:2048 -passout pass:password</code></pre><ol><li>生成 key.pem</li></ol><pre><code>openssl rsa -in /tmp/privkey.pem -out key.pem -passin pass:password</code></pre><ol><li>生成 cert.pem</li></ol><pre><code>RANDFILE=/dev/urandom openssl req -x509 -new -nodes -in /tmp/cert.csr -key key.pem -days 3653 -sha256 -out cert.pem</code></pre><ol><li>生成 server.pem</li></ol><pre><code>cat key.pem cert.pem &gt; server.pem</code></pre><ol><li>复制到/tmp/etc/下</li></ol><pre><code>cp server.pem cert.pem cert.crt key.pem ./tmp/etc</code></pre><p>再次运行 搞定</p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;启动方式&quot;&gt;&lt;a href=&quot;#启动方式&quot; class=&quot;headerlink&quot; title=&quot;启动方式&quot;&gt;&lt;/a&gt;启动方式&lt;/h2&gt;&lt;h3 id=&quot;方式一&quot;&gt;&lt;a href=&quot;#方式一&quot; class=&quot;headerlink&quot; title=&quot;方式一&quot;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sudo chroot . ./qemu-arm-static -E LD_PRELOAD=&amp;quot;./libnvram.so&amp;quot; ./usr/sbin/httpd
+&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    <category term="基础知识" scheme="http://ioo0s.art/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    
+    <category term="IOT" scheme="http://ioo0s.art/tags/IOT/"/>
+    
+    <category term="ASUS" scheme="http://ioo0s.art/tags/ASUS/"/>
+    
+  </entry>
   
   <entry>
     <title>libnvram.so编译教程</title>
