@@ -6,7 +6,7 @@
   <link href="http://ioo0s.art/atom.xml" rel="self"/>
   
   <link href="http://ioo0s.art/"/>
-  <updated>2023-02-21T01:32:39.434Z</updated>
+  <updated>2023-02-22T03:05:28.290Z</updated>
   <id>http://ioo0s.art/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>FIoTFuzzer</title>
+    <link href="http://ioo0s.art/2023/02/22/FIoTFuzzer/"/>
+    <id>http://ioo0s.art/2023/02/22/FIoTFuzzer/</id>
+    <published>2023-02-22T03:02:51.000Z</published>
+    <updated>2023-02-22T03:05:28.290Z</updated>
+    
+    <content type="html"><![CDATA[<p>该论文是在 Snipuzz 实现的基础上做的改进优化，着重说明了有的节点和处理方法，最终获得了很好的效果。但是论文并没有附加开源项目，本人是基于该理论描述的 fuzz 架构做了具体的实现，开源时间待定。</p><span id="more"></span><h2 id="BackGround"><a href="#BackGround" class="headerlink" title="BackGround"></a>BackGround</h2><h3 id="现有-Iot-Fuzz"><a href="#现有-Iot-Fuzz" class="headerlink" title="现有 Iot-Fuzz"></a>现有 Iot-Fuzz</h3><p><img src="/2023/02/22/FIoTFuzzer/boxcnKESoUysydRBCu7W1xhcgWf.png"></p><h2 id="本论文工作"><a href="#本论文工作" class="headerlink" title="本论文工作"></a>本论文工作</h2><ol><li>改进种子获取方式，除去抓包获取（被动式），增加了对该协议的 API Doc 或其他定义格式文件的读取</li><li>新增协议类型识别，添加网络协议特征（HTTP/ZigBee/等等），识别流量协议。</li><li>新增消息类型识别，对消息内容进行类型识别，主要针对常用协议 JSON、XML 等。</li><li>新增编码类型识别，对消息内容进行编码识别，通过内置的编码库（Base64，urlencode 等）识别，并将解密内容重新进行 2-4 的匹配。</li><li>改进相似性分类算法，增加滤波器（阈值）进行合理的归类</li></ol><h3 id="FIOT-架构"><a href="#FIOT-架构" class="headerlink" title="FIOT 架构"></a>FIOT 架构</h3><p><img src="/2023/02/22/FIoTFuzzer/boxcngFhrxj84dvbtMKdvPOzCBd.png"></p><h3 id="消息类型识别算法"><a href="#消息类型识别算法" class="headerlink" title="消息类型识别算法"></a>消息类型识别算法</h3><p><img src="/2023/02/22/FIoTFuzzer/boxcnnkLQdaFLGSCjBSV01zXh9b.png"></p><p><img src="/2023/02/22/FIoTFuzzer/boxcnqLOphdFFnyRlqxaquEUy3G.png"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>FloTFuzzer 则针对整个 fuzz 过程进行了拆分优化，弥补了 Snipuzz 的不足，并添加了对协议类型，编码类型，数据类型做了识别处理，使得变异数据能够保持原有的数据格式，减少了变异时间，同时能够增加代码功能的覆盖率。</p><h4 id="实现后的-fuzz-IOSTFuzzer"><a href="#实现后的-fuzz-IOSTFuzzer" class="headerlink" title="实现后的 fuzz-IOSTFuzzer"></a>实现后的 fuzz-IOSTFuzzer</h4><p>在 FIOTFuzzer 基础上进行了下述的优化</p><ol><li>新增对该协议的 API Doc 或其他定义格式文件的读取</li><li>新增协议类实现框架，对特定协议可以更细粒度的处理</li></ol><h5 id="待优化"><a href="#待优化" class="headerlink" title="待优化"></a>待优化</h5><ol><li>实现 FIOTFuzzer 自动化数据包解析转发功能</li><li>改进数据变异算法，提高覆盖率</li><li>改进 sender，提高发包速率</li><li>改进响应相似性识别方式，考虑使用 NLP 代码相似性识别技术</li></ol><p>项目地址：<a href="https://github.com/ioo0s/IOSTFuzzer">https://github.com/ioo0s/IOSTFuzzer</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;该论文是在 Snipuzz 实现的基础上做的改进优化，着重说明了有的节点和处理方法，最终获得了很好的效果。但是论文并没有附加开源项目，本人是基于该理论描述的 fuzz 架构做了具体的实现，开源时间待定。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="论文学习" scheme="http://ioo0s.art/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="IOT" scheme="http://ioo0s.art/tags/IOT/"/>
+    
+    <category term="Fuzz" scheme="http://ioo0s.art/tags/Fuzz/"/>
+    
+  </entry>
   
   <entry>
     <title>Snipuzz</title>
