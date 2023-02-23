@@ -6,7 +6,7 @@
   <link href="http://ioo0s.art/atom.xml" rel="self"/>
   
   <link href="http://ioo0s.art/"/>
-  <updated>2023-02-22T03:05:28.290Z</updated>
+  <updated>2023-02-23T01:12:02.589Z</updated>
   <id>http://ioo0s.art/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>juniper-jweb环境搭建</title>
+    <link href="http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
+    <published>2023-02-23T01:09:04.000Z</published>
+    <updated>2023-02-23T01:12:02.589Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><p>junos 版本：junos-vsrx3-x86-64-20.3R1.8.ide.ova</p><p>VMware 版本：17.0.0 build-20800274</p><p>Ubuntu 版本：Ubuntu 22.04</p><h2 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h2><pre><code>cliconfigureload factor-default</code></pre><h2 id="账号配置"><a href="#账号配置" class="headerlink" title="账号配置"></a>账号配置</h2><pre><code>set system root-authentication plain-text-passwordkaka123set system services ssh root-login allow</code></pre><h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><p>首先需要确保在同一个网络上</p><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnmSCRb2MTgZPRJ7z6yGUP3g.png"></p><p>需要联通的虚拟机，可以自行添加一个虚拟网卡，并指定网络为 vmnet1</p><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn5SpOApmIEB2edwYDvZOkef.png"></p><p>接着需要查看当前 juniper 虚拟机的网卡信息，注意不是所有的网卡都是 ge-xxxxx 这种</p><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnRemicRBMsUG84wZybP3uHh.png"></p><p>可以看到这里有很多网卡，其中搭建好以后会存在一个 em1 的网卡配置，只要将虚拟机配置在同一网段，就可以通过 192.168.1.2 直接 ssh 连接进来。这里我们再配置一块网卡</p><ol><li>确定网卡名称，这里我们就配置 em2</li><li>在 cli 中进行配置</li></ol><pre><code>// 配置ipset interface em2 unit 0 family inet address 192.168.1.100/24commitcommit // 两次 commit才能永久保存配置，一次commit 2分钟后会回滚到之前的配置</code></pre><ol><li>通过 show 命令检查配置是否成功</li></ol><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnyFQerZLNsMfIoFK5uIMqPc.png"></p><p>可以看到成功配置</p><ol><li>将该 interface 添加到 J-web 的支持中</li></ol><pre><code>set system services web-management https interface em2set system services web-management http interface em2</code></pre><ol><li>通过 show 查看是否成功添加</li></ol><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnGr5TNZ1neGhKFY1zYO6l1b.png"></p><p>可以看到成功添加</p><h2 id="安全区添加"><a href="#安全区添加" class="headerlink" title="安全区添加"></a>安全区添加</h2><pre><code>set security zones security-zone untrust interfaces em2set security zones security-zone untrust host-inbound-traffic system-services all</code></pre><p>Show 查看是否成功配置</p><h2 id="测试访问"><a href="#测试访问" class="headerlink" title="测试访问"></a>测试访问</h2><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn9Of45kDvfKfM0Rm27QEOhb.png"></p><h2 id="测试登录"><a href="#测试登录" class="headerlink" title="测试登录"></a>测试登录</h2><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnJjWxYmBBpAZW3lZ5xEBGrd.png"></p><h2 id="NAT配置"><a href="#NAT配置" class="headerlink" title="NAT配置?"></a>NAT配置?</h2><p>与上述方法一直，但是要提前确认好当前NAT网络的网关地址，配置时将网卡设置为NAT，接着手动分配个ip即可</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;系统信息&quot;&gt;&lt;a href=&quot;#系统信息&quot; class=&quot;headerlink&quot; title=&quot;系统信息&quot;&gt;&lt;/a&gt;系统信息&lt;/h2&gt;&lt;p&gt;junos 版本：junos-vsrx3-x86-64-20.3R1.8.ide.ova&lt;/p&gt;
+&lt;p&gt;VMware 版本：</summary>
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://ioo0s.art/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    
+    <category term="IOT" scheme="http://ioo0s.art/tags/IOT/"/>
+    
+    <category term="Juniper" scheme="http://ioo0s.art/tags/Juniper/"/>
+    
+  </entry>
   
   <entry>
     <title>FIoTFuzzer</title>

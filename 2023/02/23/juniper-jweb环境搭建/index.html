@@ -6,12 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     
-    <title>Tag | FortiGate | ioo0s&#39;s blog</title>
+    <title>juniper-jweb环境搭建 | ioo0s&#39;s blog</title>
 
     <meta name="description" content="ioo0s&#39;s blog">
     <meta name="keywords" content="">
 
     
+
+    <meta property="og:locale" content="zh" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "juniper-jweb环境搭建 | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "ioo0s&#39;s blog" />
+    <meta property="og:url" content="http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="ios" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="ioo0s&#39;s blog" />
+    <meta name="twitter:title" content="juniper-jweb环境搭建 | ioo0s&#39;s blog"/>
+    <meta name="twitter:description" content="ioo0s&#39;s blog"/>
+    <script type="application/ld+json">
+        {
+            "description": "ioo0s&#39;s blog",
+            "author": { "@type": "Person", "name": "ios" },
+            "@type": "BlogPosting",
+            "url": "http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://ioo0s.art/images/avatar.jpg"
+            },
+            "name": "ios"
+            },
+            "headline": "juniper-jweb环境搭建 | ioo0s&#39;s blog",
+            "datePublished": "2023-02-23T01:09:04.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
 
 
 
@@ -41,7 +76,7 @@
 
 
     <script>
-        window.isPost = false
+        window.isPost = true
         window.aomori = {
             
             
@@ -136,70 +171,171 @@
         <div class="main">
             <section class="inner">
                 <section class="inner-main">
-                    
+                    <div class="post">
+    <article id="post-cleget2q20000csv00xm9867a" class="article article-type-post" itemscope
+    itemprop="blogPost">
 
-    
-    
-    
-    
-    <section class="archives-wrap">
-        <div class="archive-year-wrap">
-        <a href="/archives/2023" class="archive-year">2023</a>
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      juniper-jweb环境搭建
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2023-02-23T01:09:04.000Z" itemprop="datePublished">2023-02-23</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                <span id="busuanzi_value_page_pv">N</span> 人看过
+            </div>
+            
+
         </div>
-        <div class="archives">
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><p>junos 版本：junos-vsrx3-x86-64-20.3R1.8.ide.ova</p>
+<p>VMware 版本：17.0.0 build-20800274</p>
+<p>Ubuntu 版本：Ubuntu 22.04</p>
+<h2 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h2><pre><code>cli
+configure
+load factor-default
+</code></pre>
+<h2 id="账号配置"><a href="#账号配置" class="headerlink" title="账号配置"></a>账号配置</h2><pre><code>set system root-authentication plain-text-password
+kaka123
+set system services ssh root-login allow
+</code></pre>
+<h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><p>首先需要确保在同一个网络上</p>
+<p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnmSCRb2MTgZPRJ7z6yGUP3g.png"></p>
+<p>需要联通的虚拟机，可以自行添加一个虚拟网卡，并指定网络为 vmnet1</p>
+<p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn5SpOApmIEB2edwYDvZOkef.png"></p>
+<p>接着需要查看当前 juniper 虚拟机的网卡信息，注意不是所有的网卡都是 ge-xxxxx 这种</p>
+<p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnRemicRBMsUG84wZybP3uHh.png"></p>
+<p>可以看到这里有很多网卡，其中搭建好以后会存在一个 em1 的网卡配置，只要将虚拟机配置在同一网段，就可以通过 192.168.1.2 直接 ssh 连接进来。这里我们再配置一块网卡</p>
+<ol>
+<li>确定网卡名称，这里我们就配置 em2</li>
+<li>在 cli 中进行配置</li>
+</ol>
+<pre><code>// 配置ip
+set interface em2 unit 0 family inet address 192.168.1.100/24
+commit
+commit 
+// 两次 commit才能永久保存配置，一次commit 2分钟后会回滚到之前的配置
+</code></pre>
+<ol>
+<li>通过 show 命令检查配置是否成功</li>
+</ol>
+<p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnyFQerZLNsMfIoFK5uIMqPc.png"></p>
+<p>可以看到成功配置</p>
+<ol>
+<li>将该 interface 添加到 J-web 的支持中</li>
+</ol>
+<pre><code>set system services web-management https interface em2
+set system services web-management http interface em2
+</code></pre>
+<ol>
+<li>通过 show 查看是否成功添加</li>
+</ol>
+<p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnGr5TNZ1neGhKFY1zYO6l1b.png"></p>
+<p>可以看到成功添加</p>
+<h2 id="安全区添加"><a href="#安全区添加" class="headerlink" title="安全区添加"></a>安全区添加</h2><pre><code>set security zones security-zone untrust interfaces em2
+set security zones security-zone untrust host-inbound-traffic system-services all
+</code></pre>
+<p>Show 查看是否成功配置</p>
+<h2 id="测试访问"><a href="#测试访问" class="headerlink" title="测试访问"></a>测试访问</h2><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn9Of45kDvfKfM0Rm27QEOhb.png"></p>
+<h2 id="测试登录"><a href="#测试登录" class="headerlink" title="测试登录"></a>测试登录</h2><p><img src="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnJjWxYmBBpAZW3lZ5xEBGrd.png"></p>
+<h2 id="NAT配置"><a href="#NAT配置" class="headerlink" title="NAT配置?"></a>NAT配置?</h2><p>与上述方法一直，但是要提前确认好当前NAT网络的网关地址，配置时将网卡设置为NAT，接着手动分配个ip即可</p>
+
+        </div>
+
+    </div>
+
     
-    <article class="archive-article archive-type-post">
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
   
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/09/CVE-2022-42475/">CVE-2022-42475</a>
-    </h1>
+    <a href="/2023/02/22/FIoTFuzzer/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">precedente</div>
+      <div class="article-nav-title">FIoTFuzzer</div>
+    </a>
   
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">share</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=juniper-jweb环境搭建 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F23%2Fjuniper-jweb%25E7%258E%25AF%25E5%25A2%2583%25E6%2590%25AD%25E5%25BB%25BA%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=juniper-jweb环境搭建 - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F23%2Fjuniper-jweb%25E7%258E%25AF%25E5%25A2%2583%25E6%2590%25AD%25E5%25BB%25BA%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=juniper-jweb环境搭建 - ioo0s's blog&url=http://ioo0s.art/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
 
 </article>
 
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/09/gdb-server%E9%85%8D%E7%BD%AE/">gdb-server配置</a>
-    </h1>
-  
-
-</article>
-
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/">利用VMware获取shell-进阶</a>
-    </h1>
-  
-
-</article>
-
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/">利用VMware获取shell</a>
-    </h1>
-  
-
-</article>
-
-
-    </div></section>
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
                 </section>
             </section>
 
@@ -211,6 +347,12 @@
 <div class="widget" id="widget">
     
       
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
     
       
   <div class="widget-wrap widget-cate">
