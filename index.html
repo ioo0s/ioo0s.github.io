@@ -211,6 +211,59 @@
   
     
       <article
+id="post-Reinforcement-Learning-Note"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2024/04/10/Reinforcement-Learning-Note/">Reinforcement Learning Note</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <h2 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>课程参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13W411Y75P">https://www.bilibili.com/video/BV13W411Y75P</a></p>
+<p>Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。</p>
+<p>Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。</p>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2024-04-10T05:13:58.000Z" itemprop="datePublished">2024-04-10</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RL/" rel="tag">RL</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
 id="post-乔姆斯基生成语法分析笔记"
 class="article article-type-post"
 >
@@ -692,58 +745,6 @@ class="article article-type-post"
 
     
   
-    
-      <article
-id="post-RT-AX55环境搭建"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2023/02/20/RT-AX55%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">RT-AX55环境搭建</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <h2 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><pre><code>sudo chroot . ./qemu-arm-static -E LD_PRELOAD=&quot;./libnvram.so&quot; ./usr/sbin/httpd
-</code></pre>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2023-02-20T01:59:59.000Z" itemprop="datePublished">2023-02-20</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
@@ -778,7 +779,7 @@ class="article article-type-post"
   <div class="widget-wrap widget-tags">
     <div class="widget-title"><span>Tags</span></div>
     <div class="widget-inner">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
     </div>
   </div>
 
@@ -789,6 +790,10 @@ class="article article-type-post"
     <div class="widget-title"><span>Recent Posts</span></div>
     <div class="widget-inner">
       <ul>
+        
+          <li>
+            <a href="/2024/04/10/Reinforcement-Learning-Note/">Reinforcement Learning Note</a>
+          </li>
         
           <li>
             <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/">乔姆斯基生成语法分析笔记</a>
@@ -804,10 +809,6 @@ class="article article-type-post"
         
           <li>
             <a href="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">GNS3-mipsel-环境搭建</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/">juniper-1day-任意目录读</a>
           </li>
         
       </ul>

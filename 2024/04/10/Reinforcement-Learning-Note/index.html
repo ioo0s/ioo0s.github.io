@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>Reinforcement Learning Note | ioo0s&#39;s blog</title>
+
+    <meta name="description" content="&lt;h2 id=&#34;Q-Learning&#34;&gt;&lt;a href=&#34;#Q-Learning&#34; class=&#34;headerlink&#34; title=&#34;Q-Learning&#34;&gt;&lt;/a&gt;Q-Learning&lt;/h2&gt;&lt;h3 id=&#34;原理&#34;&gt;&lt;a href=&#34;#原理&#34; class=&#34;headerlink&#34; title=&#34;原理&#34;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;课程参考：&lt;a href=&#34;https://www.bilibili.com/video/BV13W411Y75P&#34;&gt;https://www.bilibili.com/video/BV13W411Y75P&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。&lt;/p&gt;
+&lt;p&gt;Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="zh" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "Reinforcement Learning Note | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "&lt;h2 id=&#34;Q-Learning&#34;&gt;&lt;a href=&#34;#Q-Learning&#34; class=&#34;headerlink&#34; title=&#34;Q-Learning&#34;&gt;&lt;/a&gt;Q-Learning&lt;/h2&gt;&lt;h3 id=&#34;原理&#34;&gt;&lt;a href=&#34;#原理&#34; class=&#34;headerlink&#34; title=&#34;原理&#34;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;课程参考：&lt;a href=&#34;https://www.bilibili.com/video/BV13W411Y75P&#34;&gt;https://www.bilibili.com/video/BV13W411Y75P&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。&lt;/p&gt;
+&lt;p&gt;Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。&lt;/p&gt;" />
+    <meta property="og:url" content="http://ioo0s.art/2024/04/10/Reinforcement-Learning-Note/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="ios" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;h2 id=&#34;Q-Learning&#34;&gt;&lt;a href=&#34;#Q-Learning&#34; class=&#34;headerlink&#34; title=&#34;Q-Learning&#34;&gt;&lt;/a&gt;Q-Learning&lt;/h2&gt;&lt;h3 id=&#34;原理&#34;&gt;&lt;a href=&#34;#原理&#34; class=&#34;headerlink&#34; title=&#34;原理&#34;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;课程参考：&lt;a href=&#34;https://www.bilibili.com/video/BV13W411Y75P&#34;&gt;https://www.bilibili.com/video/BV13W411Y75P&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。&lt;/p&gt;
+&lt;p&gt;Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。&lt;/p&gt;" />
+    <meta name="twitter:title" content="Reinforcement Learning Note | ioo0s&#39;s blog"/>
+    <meta name="twitter:description" content="&lt;h2 id=&#34;Q-Learning&#34;&gt;&lt;a href=&#34;#Q-Learning&#34; class=&#34;headerlink&#34; title=&#34;Q-Learning&#34;&gt;&lt;/a&gt;Q-Learning&lt;/h2&gt;&lt;h3 id=&#34;原理&#34;&gt;&lt;a href=&#34;#原理&#34; class=&#34;headerlink&#34; title=&#34;原理&#34;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;课程参考：&lt;a href=&#34;https://www.bilibili.com/video/BV13W411Y75P&#34;&gt;https://www.bilibili.com/video/BV13W411Y75P&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。&lt;/p&gt;
+&lt;p&gt;Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。&lt;/p&gt;"/>
+    <script type="application/ld+json">
+        {
+            "description": "&lt;h2 id=&#34;Q-Learning&#34;&gt;&lt;a href=&#34;#Q-Learning&#34; class=&#34;headerlink&#34; title=&#34;Q-Learning&#34;&gt;&lt;/a&gt;Q-Learning&lt;/h2&gt;&lt;h3 id=&#34;原理&#34;&gt;&lt;a href=&#34;#原理&#34; class=&#34;headerlink&#34; title=&#34;原理&#34;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;课程参考：&lt;a href=&#34;https://www.bilibili.com/video/BV13W411Y75P&#34;&gt;https://www.bilibili.com/video/BV13W411Y75P&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。&lt;/p&gt;
+&lt;p&gt;Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "ios" },
+            "@type": "BlogPosting",
+            "url": "http://ioo0s.art/2024/04/10/Reinforcement-Learning-Note/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://ioo0s.art/images/avatar.jpg"
+            },
+            "name": "ios"
+            },
+            "headline": "Reinforcement Learning Note | ioo0s&#39;s blog",
+            "datePublished": "2024-04-10T05:13:58.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://ioo0s.art/2024/04/10/Reinforcement-Learning-Note/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦈</text></svg>">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = true
+        window.aomori_search_algolia = false
+
+    </script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-avatar avatar avatar-sm">
+                <img src="/images/avatar.jpg" alt="ios">
+            </div>
+            
+            <div class="header-type-inner">
+                
+                    <div id="typed-strings" style="display:none">
+                        <p>ioo0s&#39;s blog</p>
+                    </div>
+                    <a class="header-type-title" id="typed" href="/"></a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">主页</a>
+                
+                <a href="/archives">存档</a>
+                
+                <a href="/collection">收藏</a>
+                
+                <a href="/about">关于</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+    <a class="social" target="_blank" href="https://github.com/ioo0s">
+        <ion-icon name="logo-github"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="https://twitter.com/LiuIos">
+        <ion-icon name="logo-twitter"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="http://ioo0s.art/atom.xml">
+        <ion-icon name="logo-rss"></ion-icon>
+    </a>
+
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">主页</a>
+                    
+                    <a href="/archives">存档</a>
+                    
+                    <a href="/collection">收藏</a>
+                    
+                    <a href="/about">关于</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-clutuuncs0000ds1wbl5ydu5p" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Reinforcement Learning Note
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2024-04-10T05:13:58.000Z" itemprop="datePublished">2024-04-10</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RL/" rel="tag">RL</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                <span id="busuanzi_value_page_pv">N</span> views
+            </div>
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <h2 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>课程参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13W411Y75P">https://www.bilibili.com/video/BV13W411Y75P</a></p>
+<p>Q-Learning是属于值函数近似算法中，蒙特卡洛方法和时间差分法相结合的算法。这种算法使得智能体（agent）能够在与环境互动的过程中学习如何采取动作以最大化累积奖励。Q-learning特别适用于解决决策过程问题，尤其是那些状态和动作空间定义明确的问题。</p>
+<p>Q-Learning 是一个离线策略（off-policy）学习算法。在Q-Learning中，智能体学习的是一个与其实际执行动作无关的优化策略。也就是说，当它在探索更多的状态-动作对时，它学习的是最优策略。同时，在更新q-table中的值时，并不考虑下一步实际执行的动作是什么，而是假设采取的是让next_state下q-table值最大的动作。</p>
+<span id="more"></span>
+
+<h4 id="算法特性"><a href="#算法特性" class="headerlink" title="算法特性"></a>算法特性</h4><p><strong>无模型</strong>：Q-learning是一个无模型的强化学习算法，它不需要关于环境动态的先验知识</p>
+<p><strong>离线学习</strong>：Q-learning是一种离线策略学习方法，智能体的学习与其遵循的策略无关。</p>
+<p><strong>贪婪策略</strong>：在学习过程中，Q-learning采用贪婪策略在学习与探索间寻找平衡。即在大多数情况下选择当前估计最优的动作，但有时也会随机选择其他动作来探索未知的状态空间。</p>
+<h3 id="迷宫实例"><a href="#迷宫实例" class="headerlink" title="迷宫实例"></a>迷宫实例</h3><h4 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a><strong>Environment</strong></h4><ol>
+<li><p>迷宫生成</p>
+<p>用于随机生成迷宫，或者加载一个生成好的迷宫。迷宫由<code>*</code> <code> </code> 构成，其中<code>*</code>代表墙，<code> </code>代表路，<code>S</code>代表起点，<code>E</code>代表终点</p>
+<pre><code class="python">class Maze:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.maze = [[&#39;*&#39; for _ in range(2 * height + 1)] for _ in range(2 * width + 1)]
+        self.start_local = None
+        self.final_local = None
+        self.generate_maze()
+        self._locate_start_and_final()
+
+    def _break_wall(self, x, y):
+        self.maze[2 * x + 1][2 * y + 1] = &#39; &#39;
+
+    def _carve_passages_from(self, x, y):
+        dire = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        random.shuffle(dire)
+        for dx, dy in dire:
+            new_x = x + dx
+            new_y = y + dy
+            if 0 &lt;= new_x &lt; self.width and 0 &lt;= new_y &lt; self.height:
+                if self.maze[2 * new_x + 1][2 * new_y + 1] == &#39;*&#39;:
+                    self.maze[2 * x + 1 + dx][2 * y + 1 + dy] = &#39; &#39;  # Break wall
+                    self._break_wall(new_x, new_y)
+                    self._carve_passages_from(new_x, new_y)
+
+    def generate_maze(self):
+        self._break_wall(0, 0)  # Start point
+        self._carve_passages_from(0, 0)
+        self.maze[0][1] = &#39;S&#39;  # Mark the start point
+        self.maze[2 * self.width][2 * self.height - 1] = &#39;E&#39;  # Mark the end point
+
+    def _locate_start_and_final(self):
+        self.start_local = None
+        self.final_local = None
+
+        for i, row in enumerate(self.maze):
+            for j, char in enumerate(row):
+                if char == &#39;S&#39;:
+                    self.start_local = (i, j)
+                elif char == &#39;E&#39;:
+                    self.final_local = (i, j)
+
+        if self.start_local is None or self.final_local is None:
+            raise ValueError(&quot;起点或终点未在迷宫中找到。&quot;)
+
+    def display(self, maze=None):
+        if maze is None:
+            for row in self.maze:
+                print(&#39;&#39;.join(row))
+        else:
+            for row in maze:
+                print(&#39;&#39;.join(row))
+
+    def save(self, filename):
+        with open(filename, &#39;w&#39;) as file:
+            for row in self.maze:
+                file.write(&#39;&#39;.join(row) + &#39;\n&#39;)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, &#39;r&#39;) as file:
+            maze_data = [list(line.strip()) for line in file]
+        # 假设文件内容确定迷宫尺寸且迷宫规格是规整的（每行长度相同）
+        height = len(maze_data)
+        width = len(maze_data[0]) if height &gt; 0 else 0
+        maze_obj = cls(width, height)  # 创建 Maze 实例
+        maze_obj.maze = maze_data
+        maze_obj._locate_start_and_final()
+        return maze_obj
+</code></pre>
+<p>迷宫可以使用save保存在本地，方便下次训练使用，保存后的内容如下：</p>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240402104606241.png" alt="image-20240402104606241"></p>
+</li>
+<li><p>移动判定</p>
+<p>理解为游戏的模拟输入，函数的输入为当前的坐标state(x,y)和接下来的行为action(u,d,l,f)。输出为执行完action后的坐标next_state，和奖励reward（用于判定是否达到终点）。</p>
+<pre><code class="python">    def get_env_feedback(self, state, action):
+        &quot;&quot;&quot;
+        根据当前的状态和行动，返回下一个状态和奖励。
+        state: 当前的状态，即当前的坐标 (x, y)
+        action: 当前采取的行动。&#39;UP&#39;, &#39;DOWN&#39;, &#39;LEFT&#39;, &#39;RIGHT&#39; 中的一个。
+        返回: 下一个状态和奖励。
+        &quot;&quot;&quot;
+        # 计算下一步的位置
+        x, y = state
+        if action == &#39;UP&#39;:
+            next_state = (max(x - 1, 0), y)
+        elif action == &#39;DOWN&#39;:
+            next_state = (min(x + 1, 2 * self.height), y)
+        elif action == &#39;LEFT&#39;:
+            next_state = (x, max(y - 1, 0))
+        elif action == &#39;RIGHT&#39;:
+            next_state = (x, min(y + 1, 2 * self.width))
+        else:
+            next_state = state  # 无效的行动
+
+        # 检查下一步是否为墙(&#39;*&#39;)或终点(&#39;E&#39;)
+        next_x, next_y = next_state
+        if self.maze[next_x][next_y] == &#39;*&#39;:
+            reward = -1  # 如果撞墙，给予负奖励
+            next_state = state  # 状态不改变
+        elif self.maze[next_x][next_y] == &#39;E&#39;:
+            reward = 1  # 如果到达终点，给予正奖励
+        else:
+            reward = 0  # 否则，没有奖励
+
+        return next_state, reward
+</code></pre>
+</li>
+<li><p>索引转换</p>
+<p>用于将x,y坐标转换为q-table索引的辅助方法</p>
+<pre><code class="python">    def state_to_index(self, state):
+        &quot;&quot;&quot;
+        将 (x, y) 坐标转换为 q_table 的索引。
+        &quot;&quot;&quot;
+        x, y = state
+        index = x * self.width + y
+        return index
+</code></pre>
+</li>
+</ol>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><strong>Agent</strong></h4><p>使用q-leaning</p>
+<ol>
+<li><p>创建q-leaning表</p>
+<p>参数为n_states：迷宫的长*宽，actions：[‘LEFT’, ‘RIGHT’, ‘UP’, ‘DOWN’]</p>
+<pre><code class="python">def build_q_table(n_states: int, actions: list[str]) -&gt; pd.DataFrame:
+    table = pd.DataFrame(
+        np.zeros((n_states, len(actions))),
+        columns=actions)
+    return table
+</code></pre>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240402101717762.png" alt="image-20240402101717762"></p>
+</li>
+<li><p>行动决策</p>
+<p>首先获取当前位置(state_idx)的决策概率，例如state_idx=0时，state_actions = [0.0, 0.0, 0.0, 0.0]。这里有一个超参EPSILON，用于在行动决策中划分多少概率随机选择一次行动。如果不使用随机决策则会取当前state_actions中概率最大的一个决策。</p>
+<pre><code class="python">def choose_action(state_idx, q_table: pd.DataFrame) -&gt; str:
+    # 根据当前state状态和q_table选择action
+    state_actions: np.ndarray = q_table.iloc[state_idx, :]
+
+    # 随机选择的情况1.刚好是10%的随机状态 2.初始化状态
+
+    if np.random.uniform() &gt; (1 - EPSILON) or state_actions.all() == 0:
+        action_name = np.random.choice(ACTIONS)
+    else:
+        action_name = state_actions.idxmax()
+    return action_name
+</code></pre>
+</li>
+</ol>
+<h4 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h4><p>当Agent和Environment都实现后，可以开始编写q-leaning的训练了。</p>
+<pre><code class="python">def save_q_table(q_table):
+    # 获取当前日期并格式化为字符串
+    date_suffix = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+    filename = f&quot;q_table_&#123;date_suffix&#125;.npy&quot;
+    np.save(filename, q_table)
+    print(f&quot;Q-table saved to &#123;filename&#125;&quot;)
+    
+def train(maze):
+    q_table = build_q_table(maze.width * maze.height, ACTIONS)
+    print(q_table)
+
+    for episode in range(STEP):
+        step_counter = 0
+        is_final = False
+
+        S = maze.start_local
+        maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+        while not is_final:
+            S_INDEX = maze.state_to_index(S)
+            A = choose_action(S_INDEX, q_table)
+            observation_, reward = maze.get_env_feedback(S, A)
+
+            q_predict = q_table.loc[S_INDEX, A]
+            if reward != 1: # 判断是否达到迷宫终点
+                  # 未到达时，获取下一个坐标的index，并且计算对应的q_target值
+                S__INDEX = maze.state_to_index(observation_)
+                # LAMBDA为衰减超参
+                q_target = reward + LAMBDA * q_table.iloc[S__INDEX, :].max()
+            else:
+                # 达到时 q_target=1
+                q_target = reward
+                is_final = True
+                        # 更新参数，ALPHA为leaning-rate超参
+            q_table.loc[S_INDEX, A] += ALPHA * (q_target - q_predict)  # 更新q-table
+            S = observation_
+
+            step_counter += 1
+              maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+    q_table_numpy = q_table.to_numpy()
+    # 保存q-table
+    save_q_table(q_table_numpy)
+    return q_table
+</code></pre>
+<p>附算法图：</p>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240402103237474.png" alt="image-20240402103237474"></p>
+<p>训练结果截图：</p>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240402103831675.png" alt="image-20240402103831675"></p>
+<h4 id="Evaluate"><a href="#Evaluate" class="headerlink" title="Evaluate"></a>Evaluate</h4><ol>
+<li><p>编写MazeGUI，为了让测试具像化，并且使用moves统计测试时使用的步骤</p>
+<pre><code>class MazeGUI:
+    def __init__(self, maze):
+        self.maze = maze
+        self.root = tk.Tk()
+        self.root.title(&quot;Maze&quot;)
+        self.size = 600  # 窗口尺寸
+        self.cell_width = self.size // len(maze.maze[0])
+        self.cell_height = self.size // len(maze.maze)
+        self.canvas = tk.Canvas(self.root, height=self.size, width=self.size, bg=&quot;white&quot;)
+        self.canvas.pack()
+        self.draw_maze()
+        self.player = self.canvas.create_rectangle(0, 0, self.cell_width, self.cell_height, fill=&quot;blue&quot;)  # 初始化玩家位置
+        self.gui_queue = Queue()
+        self.process_queue_updates()
+        self.moves = 0  # 用于步数统计
+
+        # 创建显示步数的Label组件
+        self.steps_label = tk.Label(self.root, text=f&quot;Moves: &#123;self.moves&#125;&quot;)
+        self.steps_label.pack()
+
+    def draw_maze(self):
+        for i, row in enumerate(self.maze.maze):
+            for j, cell in enumerate(row):
+                x0 = j * self.cell_width
+                y0 = i * self.cell_height
+                x1 = x0 + self.cell_width
+                y1 = y0 + self.cell_height
+
+                if cell == &#39;*&#39;:  # 墙壁
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;black&quot;)
+                elif cell == &#39;E&#39;:  # 终点
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;red&quot;)
+                elif cell == &#39;S&#39;:  # 起点
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;green&quot;)
+                elif cell == &#39; &#39;:  # 空路
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;white&quot;)
+
+    def update_player_position(self, new_position):
+        self.moves += 1  # 步数统计
+        self.steps_label.config(text=f&quot;Moves: &#123;self.moves&#125;&quot;)
+
+        x, y = new_position
+        if x &lt; 0 or y &lt; 0 or x &gt;= self.maze.height or y &gt;= self.maze.width:
+            print(&quot;Invalid move: Player cannot move outside the maze.&quot;)
+            return  # 返回，不执行移动
+
+        # 检查新位置是否是墙壁
+        if self.maze.maze[x][y] == &#39;*&#39;:
+            print(&quot;Invalid move: Player cannot move into a wall.&quot;)
+        else:
+            # 更新玩家在画布上的坐标位置
+            self.canvas.coords(self.player,
+                               y * self.cell_width,  # 左上角x坐标
+                               x * self.cell_height,  # 左上角y坐标
+                               (y + 1) * self.cell_width,  # 右下角x坐标
+                               (x + 1) * self.cell_height)  # 右下角y坐标
+
+    def process_queue_updates(self):
+        try:
+            while not self.gui_queue.empty():
+                new_position = self.gui_queue.get_nowait()
+                # 假设你有一个方法来处理实际的更新
+                self.update_player_position(new_position)
+        except self.gui_queue.Empty:
+            pass
+        # 每隔100ms检查队列更新
+        self.root.after(100, self.process_queue_updates)
+
+    def show_steps(self):
+        # 这个方法被调用时，会作出计数并弹窗显示移动次数
+        messagebox.showinfo(&quot;Steps&quot;, f&quot;Number of moves: &#123;self.moves&#125;&quot;)
+
+    def reset(self):
+        # # 清除画布上的所有内容
+        # self.canvas.delete(&quot;all&quot;)
+        #
+        # self.draw_maze()
+        # 将玩家移动到迷宫的起点
+        self.update_player_position(self.maze.start_local)
+
+    def run(self):
+        self.root.mainloop()
+</code></pre>
+</li>
+<li><p>编写eval函数，验证时不需要采用随机化决策，直接从q-table中获取每一步的最大值决策即可。</p>
+<pre><code>def eval(q_table, maze_gui):
+    S = maze_gui.maze.start_local
+    is_final = False
+    maze_gui.reset()  # 重置迷宫到初始状态，并在GUI中更新
+
+    while not is_final:
+        S_INDEX = maze_gui.maze.state_to_index(S)
+        # 总是选择最佳动作
+        A = q_table.iloc[S_INDEX, :].idxmax()
+        observation_, reward = maze_gui.maze.get_env_feedback(S, A)
+
+        # 对 GUI 做出更新
+        maze_gui.gui_queue.put(observation_)
+
+        # 延迟一小段时间，以便观察到玩家移动
+        time.sleep(0.3)
+
+        S = observation_  # 更新当前状态
+
+        # 终点检测
+        if reward == 1:
+            is_final = True
+
+    print(&quot;Evaluation complete.&quot;)
+</code></pre>
+</li>
+</ol>
+<h4 id="完整实例"><a href="#完整实例" class="headerlink" title="完整实例"></a>完整实例</h4><p>MazeGen.py</p>
+<pre><code class="python">import random
+import tkinter as tk
+from tkinter import messagebox
+from queue import Queue
+
+
+class MazeGUI:
+    def __init__(self, maze):
+        self.maze = maze
+        self.root = tk.Tk()
+        self.root.title(&quot;Maze&quot;)
+        self.size = 600  # 窗口尺寸
+        self.cell_width = self.size // len(maze.maze[0])
+        self.cell_height = self.size // len(maze.maze)
+        self.canvas = tk.Canvas(self.root, height=self.size, width=self.size, bg=&quot;white&quot;)
+        self.canvas.pack()
+        self.draw_maze()
+        self.player = self.canvas.create_rectangle(0, 0, self.cell_width, self.cell_height, fill=&quot;blue&quot;)  # 初始化玩家位置
+        self.gui_queue = Queue()
+        self.process_queue_updates()
+        self.moves = 0  # 用于步数统计
+
+        # 创建显示步数的Label组件
+        self.steps_label = tk.Label(self.root, text=f&quot;Moves: &#123;self.moves&#125;&quot;)
+        self.steps_label.pack()
+
+    def draw_maze(self):
+        for i, row in enumerate(self.maze.maze):
+            for j, cell in enumerate(row):
+                x0 = j * self.cell_width
+                y0 = i * self.cell_height
+                x1 = x0 + self.cell_width
+                y1 = y0 + self.cell_height
+
+                if cell == &#39;*&#39;:  # 墙壁
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;black&quot;)
+                elif cell == &#39;E&#39;:  # 终点
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;red&quot;)
+                elif cell == &#39;S&#39;:  # 起点
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;green&quot;)
+                elif cell == &#39; &#39;:  # 空路
+                    self.canvas.create_rectangle(x0, y0, x1, y1, fill=&quot;white&quot;)
+
+    def update_player_position(self, new_position):
+        self.moves += 1  # 步数统计
+        self.steps_label.config(text=f&quot;Moves: &#123;self.moves&#125;&quot;)
+
+        x, y = new_position
+        if x &lt; 0 or y &lt; 0 or x &gt;= self.maze.height or y &gt;= self.maze.width:
+            print(&quot;Invalid move: Player cannot move outside the maze.&quot;)
+            return  # 返回，不执行移动
+
+        # 检查新位置是否是墙壁
+        if self.maze.maze[x][y] == &#39;*&#39;:
+            print(&quot;Invalid move: Player cannot move into a wall.&quot;)
+        else:
+            # 更新玩家在画布上的坐标位置
+            self.canvas.coords(self.player,
+                               y * self.cell_width,  # 左上角x坐标
+                               x * self.cell_height,  # 左上角y坐标
+                               (y + 1) * self.cell_width,  # 右下角x坐标
+                               (x + 1) * self.cell_height)  # 右下角y坐标
+
+    def process_queue_updates(self):
+        try:
+            while not self.gui_queue.empty():
+                new_position = self.gui_queue.get_nowait()
+                # 假设你有一个方法来处理实际的更新
+                self.update_player_position(new_position)
+        except self.gui_queue.Empty:
+            pass
+        # 每隔100ms检查队列更新
+        self.root.after(100, self.process_queue_updates)
+
+    def show_steps(self):
+        # 这个方法被调用时，会作出计数并弹窗显示移动次数
+        messagebox.showinfo(&quot;Steps&quot;, f&quot;Number of moves: &#123;self.moves&#125;&quot;)
+
+    def reset(self):
+        # # 清除画布上的所有内容
+        # self.canvas.delete(&quot;all&quot;)
+        #
+        # self.draw_maze()
+        # 将玩家移动到迷宫的起点
+        self.update_player_position(self.maze.start_local)
+
+    def run(self):
+        self.root.mainloop()
+
+
+class Maze:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.maze = [[&#39;*&#39; for _ in range(2 * height + 1)] for _ in range(2 * width + 1)]
+        self.start_local = None
+        self.final_local = None
+        self.generate_maze()
+        self._locate_start_and_final()
+
+    def _break_wall(self, x, y):
+        self.maze[2 * x + 1][2 * y + 1] = &#39; &#39;
+
+    def _carve_passages_from(self, x, y):
+        dire = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        random.shuffle(dire)
+        for dx, dy in dire:
+            new_x = x + dx
+            new_y = y + dy
+            if 0 &lt;= new_x &lt; self.width and 0 &lt;= new_y &lt; self.height:
+                if self.maze[2 * new_x + 1][2 * new_y + 1] == &#39;*&#39;:
+                    self.maze[2 * x + 1 + dx][2 * y + 1 + dy] = &#39; &#39;  # Break wall
+                    self._break_wall(new_x, new_y)
+                    self._carve_passages_from(new_x, new_y)
+
+    def generate_maze(self):
+        self._break_wall(0, 0)  # Start point
+        self._carve_passages_from(0, 0)
+        self.maze[0][1] = &#39;S&#39;  # Mark the start point
+        self.maze[2 * self.width][2 * self.height - 1] = &#39;E&#39;  # Mark the end point
+
+    def _locate_start_and_final(self):
+        self.start_local = None
+        self.final_local = None
+
+        for i, row in enumerate(self.maze):
+            for j, char in enumerate(row):
+                if char == &#39;S&#39;:
+                    self.start_local = (i, j)
+                elif char == &#39;E&#39;:
+                    self.final_local = (i, j)
+
+        if self.start_local is None or self.final_local is None:
+            raise ValueError(&quot;起点或终点未在迷宫中找到。&quot;)
+
+    def display(self, maze=None):
+        if maze is None:
+            for row in self.maze:
+                print(&#39;&#39;.join(row))
+        else:
+            for row in maze:
+                print(&#39;&#39;.join(row))
+
+    def save(self, filename):
+        with open(filename, &#39;w&#39;) as file:
+            for row in self.maze:
+                file.write(&#39;&#39;.join(row) + &#39;\n&#39;)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, &#39;r&#39;) as file:
+            maze_data = [list(line.strip()) for line in file]
+        # 假设文件内容确定迷宫尺寸且迷宫规格是规整的（每行长度相同）
+        height = len(maze_data)
+        width = len(maze_data[0]) if height &gt; 0 else 0
+        maze_obj = cls(width, height)  # 创建 Maze 实例
+        maze_obj.maze = maze_data
+        maze_obj._locate_start_and_final()
+        return maze_obj
+
+    def get_env_feedback(self, state, action):
+        &quot;&quot;&quot;
+        根据当前的状态和行动，返回下一个状态和奖励。
+        state: 当前的状态，即当前的坐标 (x, y)
+        action: 当前采取的行动。&#39;UP&#39;, &#39;DOWN&#39;, &#39;LEFT&#39;, &#39;RIGHT&#39; 中的一个。
+        返回: 下一个状态和奖励。
+        &quot;&quot;&quot;
+        # 计算下一步的位置
+        x, y = state
+        if action == &#39;UP&#39;:
+            next_state = (max(x - 1, 0), y)
+        elif action == &#39;DOWN&#39;:
+            next_state = (min(x + 1, 2 * self.height), y)
+        elif action == &#39;LEFT&#39;:
+            next_state = (x, max(y - 1, 0))
+        elif action == &#39;RIGHT&#39;:
+            next_state = (x, min(y + 1, 2 * self.width))
+        else:
+            next_state = state  # 无效的行动
+
+        # 检查下一步是否为墙(&#39;*&#39;)或终点(&#39;E&#39;)
+        next_x, next_y = next_state
+        if self.maze[next_x][next_y] == &#39;*&#39;:
+            reward = -1  # 如果撞墙，给予负奖励
+            next_state = state  # 状态不改变
+        elif self.maze[next_x][next_y] == &#39;E&#39;:
+            reward = 1  # 如果到达终点，给予正奖励
+        else:
+            reward = 0  # 否则，没有奖励
+
+        return next_state, reward
+
+    def update_env(self, maze, state, episode, step_counter):
+        if state == maze.final_local:
+            # 先创建一个迷宫的副本以便更新显示
+            updated_maze = [row.copy() for row in maze.maze]
+
+            # 确定玩家的当前位置，并标记，在这个例子中，我们使用 &#39;P&#39; 来表示玩家的当前位置
+            x, y = state  # 假设状态为 (x, y) 坐标的函数
+            updated_maze[x][y] = &#39;P&#39;  # &#39;P&#39; 表示玩家当前位置
+
+            # 清屏操作，以便更新时清除旧的迷宫状态
+            print(&quot;\033[H\033[J&quot;, end=&quot;&quot;)
+
+            print(f&quot;Episode: &#123;episode&#125;, Step: &#123;step_counter&#125;&quot;)
+            self.display(updated_maze)  # 假设 print_maze 是打印迷宫状态的函数
+
+    def state_to_index(self, state):
+        &quot;&quot;&quot;
+        将 (x, y) 坐标转换为 q_table 的索引。
+        &quot;&quot;&quot;
+        x, y = state
+        index = x * self.width + y
+        return index
+</code></pre>
+<p>Q-leaning.py</p>
+<pre><code class="python">import random
+import time
+from datetime import datetime
+import threading
+import numpy as np
+import pandas as pd
+from MazeGen import MazeGUI, Maze
+
+# 超参
+ACTIONS = [&#39;LEFT&#39;, &#39;RIGHT&#39;, &#39;UP&#39;, &#39;DOWN&#39;]
+EPSILON = 0.1  # 贪婪策略，决策概率（0.1部分为随机）
+ALPHA = 0.1  # learning rate
+LAMBDA = 0.9  # 衰减值： 0完全不看未来的见过，1考虑未来的每一个结果
+STEP = 300  # 训练轮数
+FRESH_TIME = 0.3  # 每一步骤停顿时间
+random.seed(13)
+
+
+
+
+def build_q_table(n_states: int, actions: list[str]) -&gt; pd.DataFrame:
+    table = pd.DataFrame(
+        np.zeros((n_states, len(actions))),
+        columns=actions)
+    return table
+
+
+def choose_action(state_idx, q_table: pd.DataFrame) -&gt; str:
+    # 根据当前state状态和q_table选择action
+    state_actions: np.ndarray = q_table.iloc[state_idx, :]
+
+    # 随机选择的情况1.刚好是10%的随机状态 2.初始化状态
+    if np.random.uniform() &gt; EPSILON or state_actions.all() == 0:
+        action_name = np.random.choice(ACTIONS)
+    else:
+        action_name = state_actions.idxmax()
+    return action_name
+
+
+def save_q_table(q_table):
+    # 获取当前日期并格式化为字符串
+    date_suffix = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+    filename = f&quot;q_table_&#123;date_suffix&#125;.npy&quot;
+    np.save(filename, q_table)
+    print(f&quot;Q-table saved to &#123;filename&#125;&quot;)
+
+
+def train(maze):
+    q_table = build_q_table(maze.width * maze.height, ACTIONS)
+    print(q_table)
+
+    for episode in range(STEP):
+        step_counter = 0
+        is_final = False
+
+        S = maze.start_local
+        maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+        while not is_final:
+            S_INDEX = maze.state_to_index(S)
+            A = choose_action(S_INDEX, q_table)
+            observation_, reward = maze.get_env_feedback(S, A)
+
+            q_predict = q_table.loc[S_INDEX, A]
+            if reward != 1:
+                S__INDEX = maze.state_to_index(observation_)
+                q_target = reward + LAMBDA * q_table.iloc[S__INDEX, :].max()
+            else:
+                q_target = reward
+                is_final = True
+
+            q_table.loc[S_INDEX, A] += ALPHA * (q_target - q_predict)  # 更新q-table
+            S = observation_
+
+            step_counter += 1
+            maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+    q_table_numpy = q_table.to_numpy()
+    # 保存q-table
+    save_q_table(q_table_numpy)
+    return q_table
+
+
+def eval(q_table, maze_gui):
+    S = maze_gui.maze.start_local
+    is_final = False
+    maze_gui.reset()  # 重置迷宫到初始状态，并在GUI中更新
+
+    while not is_final:
+        S_INDEX = maze_gui.maze.state_to_index(S)
+        # 总是选择最佳动作
+        A = q_table.iloc[S_INDEX, :].idxmax()
+        observation_, reward = maze_gui.maze.get_env_feedback(S, A)
+
+        # 对 GUI 做出更新
+        maze_gui.gui_queue.put(observation_)
+
+        # 延迟一小段时间，以便观察到玩家移动
+        time.sleep(0.3)
+
+        S = observation_  # 更新当前状态
+
+        # 终点检测
+        if reward == 1:
+            is_final = True
+
+    print(&quot;Evaluation complete.&quot;)
+
+
+if __name__ == &#39;__main__&#39;:
+    maze = Maze.load(&#39;my_maze.txt&#39;)
+    q_table = train(maze)
+    print(q_table)
+    maze_gui = MazeGUI(maze)
+
+    threading.Thread(target=lambda: eval(q_table, maze_gui)).start()
+    maze_gui.root.mainloop()
+
+    # 创建并显示迷宫实例
+    # my_maze = Maze(4,4)
+    # print(&quot;Generated Maze:&quot;)
+    # # my_maze.display()
+    # #
+    # # # 保存迷宫到文件
+    # my_maze.save(&#39;my_maze.txt&#39;)
+    #
+    # # # 从文件加载并显示迷宫
+    # loaded_maze = Maze.load(&#39;my_maze.txt&#39;)
+    # app = MazeGUI(loaded_maze)
+    # app.run()  # 显示迷宫
+    # print(&quot;\nLoaded Maze:&quot;)
+    # loaded_maze.display()
+</code></pre>
+<p>最终效果展示：</p>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240402104515416.png" alt="image-20240402104515416"></p>
+<h4 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h4><ol>
+<li>q-table创建没有使用动态创建，这会导致q-table的index不足或者浪费的情况出现。</li>
+<li>chooce action中idxmax只返回在请求轴上第一次出现最大值的索引，这回忽略当出现每种决策相同概率时 只会选择第一个的问题。</li>
+</ol>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li>对QLearning单独建立类，并且初始化q_table内容为空。利用check_state_exist检查当前states索引以及之前的索引是否存在，不存在则新建。</li>
+<li>使用state_actions.sample(frac=1)来打乱action所在位置，<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sample.html">sample</a>函数用于随机样本获取。</li>
+<li>修改save_q_table时，依赖当前路径的总步数，保存最优解</li>
+</ol>
+<pre><code>class QLearning:
+    def __init__(self, actions: list[str], learning_rate=0.1, reward_decay=0.9, epsilon=0.1):
+        self.actions = actions  # 动作空间
+        self.lr = learning_rate  # 学习率
+        self.gamma = reward_decay  # 奖励衰减
+        self.epsilon = epsilon  # 探索概率
+        self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float64)  # 初始化空的Q表
+
+        self.min_steps = float(&#39;inf&#39;)  # 初始化最少步数为无穷大
+        self.best_q_table = None  # 存储步数最少时的Q表
+
+    def check_state_exist(self, state):
+        # 检查并添加状态到Q表，包括之前的所有未添加的状态
+        if state not in self.q_table.index:
+            # 假设状态是整数且连续，我们需要填补所有缺失的状态，直至当前状态
+            missing_states = [s for s in
+                              range(min(self.q_table.index.astype(int).min(), state) if not self.q_table.empty else 0,
+                                    state + 1) if s not in self.q_table.index]
+            for s in missing_states:
+                # 添加缺失的状态到Q表
+                self.q_table = self.q_table._append(
+                    pd.Series(
+                        [0] * len(self.actions),
+                        index=self.q_table.columns,
+                        name=s,
+                    )
+                )
+
+    def choose_action(self, state):
+        self.check_state_exist(state)  # 确保状态在Q表中
+
+        # 根据当前状态来选择动作
+        state_actions: np.ndarray = self.q_table.iloc[state, :]
+        if np.random.uniform() &lt; self.epsilon or state_actions.all() == 0:
+            # 探索：以ε的概率执行随机动作
+            action = np.random.choice(self.actions)
+        else:
+            # 利用：以1 - ε的概率执行当前最优动作（贪婪选择）
+            shuffled_actions = state_actions.sample(frac=1)  # 使用sample与frac=1来随机打乱
+            action = shuffled_actions.idxmax()
+        return action
+
+    def save_q_table(self, steps):
+        if steps &lt; self.min_steps:
+            self.min_steps = steps
+            self.best_q_table = self.q_table.copy()  # 更新最佳Q表副本
+
+            date_suffix = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+            filename = f&quot;q_learning_q_table_&#123;date_suffix&#125;.npy&quot;
+            np.save(filename, self.best_q_table)
+            print(f&quot;Q-table saved to &#123;filename&#125;&quot;)
+
+    def learn(self, s, a, r, s_):
+        # 学习过程，根据q-learning公式更新Q表
+        q_predict = self.q_table.loc[s, a]
+
+        if r != 1:
+            s__idx = maze.state_to_index(s_)
+            self.check_state_exist(s__idx)  # 确保next_states在Q表中
+            q_target = r + self.gamma * self.q_table.iloc[s__idx, :].max()
+        else:
+            q_target = r
+
+        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  # 更新q-table
+</code></pre>
+<p>更新后的train，实时保存最优解</p>
+<pre><code>def train(maze):
+    q_learning = QLearning(ACTIONS, learning_rate=ALPHA, reward_decay=LAMBDA, epsilon=EPSILON)
+
+    for episode in range(STEP):
+        step_counter = 0
+
+        S = maze.start_local
+        maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+        while True:
+            S_INDEX = maze.state_to_index(S)
+            A = q_learning.choose_action(S_INDEX)
+
+            observation_, reward = maze.get_env_feedback(S, A)
+
+            q_learning.learn(S_INDEX, A, reward, observation_)
+
+            S = observation_
+            step_counter += 1
+            maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+            if reward == 1:
+                break
+
+        q_learning.save_q_table(step_counter)
+    print(&quot;beat steps: &#123;&#125;&quot;.format(q_learning.min_steps))
+    return q_learning.best_q_table
+</code></pre>
+<h2 id="Sarsa"><a href="#Sarsa" class="headerlink" title="Sarsa"></a>Sarsa</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13W411Y75P">https://www.bilibili.com/video/BV13W411Y75P</a></p>
+<p>与Q-Learning不同，SARSA 是一个在线策略（on-policy）学习算法。这意味着它在更新值函数时考虑了当前策略下智能体实际会执行的动作。</p>
+<h4 id="算法特点"><a href="#算法特点" class="headerlink" title="算法特点"></a>算法特点</h4><p><strong>在线策略（On-policy）</strong>：SARSA评估和改进的是同一策略，即智能体在学习时实际遵循的策略。</p>
+<p><strong>探索与利用</strong>：通过 ε-贪婪策略或其他策略可以平衡探索（exploration）新状态-动作对和利用（exploitation）已知的最佳状态-动作对。</p>
+<p><strong>收敛性</strong>：在适当的条件下（如足够长时间的训练和适当的衰减学习率），SARSA算法可以收敛到最优策略。</p>
+<h4 id="与Q-Learning主要区别"><a href="#与Q-Learning主要区别" class="headerlink" title="与Q-Learning主要区别"></a>与Q-Learning主要区别</h4><ul>
+<li><strong>策略类型</strong>：Q-Learning 是离线策略，意味着它在学习最优策略时无需遵循该策略。相反，SARSA 是在线策略，它必须遵循当前的策略进行学习。</li>
+<li><strong>风险态度</strong>：由于 Q-Learning 考虑的是最优动作，它可能会表现得更加积极（风险偏好）。而SARSA将会考虑当前的探索水平，因此它在更新过程中可能更加保守（风险规避）。</li>
+<li><strong>收敛性</strong>：两者都可以在适当的条件下收敛到最优策略。然而，在含有随机因素或是动作选择有噪声的情况下，由于SARSA较为保守，它通常会更稳健一些。</li>
+</ul>
+<h3 id="迷宫实例-1"><a href="#迷宫实例-1" class="headerlink" title="迷宫实例"></a>迷宫实例</h3><h4 id="Environment-1"><a href="#Environment-1" class="headerlink" title="Environment"></a>Environment</h4><p>与Q-learning完全一致</p>
+<h4 id="Agent-1"><a href="#Agent-1" class="headerlink" title="Agent"></a><strong>Agent</strong></h4><p>基本与Q-learning一致，只有learn函数需要修改为sarsa算法</p>
+<pre><code>class Sarsa:
+    def __init__(self, actions: list[str], learning_rate=0.1, reward_decay=0.9, epsilon=0.1):
+        self.actions = actions  # 动作空间
+        self.lr = learning_rate  # 学习率
+        self.gamma = reward_decay  # 奖励衰减
+        self.epsilon = epsilon  # 探索概率
+        self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float64)  # 初始化空的Q表
+
+        self.min_steps = float(&#39;inf&#39;)  # 初始化最少步数为无穷大
+        self.best_q_table = None  # 存储步数最少时的Q表
+
+    def check_state_exist(self, state):
+        # 检查并添加状态到Q表，包括之前的所有未添加的状态
+        if state not in self.q_table.index:
+            # 假设状态是整数且连续，我们需要填补所有缺失的状态，直至当前状态
+            missing_states = [s for s in
+                              range(min(self.q_table.index.astype(int).min(), state) if not self.q_table.empty else 0,
+                                    state + 1) if s not in self.q_table.index]
+            for s in missing_states:
+                # 添加缺失的状态到Q表
+                self.q_table = self.q_table._append(
+                    pd.Series(
+                        [0] * len(self.actions),
+                        index=self.q_table.columns,
+                        name=s,
+                    )
+                )
+
+    def choose_action(self, state):
+        self.check_state_exist(state)  # 确保状态在Q表中
+
+        # 根据当前状态来选择动作
+        state_actions: np.ndarray = self.q_table.iloc[state, :]
+        if np.random.uniform() &lt; self.epsilon or state_actions.all() == 0:
+            # 探索：以ε的概率执行随机动作
+            action = np.random.choice(self.actions)
+        else:
+            # 利用：以1 - ε的概率执行当前最优动作（贪婪选择）
+            shuffled_actions = state_actions.sample(frac=1)  # 使用sample与frac=1来随机打乱
+            action = shuffled_actions.idxmax()
+        return action
+
+    def save_q_table(self, steps):
+        if steps &lt; self.min_steps:
+            self.min_steps = steps
+            self.best_q_table = self.q_table.copy(deep=True)  # 更新最佳Q表副本
+
+            date_suffix = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+            filename = f&quot;sarsa_q_table_&#123;date_suffix&#125;.npy&quot;
+            np.save(filename, self.best_q_table)
+            print(f&quot;Q-table saved to &#123;filename&#125;&quot;)
+
+    def learn(self, s, a, r, next_s, next_action):
+        self.check_state_exist(next_s)  # 确保next_states在Q表中
+
+        # 学习过程，根据q-learning公式更新Q表
+        q_predict = self.q_table.loc[s, a]
+
+        if r != 1:
+            q_target = r + self.gamma * self.q_table.loc[next_s, next_action]  # 只对next action进行计算
+        else:
+            q_target = r
+
+        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  # 更新q-table
+</code></pre>
+<h4 id="Train-1"><a href="#Train-1" class="headerlink" title="Train"></a>Train</h4><p>需要将action计算放在初始轮中，并且迭代。</p>
+<pre><code>def train(maze):
+    sarsa = Sarsa(ACTIONS, learning_rate=ALPHA, reward_decay=LAMBDA, epsilon=EPSILON)
+
+    for episode in range(STEP):
+        step_counter = 0
+
+        S = maze.start_local
+        S_INDEX = maze.state_to_index(S)
+        A = sarsa.choose_action(S_INDEX)
+
+        maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+        while True:
+            observation_, reward = maze.get_env_feedback(S, A)
+
+            next_s_idx = maze.state_to_index(observation_)
+            next_action = sarsa.choose_action(next_s_idx)
+
+            sarsa.learn(S_INDEX, A, reward, next_s_idx, next_action)
+
+            S = observation_
+            A = next_action
+
+            step_counter += 1
+            maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+            if reward == 1:
+                break
+
+        sarsa.save_q_table(step_counter)
+
+    print(&quot;beat steps: &#123;&#125;&quot;.format(sarsa.min_steps))
+
+    return sarsa.best_q_table
+</code></pre>
+<p>训练结果截图(注意 由于保守的策略，需要更多轮训练才会得到最优的结果)：</p>
+<p><img src="/2024/04/10/Reinforcement-Learning-Note/image-20240409085515767.png" alt="image-20240409085515767"></p>
+<h4 id="Evaluate-1"><a href="#Evaluate-1" class="headerlink" title="Evaluate"></a>Evaluate</h4><p>与q-learning完全一致</p>
+<h4 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h4><pre><code class="python">import random
+import threading
+import time
+from datetime import datetime
+
+import pandas as pd
+import numpy as np
+from MazeGen import MazeGUI, Maze
+
+ACTIONS = [&#39;LEFT&#39;, &#39;RIGHT&#39;, &#39;UP&#39;, &#39;DOWN&#39;]
+EPSILON = 0.2  # 策略选择
+ALPHA = 0.1  # learning rate
+LAMBDA = 0.9  # 衰减值： 0完全不看未来的结果，1考虑未来的每一个结果
+STEP = 100  # 训练轮数
+FRESH_TIME = 0.3  # 每一步骤停顿时间
+random.seed(13)
+
+
+class Sarsa:
+    def __init__(self, actions: list[str], learning_rate=0.1, reward_decay=0.9, epsilon=0.1):
+        self.actions = actions  # 动作空间
+        self.lr = learning_rate  # 学习率
+        self.gamma = reward_decay  # 奖励衰减
+        self.epsilon = epsilon  # 探索概率
+        self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float64)  # 初始化空的Q表
+
+        self.min_steps = float(&#39;inf&#39;)  # 初始化最少步数为无穷大
+        self.best_q_table = None  # 存储步数最少时的Q表
+
+    def check_state_exist(self, state):
+        # 检查并添加状态到Q表，包括之前的所有未添加的状态
+        if state not in self.q_table.index:
+            # 假设状态是整数且连续，我们需要填补所有缺失的状态，直至当前状态
+            missing_states = [s for s in
+                              range(min(self.q_table.index.astype(int).min(), state) if not self.q_table.empty else 0,
+                                    state + 1) if s not in self.q_table.index]
+            for s in missing_states:
+                # 添加缺失的状态到Q表
+                self.q_table = self.q_table._append(
+                    pd.Series(
+                        [0] * len(self.actions),
+                        index=self.q_table.columns,
+                        name=s,
+                    )
+                )
+
+    def choose_action(self, state):
+        self.check_state_exist(state)  # 确保状态在Q表中
+
+        # 根据当前状态来选择动作
+        state_actions: np.ndarray = self.q_table.iloc[state, :]
+        if np.random.uniform() &lt; self.epsilon or state_actions.all() == 0:
+            # 探索：以ε的概率执行随机动作
+            action = np.random.choice(self.actions)
+        else:
+            # 利用：以1 - ε的概率执行当前最优动作（贪婪选择）
+            shuffled_actions = state_actions.sample(frac=1)  # 使用sample与frac=1来随机打乱
+            action = shuffled_actions.idxmax()
+        return action
+
+    def save_q_table(self, steps):
+        if steps &lt; self.min_steps:
+            self.min_steps = steps
+            self.best_q_table = self.q_table.copy(deep=True)  # 更新最佳Q表副本
+
+            date_suffix = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+            filename = f&quot;sarsa_q_table_&#123;date_suffix&#125;.npy&quot;
+            np.save(filename, self.best_q_table)
+            print(f&quot;Q-table saved to &#123;filename&#125;&quot;)
+
+    def learn(self, s, a, r, next_s, next_action):
+        self.check_state_exist(next_s)  # 确保next_states在Q表中
+
+        # 学习过程，根据q-learning公式更新Q表
+        q_predict = self.q_table.loc[s, a]
+
+        if r != 1:
+            q_target = r + self.gamma * self.q_table.loc[next_s, next_action]  # 只对next action进行计算
+        else:
+            q_target = r
+
+        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  # 更新q-table
+
+
+def train(maze):
+    sarsa = Sarsa(ACTIONS, learning_rate=ALPHA, reward_decay=LAMBDA, epsilon=EPSILON)
+
+    for episode in range(STEP):
+        step_counter = 0
+
+        S = maze.start_local
+        S_INDEX = maze.state_to_index(S)
+        A = sarsa.choose_action(S_INDEX)
+
+        maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+        while True:
+            observation_, reward = maze.get_env_feedback(S, A)
+
+            next_s_idx = maze.state_to_index(observation_)
+            next_action = sarsa.choose_action(next_s_idx)
+
+            sarsa.learn(S_INDEX, A, reward, next_s_idx, next_action)
+
+            S = observation_
+            A = next_action
+
+            step_counter += 1
+            maze.update_env(maze, S, episode=episode, step_counter=step_counter)
+
+            if reward == 1:
+                break
+
+        sarsa.save_q_table(step_counter)
+
+    print(&quot;beat steps: &#123;&#125;&quot;.format(sarsa.min_steps))
+
+    return sarsa.best_q_table
+
+
+def eval(q_table, maze_gui):
+    S = maze_gui.maze.start_local
+    is_final = False
+    maze_gui.reset()  # 重置迷宫到初始状态，并在GUI中更新
+
+    while not is_final:
+        S_INDEX = maze_gui.maze.state_to_index(S)
+        # 总是选择最佳动作
+        A = q_table.iloc[S_INDEX, :].idxmax()
+        observation_, reward = maze_gui.maze.get_env_feedback(S, A)
+
+        # 对 GUI 做出更新
+        maze_gui.gui_queue.put(observation_)
+
+        # 延迟一小段时间，以便观察到玩家移动
+        time.sleep(0.3)
+
+        S = observation_  # 更新当前状态
+
+        # 终点检测
+        if reward == 1:
+            is_final = True
+
+    print(&quot;Evaluation complete.&quot;)
+
+
+if __name__ == &#39;__main__&#39;:
+    maze = Maze.load(&#39;my_maze.txt&#39;)
+    q_table = train(maze)
+    print(q_table)
+    maze_gui = MazeGUI(maze)
+
+    threading.Thread(target=lambda: eval(q_table, maze_gui)).start()
+    maze_gui.root.mainloop()
+</code></pre>
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+  
+    <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">前の記事</div>
+      <div class="article-nav-title">乔姆斯基生成语法分析笔记</div>
+    </a>
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">シェア</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=Reinforcement Learning Note - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2024%2F04%2F10%2FReinforcement-Learning-Note%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=Reinforcement Learning Note - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2024%2F04%2F10%2FReinforcement-Learning-Note%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=Reinforcement Learning Note - ioo0s's blog&url=http://ioo0s.art/2024/04/10/Reinforcement-Learning-Note/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-cate">
+    <div class="widget-title"><span>Categories</span></div>
+    <div class="widget-inner">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">论文学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/10/Reinforcement-Learning-Note/">Reinforcement Learning Note</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/">乔姆斯基生成语法分析笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/05/Apollo-8-0%E6%95%99%E7%A8%8B/">Apollo 8.0教程</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/15/CVE-2023-21608/">CVE-2023-21608</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">GNS3-mipsel-环境搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            ioo0s&#39;s blog &copy; 2024<br>
+            Powered By Hexo · Theme By Aomori
+        </div>
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+<!-- 百度链接提交 -->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
