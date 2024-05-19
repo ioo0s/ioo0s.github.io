@@ -8,7 +8,9 @@
     
     <title>GNS3-mipsel-环境搭建 | ioo0s&#39;s blog</title>
 
-    <meta name="description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a href=&#34;#配置过程&#34; class=&#34;headerlink&#34; title=&#34;配置过程&#34;&gt;&lt;/a&gt;配置过程&lt;/h2&gt;&lt;h3 id=&#34;GNS3-vm-配置&#34;&gt;&lt;a href=&#34;#GNS3-vm-配置&#34; class=&#34;headerlink&#34; title=&#34;GNS3-vm 配置&#34;&gt;&lt;/a&gt;GNS3-vm 配置&lt;/h3&gt;&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;">
+    <meta name="description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置过程&#34;&gt;&lt;/a&gt; 配置过程&lt;/h2&gt;
+&lt;h3 id=&#34;gns3-vm-配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gns3-vm-配置&#34;&gt;&lt;/a&gt; GNS3-vm 配置&lt;/h3&gt;
+&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;">
     <meta name="keywords" content="">
 
     
@@ -16,17 +18,25 @@
     <meta property="og:locale" content="zh" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content= "GNS3-mipsel-环境搭建 | ioo0s&#39;s blog"  />
-    <meta property="og:description" content= "&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a href=&#34;#配置过程&#34; class=&#34;headerlink&#34; title=&#34;配置过程&#34;&gt;&lt;/a&gt;配置过程&lt;/h2&gt;&lt;h3 id=&#34;GNS3-vm-配置&#34;&gt;&lt;a href=&#34;#GNS3-vm-配置&#34; class=&#34;headerlink&#34; title=&#34;GNS3-vm 配置&#34;&gt;&lt;/a&gt;GNS3-vm 配置&lt;/h3&gt;&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;" />
+    <meta property="og:description" content= "&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置过程&#34;&gt;&lt;/a&gt; 配置过程&lt;/h2&gt;
+&lt;h3 id=&#34;gns3-vm-配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gns3-vm-配置&#34;&gt;&lt;/a&gt; GNS3-vm 配置&lt;/h3&gt;
+&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;" />
     <meta property="og:url" content="http://ioo0s.art/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="ios" />
     <meta property="article:publisher" content="" />
-    <meta property="og:description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a href=&#34;#配置过程&#34; class=&#34;headerlink&#34; title=&#34;配置过程&#34;&gt;&lt;/a&gt;配置过程&lt;/h2&gt;&lt;h3 id=&#34;GNS3-vm-配置&#34;&gt;&lt;a href=&#34;#GNS3-vm-配置&#34; class=&#34;headerlink&#34; title=&#34;GNS3-vm 配置&#34;&gt;&lt;/a&gt;GNS3-vm 配置&lt;/h3&gt;&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;" />
+    <meta property="og:description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置过程&#34;&gt;&lt;/a&gt; 配置过程&lt;/h2&gt;
+&lt;h3 id=&#34;gns3-vm-配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gns3-vm-配置&#34;&gt;&lt;/a&gt; GNS3-vm 配置&lt;/h3&gt;
+&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;" />
     <meta name="twitter:title" content="GNS3-mipsel-环境搭建 | ioo0s&#39;s blog"/>
-    <meta name="twitter:description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a href=&#34;#配置过程&#34; class=&#34;headerlink&#34; title=&#34;配置过程&#34;&gt;&lt;/a&gt;配置过程&lt;/h2&gt;&lt;h3 id=&#34;GNS3-vm-配置&#34;&gt;&lt;a href=&#34;#GNS3-vm-配置&#34; class=&#34;headerlink&#34; title=&#34;GNS3-vm 配置&#34;&gt;&lt;/a&gt;GNS3-vm 配置&lt;/h3&gt;&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;"/>
+    <meta name="twitter:description" content="&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置过程&#34;&gt;&lt;/a&gt; 配置过程&lt;/h2&gt;
+&lt;h3 id=&#34;gns3-vm-配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gns3-vm-配置&#34;&gt;&lt;/a&gt; GNS3-vm 配置&lt;/h3&gt;
+&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;"/>
     <script type="application/ld+json">
         {
-            "description": "&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a href=&#34;#配置过程&#34; class=&#34;headerlink&#34; title=&#34;配置过程&#34;&gt;&lt;/a&gt;配置过程&lt;/h2&gt;&lt;h3 id=&#34;GNS3-vm-配置&#34;&gt;&lt;a href=&#34;#GNS3-vm-配置&#34; class=&#34;headerlink&#34; title=&#34;GNS3-vm 配置&#34;&gt;&lt;/a&gt;GNS3-vm 配置&lt;/h3&gt;&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;",
+            "description": "&lt;h2 id=&#34;配置过程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#配置过程&#34;&gt;&lt;/a&gt; 配置过程&lt;/h2&gt;
+&lt;h3 id=&#34;gns3-vm-配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#gns3-vm-配置&#34;&gt;&lt;/a&gt; GNS3-vm 配置&lt;/h3&gt;
+&lt;p&gt;gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。&lt;/p&gt;",
             "author": { "@type": "Person", "name": "ios" },
             "@type": "BlogPosting",
             "url": "http://ioo0s.art/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html",
@@ -181,7 +191,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clgkomm2r0008381wey3wczil" class="article article-type-post" itemscope
+    <article id="post-clwdaw3a3000b1lnp6was7pv7" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -231,24 +241,28 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><h3 id="GNS3-vm-配置"><a href="#GNS3-vm-配置" class="headerlink" title="GNS3-vm 配置"></a>GNS3-vm 配置</h3><p>gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。</p>
+            <h2 id="配置过程"><a class="markdownIt-Anchor" href="#配置过程"></a> 配置过程</h2>
+<h3 id="gns3-vm-配置"><a class="markdownIt-Anchor" href="#gns3-vm-配置"></a> GNS3-vm 配置</h3>
+<p>gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。</p>
 <span id="more"></span>
-
-<h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>修改 gns3-vm 配置</p>
-<h5 id="修改方式一"><a href="#修改方式一" class="headerlink" title="修改方式一"></a>修改方式一</h5><p>从 vm 中双击 gvm3，选择 configure 选项</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnN4SJGuF1GWMaU8cDrJbK7f.png"></p>
+<h4 id="第一步"><a class="markdownIt-Anchor" href="#第一步"></a> 第一步</h4>
+<p>修改 gns3-vm 配置</p>
+<h5 id="修改方式一"><a class="markdownIt-Anchor" href="#修改方式一"></a> 修改方式一</h5>
+<p>从 vm 中双击 gvm3，选择 configure 选项</p>
+<p><img src="boxcnN4SJGuF1GWMaU8cDrJbK7f.png" alt="" /></p>
 <p>手动输入以下命令，并按 ctr+o 进行保存，ctr+x 退出</p>
-<pre><code>[Qemu]
+<pre class="highlight"><code class="">[Qemu]
 enable_kvm = True
 #require_kvm = True
 enable_hardware_acceleration = True
 require_hardware_acceleration = False
 </code></pre>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnWq6SYmdsB0M5qkG6k2E35e.png"></p>
-<h5 id="修改方式二"><a href="#修改方式二" class="headerlink" title="修改方式二"></a>修改方式二</h5><p>通过 ssh 连入 gvm3 中，进入配置文件目录 <code>~/.config/GNS3/2.2/</code></p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnLGdF0xed3NFE6Jx7w0xOwb.png"></p>
+<p><img src="boxcnWq6SYmdsB0M5qkG6k2E35e.png" alt="" /></p>
+<h5 id="修改方式二"><a class="markdownIt-Anchor" href="#修改方式二"></a> 修改方式二</h5>
+<p>通过 ssh 连入 gvm3 中，进入配置文件目录 <code>~/.config/GNS3/2.2/</code></p>
+<p><img src="boxcnLGdF0xed3NFE6Jx7w0xOwb.png" alt="" /></p>
 <p>修改 gns3_server.conf ，添加以下代码</p>
-<pre><code>[Qemu]
+<pre class="highlight"><code class="">[Qemu]
 ; !! Remember to add the gns3 user to the KVM group, otherwise you will not have read / write permissions to /dev/kvm !! (Linux only, has priority over enable_hardware_acceleration)
 enable_kvm = True
 ; Require KVM to be installed in order to start VMs (Linux only, has priority over require_hardware_acceleration)
@@ -259,94 +273,104 @@ enable_hardware_acceleration = True
 require_hardware_acceleration = False
 </code></pre>
 <p>保存即可</p>
-<h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>由于 gns3-vm 初始没有安装全部的 qemu 环境，故而无法在 gns3 中选择其他的 qemu 环境</p>
-<pre><code>sudo apt-get install qemu qemu-user-static qemu-system uml-utilities bridge-utils
+<h4 id="第二步"><a class="markdownIt-Anchor" href="#第二步"></a> 第二步</h4>
+<p>由于 gns3-vm 初始没有安装全部的 qemu 环境，故而无法在 gns3 中选择其他的 qemu 环境</p>
+<pre class="highlight"><code class="">sudo apt-get install qemu qemu-user-static qemu-system uml-utilities bridge-utils
 </code></pre>
 <p>也可以指定单独的架构版本，例如</p>
-<pre><code>sudo apt-get install qemu-system-mips
+<pre class="highlight"><code class="">sudo apt-get install qemu-system-mips
 sudo apt-get install qemu-system-arm
 </code></pre>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="MIPS-环境创建"><a href="#MIPS-环境创建" class="headerlink" title="MIPS 环境创建"></a>MIPS 环境创建</h3><ol>
+<h4 id=""><a class="markdownIt-Anchor" href="#"></a> </h4>
+<h3 id="mips-环境创建"><a class="markdownIt-Anchor" href="#mips-环境创建"></a> MIPS 环境创建</h3>
+<ol>
 <li>选择 <code>Qemu VMs</code> 、点击 New 选项、选中 on the GNS3 VM 选项后点击 NEXT</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnq36NxGV9irGGXL90u2Vpld.png"></p>
+<p><img src="boxcnq36NxGV9irGGXL90u2Vpld.png" alt="" /></p>
 <ol start="2">
 <li>设置名称，点击 next</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnHODigQEStxRWesrQw7jb5f.png"></p>
+<p><img src="boxcnHODigQEStxRWesrQw7jb5f.png" alt="" /></p>
 <ol start="3">
 <li>指定 qemu 为 mipsel，并设置内存大小</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn7fGUPRmB9TgWhwpFFsj8Nw.png"></p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnV8mXyp76IikiqgKmDAP7Sd.png"></p>
+<p><img src="boxcn7fGUPRmB9TgWhwpFFsj8Nw.png" alt="" /></p>
+<p><img src="boxcnV8mXyp76IikiqgKmDAP7Sd.png" alt="" /></p>
 <ol start="4">
 <li>选择连接模式为 Telnet（vnc 看情况选定）</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnY6fJSLz5UYL7o7Z3u1jcae.png"></p>
+<p><img src="boxcnY6fJSLz5UYL7o7Z3u1jcae.png" alt="" /></p>
 <ol start="5">
 <li>设置 mipsel 的 qcow2 文件，需要根据版本指定</li>
 </ol>
 <p>低版本设置</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnMtBP2QvYSDEAd948QB4hSf.png"></p>
+<p><img src="boxcnMtBP2QvYSDEAd948QB4hSf.png" alt="" /></p>
 <p>高版本设置</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnCtld4PMfVGNcTw6OjVPN2f.png"></p>
+<p><img src="boxcnCtld4PMfVGNcTw6OjVPN2f.png" alt="" /></p>
 <ol start="6">
 <li>点击 edit 修改详细配置信息</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnlPURylM7rLZmxLdRg9mgXb.png"></p>
+<p><img src="boxcnlPURylM7rLZmxLdRg9mgXb.png" alt="" /></p>
 <ol start="7">
 <li>确认 qemu 为 mipsel，并勾选 atuo start</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnTKsdnx1v1fZN1htNKRxDwe.png"></p>
+<p><img src="boxcnTKsdnx1v1fZN1htNKRxDwe.png" alt="" /></p>
 <ol start="8">
 <li>修改硬盘格式为 <code>ide</code></li>
 </ol>
 <p>低版本，在 HDA 处修改即可</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn19DZmI4bnU7OaSaKIgwijf.png"></p>
+<p><img src="boxcn19DZmI4bnU7OaSaKIgwijf.png" alt="" /></p>
 <p>高版本需要更换位置到 HDB</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnS3oyqC2CFzzNMAFV9598Hf.png"></p>
+<p><img src="boxcnS3oyqC2CFzzNMAFV9598Hf.png" alt="" /></p>
 <ol start="9">
 <li>更改网卡个数（自行选择）、并且勾选 替换选项</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnMDOMvxf6GzZ1zpFsNrFw6b.png"></p>
+<p><img src="boxcnMDOMvxf6GzZ1zpFsNrFw6b.png" alt="" /></p>
 <ol start="10">
 <li>最后指定一些 kernel 文件，并在 qemu option 中添加硬盘信息</li>
 </ol>
 <p>低版本设置</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcndUpYTftoiT2L3pffl2Nc0f.png"></p>
+<p><img src="boxcndUpYTftoiT2L3pffl2Nc0f.png" alt="" /></p>
 <p>高版本设置</p>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnQD1lk94whKXU8bVALLVYJe.png"></p>
+<p><img src="boxcnQD1lk94whKXU8bVALLVYJe.png" alt="" /></p>
 <ol start="11">
 <li>测试启动，默认账号 root，密码 root</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnRtv4vAhZDgzVSuu79O40Qb.png"></p>
-<h3 id="网络通信配置"><a href="#网络通信配置" class="headerlink" title="网络通信配置"></a>网络通信配置</h3><p>可以配置外网也可以配置私网，私网配置教程参考 ASA 环境配置，这里主要讲与外网配置通信</p>
+<p><img src="boxcnRtv4vAhZDgzVSuu79O40Qb.png" alt="" /></p>
+<h3 id="网络通信配置"><a class="markdownIt-Anchor" href="#网络通信配置"></a> 网络通信配置</h3>
+<p>可以配置外网也可以配置私网，私网配置教程参考 ASA 环境配置，这里主要讲与外网配置通信</p>
 <ol>
 <li>选择左侧的 NAT，创建一个 NAT 模拟，选择 server，一般情况会有两个选项 1.本地计算机 2.gns3-vm</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcntFHAdUiqt6oIc0MvtDK6Lg.png"></p>
+<p><img src="boxcntFHAdUiqt6oIc0MvtDK6Lg.png" alt="" /></p>
 <ol start="2">
 <li>连接网络</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcnC9ZtmWTyvXZgO6rjIEe65d.png"></p>
+<p><img src="boxcnC9ZtmWTyvXZgO6rjIEe65d.png" alt="" /></p>
 <ol start="3">
 <li>查看网络情况，已经自动分配 ip 地址，并且可以进行通域通信（同一网段）通讯</li>
 </ol>
-<p><img src="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/boxcn2hjKCnOk7eCTKFo54MIhmc.png"></p>
-<h2 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h2><h3 id="GNS3-server-configuration-file"><a href="#GNS3-server-configuration-file" class="headerlink" title="GNS3 server configuration file"></a>GNS3 server configuration file</h3><p>If you want to run the GNS3 server without the GUI, you can configure it with via an ini file.</p>
-<h4 id="File-Location"><a href="#File-Location" class="headerlink" title="File Location"></a>File Location</h4><p>We search for the configuration file in multiple locations:</p>
-<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><ul>
+<p><img src="boxcn2hjKCnOk7eCTKFo54MIhmc.png" alt="" /></p>
+<h2 id="相关知识"><a class="markdownIt-Anchor" href="#相关知识"></a> 相关知识</h2>
+<h3 id="gns3-server-configuration-file"><a class="markdownIt-Anchor" href="#gns3-server-configuration-file"></a> GNS3 server configuration file</h3>
+<p>If you want to run the GNS3 server without the GUI, you can configure it with via an ini file.</p>
+<h4 id="file-location"><a class="markdownIt-Anchor" href="#file-location"></a> File Location</h4>
+<p>We search for the configuration file in multiple locations:</p>
+<h4 id="linux"><a class="markdownIt-Anchor" href="#linux"></a> Linux</h4>
+<ul>
 <li>$HOME/.config/GNS3/gns3_server.conf</li>
 <li>$HOME/.config/GNS3.conf</li>
 <li>/etc/xdg/GNS3/gns3_server.conf</li>
 <li>/etc/xdg/GNS3.conf</li>
 <li>gns3_server.conf in the current directory</li>
 </ul>
-<h4 id="Mac-OS-X"><a href="#Mac-OS-X" class="headerlink" title="Mac OS X"></a>Mac OS X</h4><ul>
+<h4 id="mac-os-x"><a class="markdownIt-Anchor" href="#mac-os-x"></a> Mac OS X</h4>
+<ul>
 <li>$HOME/.config/GNS3/gns3_server.conf</li>
 <li>gns3_server.conf in the current directory</li>
 </ul>
-<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><ul>
+<h4 id="windows"><a class="markdownIt-Anchor" href="#windows"></a> Windows</h4>
+<ul>
 <li>%APPDATA%/GNS3/gns3_server.ini</li>
 <li>%APPDATA%/Roaming/GNS3/gns3_server.ini</li>
 <li>%APPDATA%/GNS3.ini</li>
@@ -354,8 +378,9 @@ sudo apt-get install qemu-system-arm
 <li>%COMMON_APPDATA%/GNS3.ini</li>
 <li>gns3_server.ini in current directory</li>
 </ul>
-<h2 id="Qemu-mipsel-相关下载"><a href="#Qemu-mipsel-相关下载" class="headerlink" title="Qemu mipsel 相关下载"></a>Qemu mipsel 相关下载</h2><p>访问 <code>https://people.debian.org/~aurel32/qemu/</code>,下载 MIPSEL 的系统映像,其中启动对应版本</p>
-<pre><code>with the following arguments for a 32-bit machine:
+<h2 id="qemu-mipsel-相关下载"><a class="markdownIt-Anchor" href="#qemu-mipsel-相关下载"></a> Qemu mipsel 相关下载</h2>
+<p>访问 <code>https://people.debian.org/~aurel32/qemu/</code>,下载 MIPSEL 的系统映像,其中启动对应版本</p>
+<pre class="highlight"><code class="">with the following arguments for a 32-bit machine:
   - qemu-system-mipsel -M malta -kernel vmlinux-2.6.32-5-4kc-malta -hda debian_squeeze_mipsel_standard.qcow2 -append &quot;root=/dev/sda1 console=tty0&quot;
   - qemu-system-mipsel -M malta -kernel vmlinux-3.2.0-4-4kc-malta -hda debian_wheezy_mipsel_standard.qcow2 -append &quot;root=/dev/sda1 console=tty0&quot;
 
@@ -382,7 +407,7 @@ Start QEMU with the following arguments for a 64-bit machine:
 <nav class="article-nav">
   
     <a href="/2023/03/15/CVE-2023-21608/" id="article-nav-newer" class="article-nav-link-wrap">
-      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-caption">prossimo</div>
       <div class="article-nav-title">
         
           CVE-2023-21608
@@ -392,7 +417,7 @@ Start QEMU with the following arguments for a 64-bit machine:
   
   
     <a href="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-caption">precedente</div>
       <div class="article-nav-title">juniper-1day-任意目录读</div>
     </a>
   
@@ -400,7 +425,7 @@ Start QEMU with the following arguments for a 64-bit machine:
 
 
     <section class="share">
-        <div class="share-title">分享</div>
+        <div class="share-title">share</div>
         <a class="share-item" target="_blank"
             href="https://twitter.com/share?text=GNS3-mipsel-环境搭建 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F03%2F06%2FGNS3-mipsel-%25E7%258E%25AF%25E5%25A2%2583%25E6%2590%25AD%25E5%25BB%25BA%2F">
             <ion-icon name="logo-twitter"></ion-icon>

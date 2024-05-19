@@ -8,11 +8,13 @@
     
     <title>ATF-FUZZ | ioo0s&#39;s blog</title>
 
-    <meta name="description" content="&lt;h2 id=&#34;FVP环境搭建&#34;&gt;&lt;a href=&#34;#FVP环境搭建&#34; class=&#34;headerlink&#34; title=&#34;FVP环境搭建&#34;&gt;&lt;/a&gt;FVP环境搭建&lt;/h2&gt;&lt;h3 id=&#34;FVP下载&#34;&gt;&lt;a href=&#34;#FVP下载&#34; class=&#34;headerlink&#34; title=&#34;FVP下载&#34;&gt;&lt;/a&gt;FVP下载&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2024/05/03/ATF-FUZZ/image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34;&gt;&lt;/p&gt;
+    <meta name="description" content="&lt;h2 id=&#34;fvp环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp环境搭建&#34;&gt;&lt;/a&gt; FVP环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;fvp下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp下载&#34;&gt;&lt;/a&gt; FVP下载&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools and Software/Fixed Virtual Platforms&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;推荐直接下载：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;下载完成后解压的到&lt;code&gt;Base_RevC_AEMvA_pkg&lt;/code&gt;&lt;/p&gt;">
     <meta name="keywords" content="">
 
@@ -21,36 +23,44 @@
     <meta property="og:locale" content="zh" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content= "ATF-FUZZ | ioo0s&#39;s blog"  />
-    <meta property="og:description" content= "&lt;h2 id=&#34;FVP环境搭建&#34;&gt;&lt;a href=&#34;#FVP环境搭建&#34; class=&#34;headerlink&#34; title=&#34;FVP环境搭建&#34;&gt;&lt;/a&gt;FVP环境搭建&lt;/h2&gt;&lt;h3 id=&#34;FVP下载&#34;&gt;&lt;a href=&#34;#FVP下载&#34; class=&#34;headerlink&#34; title=&#34;FVP下载&#34;&gt;&lt;/a&gt;FVP下载&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2024/05/03/ATF-FUZZ/image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34;&gt;&lt;/p&gt;
+    <meta property="og:description" content= "&lt;h2 id=&#34;fvp环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp环境搭建&#34;&gt;&lt;/a&gt; FVP环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;fvp下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp下载&#34;&gt;&lt;/a&gt; FVP下载&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools and Software/Fixed Virtual Platforms&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;推荐直接下载：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;下载完成后解压的到&lt;code&gt;Base_RevC_AEMvA_pkg&lt;/code&gt;&lt;/p&gt;" />
     <meta property="og:url" content="http://ioo0s.art/2024/05/03/ATF-FUZZ/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="ios" />
     <meta property="article:publisher" content="" />
-    <meta property="og:description" content="&lt;h2 id=&#34;FVP环境搭建&#34;&gt;&lt;a href=&#34;#FVP环境搭建&#34; class=&#34;headerlink&#34; title=&#34;FVP环境搭建&#34;&gt;&lt;/a&gt;FVP环境搭建&lt;/h2&gt;&lt;h3 id=&#34;FVP下载&#34;&gt;&lt;a href=&#34;#FVP下载&#34; class=&#34;headerlink&#34; title=&#34;FVP下载&#34;&gt;&lt;/a&gt;FVP下载&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2024/05/03/ATF-FUZZ/image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34;&gt;&lt;/p&gt;
+    <meta property="og:description" content="&lt;h2 id=&#34;fvp环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp环境搭建&#34;&gt;&lt;/a&gt; FVP环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;fvp下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp下载&#34;&gt;&lt;/a&gt; FVP下载&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools and Software/Fixed Virtual Platforms&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;推荐直接下载：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;下载完成后解压的到&lt;code&gt;Base_RevC_AEMvA_pkg&lt;/code&gt;&lt;/p&gt;" />
     <meta name="twitter:title" content="ATF-FUZZ | ioo0s&#39;s blog"/>
-    <meta name="twitter:description" content="&lt;h2 id=&#34;FVP环境搭建&#34;&gt;&lt;a href=&#34;#FVP环境搭建&#34; class=&#34;headerlink&#34; title=&#34;FVP环境搭建&#34;&gt;&lt;/a&gt;FVP环境搭建&lt;/h2&gt;&lt;h3 id=&#34;FVP下载&#34;&gt;&lt;a href=&#34;#FVP下载&#34; class=&#34;headerlink&#34; title=&#34;FVP下载&#34;&gt;&lt;/a&gt;FVP下载&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2024/05/03/ATF-FUZZ/image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34;&gt;&lt;/p&gt;
+    <meta name="twitter:description" content="&lt;h2 id=&#34;fvp环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp环境搭建&#34;&gt;&lt;/a&gt; FVP环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;fvp下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp下载&#34;&gt;&lt;/a&gt; FVP下载&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools and Software/Fixed Virtual Platforms&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;推荐直接下载：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;下载完成后解压的到&lt;code&gt;Base_RevC_AEMvA_pkg&lt;/code&gt;&lt;/p&gt;"/>
     <script type="application/ld+json">
         {
-            "description": "&lt;h2 id=&#34;FVP环境搭建&#34;&gt;&lt;a href=&#34;#FVP环境搭建&#34; class=&#34;headerlink&#34; title=&#34;FVP环境搭建&#34;&gt;&lt;/a&gt;FVP环境搭建&lt;/h2&gt;&lt;h3 id=&#34;FVP下载&#34;&gt;&lt;a href=&#34;#FVP下载&#34; class=&#34;headerlink&#34; title=&#34;FVP下载&#34;&gt;&lt;/a&gt;FVP下载&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2024/05/03/ATF-FUZZ/image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34;&gt;&lt;/p&gt;
+            "description": "&lt;h2 id=&#34;fvp环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp环境搭建&#34;&gt;&lt;/a&gt; FVP环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;fvp下载&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#fvp下载&#34;&gt;&lt;/a&gt; FVP下载&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms&#34;&gt;https://developer.arm.com/Tools and Software/Fixed Virtual Platforms&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image-20240422164011956.png&#34; alt=&#34;image-20240422164011956&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;推荐直接下载：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0&#34;&gt;Armv-A Base RevC AEM FVP (x86 Linux)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C&#34;&gt;Armv-A Base RevC AEM FVP (AArch64 Linux, beta)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;下载完成后解压的到&lt;code&gt;Base_RevC_AEMvA_pkg&lt;/code&gt;&lt;/p&gt;",
             "author": { "@type": "Person", "name": "ios" },
             "@type": "BlogPosting",
@@ -206,7 +216,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clvpxvrx00000ig1wdge03y5o" class="article article-type-post" itemscope
+    <article id="post-clwdaw39y00011lnp1gu8e8ji" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -256,44 +266,51 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <h2 id="FVP环境搭建"><a href="#FVP环境搭建" class="headerlink" title="FVP环境搭建"></a>FVP环境搭建</h2><h3 id="FVP下载"><a href="#FVP下载" class="headerlink" title="FVP下载"></a>FVP下载</h3><p><a target="_blank" rel="noopener" href="https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms">https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms</a></p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422164011956.png" alt="image-20240422164011956"></p>
+            <h2 id="fvp环境搭建"><a class="markdownIt-Anchor" href="#fvp环境搭建"></a> FVP环境搭建</h2>
+<h3 id="fvp下载"><a class="markdownIt-Anchor" href="#fvp下载"></a> FVP下载</h3>
+<p><a target="_blank" rel="noopener" href="https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms">https://developer.arm.com/Tools and Software/Fixed Virtual Platforms</a></p>
+<p><img src="image-20240422164011956.png" alt="image-20240422164011956" /></p>
 <p>推荐直接下载：</p>
-<p><a target="_blank" rel="noopener" href="https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0">Armv-A Base RevC AEM FVP (x86 Linux)</a></p>
-<p><a target="_blank" rel="noopener" href="https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&hash=89A9DC4822F3043904B6766892999DA6F8376D5C">Armv-A Base RevC AEM FVP (AArch64 Linux, beta)</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz?rev=0ef747d28bbd48dc9e6ce34134c68fb4&amp;hash=583601FE651DF183C31905BC6CFF2DCDEFB74EF0">Armv-A Base RevC AEM FVP (x86 Linux)</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.arm.com/-/media/Files/downloads/ecosystem-models/FM_11_25/FVP_Base_RevC-2xAEMvA_11.25_15_Linux64_armv8l.tgz?rev=97a250c90f564d84bf1426db80b6e870&amp;hash=89A9DC4822F3043904B6766892999DA6F8376D5C">Armv-A Base RevC AEM FVP (AArch64 Linux, beta)</a></p>
 <p>下载完成后解压的到<code>Base_RevC_AEMvA_pkg</code></p>
 <span id="more"></span>
-<pre><code class="bash">sudo apt install xterm
+<pre class="highlight"><code class="bash">sudo apt install xterm
 tar -xzvf FVP_Base_RevC-2xAEMvA_11.25_15_Linux64.tgz
-# Base_RevC_AEMvA_pkg
+<span class="hljs-comment"># Base_RevC_AEMvA_pkg</span>
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422165953399.png" alt="image-20240422165953399"></p>
+<p><img src="image-20240422165953399.png" alt="image-20240422165953399" /></p>
 <p>注意对应的binary文件在<code>AEMv8R_base_pkg/models/Linux64_GCC-9.3</code>目录下</p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422174544894.png" alt="image-20240422174544894"></p>
+<p><img src="image-20240422174544894.png" alt="image-20240422174544894" /></p>
 <p>FVP的快捷的两种启动方法：1. ARM Develop Studio可视化启动 2.command line启动。本教程主要使用command line方式启动。</p>
-<h2 id="BL33构建"><a href="#BL33构建" class="headerlink" title="BL33构建"></a>BL33构建</h2><p>BL33作为None-security world镜像，一般情况下为uboot，当然也可以直接跳转到kernel。</p>
-<pre><code class="bash">export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
-git clone https://github.com/u-boot/u-boot.git
-cd u-boot
+<h2 id="bl33构建"><a class="markdownIt-Anchor" href="#bl33构建"></a> BL33构建</h2>
+<p>BL33作为None-security world镜像，一般情况下为uboot，当然也可以直接跳转到kernel。</p>
+<pre class="highlight"><code class="bash"><span class="hljs-built_in">export</span> CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
+git <span class="hljs-built_in">clone</span> https://github.com/u-boot/u-boot.git
+<span class="hljs-built_in">cd</span> u-boot
 make vexpress_aemv8a_semi_defconfig
 make -j 9
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422181720100.png" alt="image-20240422181720100"></p>
-<h2 id="ATF构建"><a href="#ATF构建" class="headerlink" title="ATF构建"></a>ATF构建</h2><pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
+<p><img src="image-20240422181720100.png" alt="image-20240422181720100" /></p>
+<h2 id="atf构建"><a class="markdownIt-Anchor" href="#atf构建"></a> ATF构建</h2>
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
 export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 
 // 调试编译
 make PLAT=fvp BL33=/data/Project/u-boot/u-boot.bin DEBUG=1 all fip
 // 正常编译
 make PLAT=fvp BL33=/data/Project/u-boot/u-boot.bin all fip
+
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422175940401.png" alt="image-20240422175940401"></p>
-<h2 id="ATF运行"><a href="#ATF运行" class="headerlink" title="ATF运行"></a>ATF运行</h2><h3 id="AEMv8-Base-FVP"><a href="#AEMv8-Base-FVP" class="headerlink" title="AEMv8 Base FVP"></a>AEMv8 Base FVP</h3><p>使用<code>FVP_Base_RevC-2xAEMv8A</code>运行</p>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/debug/
+<p><img src="image-20240422175940401.png" alt="image-20240422175940401" /></p>
+<h2 id="atf运行"><a class="markdownIt-Anchor" href="#atf运行"></a> ATF运行</h2>
+<h3 id="aemv8-base-fvp"><a class="markdownIt-Anchor" href="#aemv8-base-fvp"></a> AEMv8 Base FVP</h3>
+<p>使用<code>FVP_Base_RevC-2xAEMv8A</code>运行</p>
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/debug/
 export DISPLAY=:0
 </code></pre>
 <p>运行命令：</p>
-<pre><code>/data/Project/Base_RevC_AEMvA_pkg/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA \
+<pre class="highlight"><code class="">/data/Project/Base_RevC_AEMvA_pkg/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA \
 -C pctl.startup=0.0.0.0                                     \
 -C bp.secure_memory=1                                       \
 -C bp.tzc_400.diagnostics=1                                 \
@@ -307,29 +324,33 @@ export DISPLAY=:0
 --data cluster0.cpu0=&quot;&lt;path-to&gt;/&lt;kernel-binary&gt;&quot;@0x80080000 \
 --data cluster0.cpu0=&quot;&lt;path-to&gt;/&lt;ramdisk&gt;&quot;@0x84000000
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422190557018.png" alt="image-20240422190557018"></p>
-<h2 id="TF-A-Tests构建并运行"><a href="#TF-A-Tests构建并运行" class="headerlink" title="TF-A Tests构建并运行"></a>TF-A Tests构建并运行</h2><pre><code>export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
+<p><img src="image-20240422190557018.png" alt="image-20240422190557018" /></p>
+<h2 id="tf-a-tests构建并运行"><a class="markdownIt-Anchor" href="#tf-a-tests构建并运行"></a> TF-A Tests构建并运行</h2>
+<pre class="highlight"><code class="">export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 git clone https://review.trustedfirmware.orgTF-A/tf-a-tests.git
 cd tf-a-tests
 make PLAT=fvp tftf
+
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422192642093.png" alt="image-20240422192642093"></p>
+<p><img src="image-20240422192642093.png" alt="image-20240422192642093" /></p>
 <p>重编译ATF，指定bl33.bin为tftf.bin</p>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
 export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422192823075.png" alt="image-20240422192823075"></p>
+<p><img src="image-20240422192823075.png" alt="image-20240422192823075" /></p>
 <p>重新使用FVP运行，成功引导进入tftf中</p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422193006244.png" alt="image-20240422193006244"></p>
+<p><img src="image-20240422193006244.png" alt="image-20240422193006244" /></p>
 <p>运行完成后会输出测试结果并提示退出</p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240422193154845.png" alt="image-20240422193154845"></p>
-<h2 id="SMC-Fuzz"><a href="#SMC-Fuzz" class="headerlink" title="SMC Fuzz"></a>SMC Fuzz</h2><p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.trustedfirmware.org/docs/Directed_Radomized_SMC_Presentation.pdf">https://www.trustedfirmware.org/docs/Directed_Radomized_SMC_Presentation.pdf</a></p>
-<h3 id="默认配置运行"><a href="#默认配置运行" class="headerlink" title="默认配置运行"></a>默认配置运行</h3><pre><code>export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
+<p><img src="image-20240422193154845.png" alt="image-20240422193154845" /></p>
+<h2 id="smc-fuzz"><a class="markdownIt-Anchor" href="#smc-fuzz"></a> SMC Fuzz</h2>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.trustedfirmware.org/docs/Directed_Radomized_SMC_Presentation.pdf">https://www.trustedfirmware.org/docs/Directed_Radomized_SMC_Presentation.pdf</a></p>
+<h3 id="默认配置运行"><a class="markdownIt-Anchor" href="#默认配置运行"></a> 默认配置运行</h3>
+<pre class="highlight"><code class="">export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 make PLAT=fvp SMC_FUZZING=1 SMC_FUZZ_DTS=/data/Project/tf-a-tests/smc_fuzz/dts/top.dts TESTS=smcfuzzing tftf
 </code></pre>
 <p><strong>注意这里的SMC_FUZZ_DTS是可以自定义的，这里使用了官方提供的top.dts</strong></p>
-<pre><code>/*
+<pre class="highlight"><code class="">/*
  * Copyright (c) 2023, Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -347,67 +368,68 @@ make PLAT=fvp SMC_FUZZING=1 SMC_FUZZ_DTS=/data/Project/tf-a-tests/smc_fuzz/dts/t
 
 / &#123;
 
-    sdei &#123;
-        bias = &lt;30&gt;;
-        sdei_version &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_version_funcid&quot;;
-        &#125;;
-        sdei_pe_unmask &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_pe_unmask_funcid&quot;;
-        &#125;;
-        sdei_pe_mask &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_pe_mask_funcid&quot;;
-        &#125;;
-        sdei_event_status &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_event_status_funcid&quot;;
-        &#125;;
-        sdei_event_signal &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_event_signal_funcid&quot;;
-        &#125;;
-        sdei_private_reset &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_private_reset_funcid&quot;;
-        &#125;;
-        sdei_shared_reset &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;sdei_shared_reset_funcid&quot;;
-        &#125;;
-    &#125;;
-    tsp &#123;
-        bias = &lt;30&gt;;
-        tsp_add_op &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;tsp_add_op_funcid&quot;;
-        &#125;;
-        tsp_sub_op &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;tsp_sub_op_funcid&quot;;
-        &#125;;
-        tsp_mul_op &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;tsp_mul_op_funcid&quot;;
-        &#125;;
-        tsp_div_op &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;tsp_div_op_funcid&quot;;
-        &#125;;
-    &#125;;
+	sdei &#123;
+		bias = &lt;30&gt;;
+		sdei_version &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_version_funcid&quot;;
+		&#125;;
+		sdei_pe_unmask &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_pe_unmask_funcid&quot;;
+		&#125;;
+		sdei_pe_mask &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_pe_mask_funcid&quot;;
+		&#125;;
+		sdei_event_status &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_event_status_funcid&quot;;
+		&#125;;
+		sdei_event_signal &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_event_signal_funcid&quot;;
+		&#125;;
+		sdei_private_reset &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_private_reset_funcid&quot;;
+		&#125;;
+		sdei_shared_reset &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;sdei_shared_reset_funcid&quot;;
+		&#125;;
+	&#125;;
+	tsp &#123;
+		bias = &lt;30&gt;;
+		tsp_add_op &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;tsp_add_op_funcid&quot;;
+		&#125;;
+		tsp_sub_op &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;tsp_sub_op_funcid&quot;;
+		&#125;;
+		tsp_mul_op &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;tsp_mul_op_funcid&quot;;
+		&#125;;
+		tsp_div_op &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;tsp_div_op_funcid&quot;;
+		&#125;;
+	&#125;;
 &#125;;
+
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423103107010.png" alt="image-20240423103107010"></p>
+<p><img src="image-20240423103107010.png" alt="image-20240423103107010" /></p>
 <p>重编译ATF，并替换tftf.bin</p>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
 export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423102154343.png" alt="image-20240423102154343"></p>
+<p><img src="image-20240423102154343.png" alt="image-20240423102154343" /></p>
 <p>再次运行</p>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/release/
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/release/
 /data/Project/Base_RevC_AEMvA_pkg/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA \
 -C pctl.startup=0.0.0.0                                     \
 -C bp.secure_memory=1                                       \
@@ -418,52 +440,55 @@ make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 -C bp.secureflashloader.fname=&quot;./bl1.bin&quot;      \
 -C bp.flashloader0.fname=&quot;./fip.bin&quot;
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423153625590.png" alt="image-20240423153625590"></p>
-<h3 id="扩展SMC-fuzz"><a href="#扩展SMC-fuzz" class="headerlink" title="扩展SMC fuzz"></a>扩展SMC fuzz</h3><p>先来通过目录结构确定需要扩展的文件1. <code>Dts</code> 2. <code>fuzz helper</code> </p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423162629887.png" alt="image-20240423162629887"></p>
+<p><img src="image-20240423153625590.png" alt="image-20240423153625590" /></p>
+<h3 id="扩展smc-fuzz"><a class="markdownIt-Anchor" href="#扩展smc-fuzz"></a> 扩展SMC fuzz</h3>
+<p>先来通过目录结构确定需要扩展的文件1. <code>Dts</code> 2. <code>fuzz helper</code></p>
+<p><img src="image-20240423162629887.png" alt="image-20240423162629887" /></p>
 <ol>
 <li>首先创建<code>test_fuzz_helper.h </code>，引用上述头文件(tftf框架), 并且定义与dts中function_name对应的常量funcid。最后在底部申明使用到的函数入口run_test_fuzz和具体的handler函数tftf_test_smc</li>
 </ol>
-<pre><code class="c">//
-// Created by ios on 24-4-23.
-//
+<pre class="highlight"><code class="c"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by ios on 24-4-23.</span>
+<span class="hljs-comment">//</span>
 
-#include &lt;fuzz_helper.h&gt;
-#include &lt;power_management.h&gt;
-#include &lt;sdei.h&gt;
-#include &lt;test_helpers.h&gt;
-#include &lt;tftf_lib.h&gt;
-#include &lt;timer.h&gt;
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fuzz_helper.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;power_management.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sdei.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;test_helpers.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;tftf_lib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;timer.h&gt;</span></span>
 
-#ifndef test_funcid
-#define test_funcid 0
-#endif
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> test_funcid</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> test_funcid 0</span>
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
 
-void tftf_test_smc(uint64_t tsp_id, char *funcstr);
-void run_test_fuzz(int funcid);
+<span class="hljs-type">void</span> <span class="hljs-title function_">tftf_test_smc</span><span class="hljs-params">(<span class="hljs-type">uint64_t</span> tsp_id, <span class="hljs-type">char</span> *funcstr)</span>;
+<span class="hljs-type">void</span> <span class="hljs-title function_">run_test_fuzz</span><span class="hljs-params">(<span class="hljs-type">int</span> funcid)</span>;
 </code></pre>
 <ol start="2">
 <li>完善具体的test_fuzz_helper.c,具体功能为打印固定的字符串<code>ios-test</code> 并输出测试信息。</li>
 </ol>
-<pre><code class="c">#include &lt;fuzz_names.h&gt;
-#include &lt;test_fuzz_helper.h&gt;
+<pre class="highlight"><code class="c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fuzz_names.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;test_fuzz_helper.h&gt;</span></span>
 
-void tftf_test_smc(uint64_t tsp_id, char *funcstr)
+<span class="hljs-type">void</span> <span class="hljs-title function_">tftf_test_smc</span><span class="hljs-params">(<span class="hljs-type">uint64_t</span> tsp_id, <span class="hljs-type">char</span> *funcstr)</span>
 &#123;
-    printf(&quot;current str: %s, this is test smc fuzz handler!\n&quot;, funcstr);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;current str: %s, this is test smc fuzz handler!\n&quot;</span>, funcstr);
 &#125;
 
-/*
+<span class="hljs-comment">/*
  * TSP function called from fuzzer
- */
-void run_test_fuzz(int funcid)
+ */</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">run_test_fuzz</span><span class="hljs-params">(<span class="hljs-type">int</span> funcid)</span>
 &#123;
-    tftf_test_smc(funcid, &quot;ios-test&quot;);
+    tftf_test_smc(funcid, <span class="hljs-string">&quot;ios-test&quot;</span>);
 &#125;
+
 </code></pre>
 <ol start="3">
-<li><p>创建对应的test.dts ，主要定义了两个功能test_add和test_mov，并且对应的函数均为test_funcid。</p>
-<pre><code>/*
+<li>
+<p>创建对应的test.dts ，主要定义了两个功能test_add和test_mov，并且对应的函数均为test_funcid。</p>
+<pre class="highlight"><code class="">/*
  * Copyright (c) 2023, Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -480,46 +505,51 @@ void run_test_fuzz(int funcid)
 /dts-v1/;
 
 / &#123;
-    test &#123;
-        bias = &lt;30&gt;;
-        test_add &#123;
+	test &#123;
+		bias = &lt;30&gt;;
+		test_add &#123;
+			bias = &lt;30&gt;;
+			functionname = &quot;test_funcid&quot;;
+		&#125;;
+		test_mov &#123;
             bias = &lt;30&gt;;
             functionname = &quot;test_funcid&quot;;
         &#125;;
-        test_mov &#123;
-            bias = &lt;30&gt;;
-            functionname = &quot;test_funcid&quot;;
-        &#125;;
-    &#125;;
+	&#125;;
 &#125;;
+
 </code></pre>
 </li>
-<li><p>将run_test_fuzz添加到<code>runtestfunction_helpers.c</code>中</p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423163625289.png" alt="image-20240423163625289"></p>
+<li>
+<p>将run_test_fuzz添加到<code>runtestfunction_helpers.c</code>中</p>
+<p><img src="image-20240423163625289.png" alt="image-20240423163625289" /></p>
 </li>
-<li><p>将<code>tftf/tests/tests-smcfuzzing.mk</code> 中的编译依赖中添加<code>test_fuzz_helper.c</code></p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423163901129.png" alt="image-20240423163901129"></p>
+<li>
+<p>将<code>tftf/tests/tests-smcfuzzing.mk</code> 中的编译依赖中添加<code>test_fuzz_helper.c</code></p>
+<p><img src="image-20240423163901129.png" alt="image-20240423163901129" /></p>
 </li>
-<li><p>调整运行的次数和并发数，<code>tftf/tests/tests-smcfuzzing.mk</code></p>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423163940075.png" alt="image-20240423163940075"></p>
+<li>
+<p>调整运行的次数和并发数，<code>tftf/tests/tests-smcfuzzing.mk</code></p>
+<p><img src="image-20240423163940075.png" alt="image-20240423163940075" /></p>
 </li>
-<li><p>编译仅包含smcfuzz的tftf</p>
+<li>
+<p>编译仅包含smcfuzz的tftf</p>
 </li>
 </ol>
-<pre><code>export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
+<pre class="highlight"><code class="">export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 make PLAT=fvp SMC_FUZZING=1 SMC_FUZZ_DTS=/data/Project/tf-a-tests/smc_fuzz/dts/test.dts TESTS=smcfuzzing tftf
 </code></pre>
 <ol start="8">
 <li>打包tftf到fip.bin中</li>
 </ol>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/
 export CROSS_COMPILE=/data/toolchains/SYS_PUBLIC_TOOLS/.toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu-linux-5.10/bin/aarch64-none-linux-gnu-
 make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 </code></pre>
 <ol start="9">
 <li>运行smc_fuzz</li>
 </ol>
-<pre><code>cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/release/
+<pre class="highlight"><code class="">cd /data/Project/arm-trusted-firmware-lts-v2.8.4/build/fvp/release/
 /data/Project/Base_RevC_AEMvA_pkg/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA \
 -C pctl.startup=0.0.0.0                                     \
 -C bp.secure_memory=1                                       \
@@ -530,14 +560,19 @@ make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 -C bp.secureflashloader.fname=&quot;./bl1.bin&quot;      \
 -C bp.flashloader0.fname=&quot;./fip.bin&quot;
 </code></pre>
-<p><img src="/2024/05/03/ATF-FUZZ/image-20240423164346413.png" alt="image-20240423164346413"></p>
-<h2 id="ATF-BL1-FUZZ"><a href="#ATF-BL1-FUZZ" class="headerlink" title="ATF BL1 FUZZ"></a>ATF BL1 FUZZ</h2><h3 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h3><p>对BL1、BL2、BL31、BL32阶段的代码实现功能测试。此阶段代码多数为厂商定制。</p>
-<h3 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h3><ol>
+<p><img src="image-20240423164346413.png" alt="image-20240423164346413" /></p>
+<h2 id="atf-bl1-fuzz"><a class="markdownIt-Anchor" href="#atf-bl1-fuzz"></a> ATF BL1 FUZZ</h2>
+<h3 id="场景描述"><a class="markdownIt-Anchor" href="#场景描述"></a> 场景描述</h3>
+<p>对BL1、BL2、BL31、BL32阶段的代码实现功能测试。此阶段代码多数为厂商定制。</p>
+<h3 id="功能描述"><a class="markdownIt-Anchor" href="#功能描述"></a> 功能描述</h3>
+<ol>
 <li>针对函数级功能参数FUZZ</li>
 <li>支持模拟器全阶段FUZZ（BL1、BL2、BL31、BL32）</li>
 </ol>
-<h3 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h3><p>待补充</p>
-<h3 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h3><p><img src="/2024/05/03/ATF-FUZZ/image-20240428094155981.png" alt="image-20240428094155981"></p>
+<h3 id="功能实现"><a class="markdownIt-Anchor" href="#功能实现"></a> 功能实现</h3>
+<p>待补充</p>
+<h3 id="效果展示"><a class="markdownIt-Anchor" href="#效果展示"></a> 效果展示</h3>
+<p><img src="image-20240428094155981.png" alt="image-20240428094155981" /></p>
 
         </div>
 
@@ -558,7 +593,7 @@ make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
   
   
     <a href="/2024/04/10/Reinforcement-Learning-Note/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-caption">precedente</div>
       <div class="article-nav-title">Reinforcement Learning Note</div>
     </a>
   
@@ -566,7 +601,7 @@ make PLAT=fvp BL33=/data/Project/tf-a-tests/build/fvp/release/tftf.bin all fip
 
 
     <section class="share">
-        <div class="share-title">分享</div>
+        <div class="share-title">share</div>
         <a class="share-item" target="_blank"
             href="https://twitter.com/share?text=ATF-FUZZ - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2024%2F05%2F03%2FATF-FUZZ%2F">
             <ion-icon name="logo-twitter"></ion-icon>

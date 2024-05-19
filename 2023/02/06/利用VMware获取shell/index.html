@@ -8,8 +8,10 @@
     
     <title>利用VMware获取shell | ioo0s&#39;s blog</title>
 
-    <meta name="description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a href=&#34;#获取-vmlinuz&#34; class=&#34;headerlink&#34; title=&#34;获取 vmlinuz&#34;&gt;&lt;/a&gt;获取 vmlinuz&lt;/h2&gt;&lt;h3 id=&#34;方式一&#34;&gt;&lt;a href=&#34;#方式一&#34; class=&#34;headerlink&#34; title=&#34;方式一&#34;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34;&gt;&lt;/p&gt;">
+    <meta name="description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#获取-vmlinuz&#34;&gt;&lt;/a&gt; 获取 vmlinuz&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方式一&#34;&gt;&lt;/a&gt; 方式一&lt;/h3&gt;
+&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;">
     <meta name="keywords" content="">
 
     
@@ -17,21 +19,29 @@
     <meta property="og:locale" content="zh" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content= "利用VMware获取shell | ioo0s&#39;s blog"  />
-    <meta property="og:description" content= "&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a href=&#34;#获取-vmlinuz&#34; class=&#34;headerlink&#34; title=&#34;获取 vmlinuz&#34;&gt;&lt;/a&gt;获取 vmlinuz&lt;/h2&gt;&lt;h3 id=&#34;方式一&#34;&gt;&lt;a href=&#34;#方式一&#34; class=&#34;headerlink&#34; title=&#34;方式一&#34;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34;&gt;&lt;/p&gt;" />
+    <meta property="og:description" content= "&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#获取-vmlinuz&#34;&gt;&lt;/a&gt; 获取 vmlinuz&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方式一&#34;&gt;&lt;/a&gt; 方式一&lt;/h3&gt;
+&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;" />
     <meta property="og:url" content="http://ioo0s.art/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="ios" />
     <meta property="article:publisher" content="" />
-    <meta property="og:description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a href=&#34;#获取-vmlinuz&#34; class=&#34;headerlink&#34; title=&#34;获取 vmlinuz&#34;&gt;&lt;/a&gt;获取 vmlinuz&lt;/h2&gt;&lt;h3 id=&#34;方式一&#34;&gt;&lt;a href=&#34;#方式一&#34; class=&#34;headerlink&#34; title=&#34;方式一&#34;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34;&gt;&lt;/p&gt;" />
+    <meta property="og:description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#获取-vmlinuz&#34;&gt;&lt;/a&gt; 获取 vmlinuz&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方式一&#34;&gt;&lt;/a&gt; 方式一&lt;/h3&gt;
+&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;" />
     <meta name="twitter:title" content="利用VMware获取shell | ioo0s&#39;s blog"/>
-    <meta name="twitter:description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a href=&#34;#获取-vmlinuz&#34; class=&#34;headerlink&#34; title=&#34;获取 vmlinuz&#34;&gt;&lt;/a&gt;获取 vmlinuz&lt;/h2&gt;&lt;h3 id=&#34;方式一&#34;&gt;&lt;a href=&#34;#方式一&#34; class=&#34;headerlink&#34; title=&#34;方式一&#34;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34;&gt;&lt;/p&gt;"/>
+    <meta name="twitter:description" content="&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#获取-vmlinuz&#34;&gt;&lt;/a&gt; 获取 vmlinuz&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方式一&#34;&gt;&lt;/a&gt; 方式一&lt;/h3&gt;
+&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;"/>
     <script type="application/ld+json">
         {
-            "description": "&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a href=&#34;#获取-vmlinuz&#34; class=&#34;headerlink&#34; title=&#34;获取 vmlinuz&#34;&gt;&lt;/a&gt;获取 vmlinuz&lt;/h2&gt;&lt;h3 id=&#34;方式一&#34;&gt;&lt;a href=&#34;#方式一&#34; class=&#34;headerlink&#34; title=&#34;方式一&#34;&gt;&lt;/a&gt;方式一&lt;/h3&gt;&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34;&gt;&lt;/p&gt;",
+            "description": "&lt;h2 id=&#34;获取-vmlinuz&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#获取-vmlinuz&#34;&gt;&lt;/a&gt; 获取 vmlinuz&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方式一&#34;&gt;&lt;/a&gt; 方式一&lt;/h3&gt;
+&lt;p&gt;对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boxcn2cjTeNLk3cdxSy6yrkdxef.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;",
             "author": { "@type": "Person", "name": "ios" },
             "@type": "BlogPosting",
             "url": "http://ioo0s.art/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/index.html",
@@ -186,7 +196,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clgkomm33001w381waq832h5g" class="article article-type-post" itemscope
+    <article id="post-clwdaw3ae002p1lnp6li1fl4m" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -236,34 +246,39 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <h2 id="获取-vmlinuz"><a href="#获取-vmlinuz" class="headerlink" title="获取 vmlinuz"></a>获取 vmlinuz</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png"></p>
+            <h2 id="获取-vmlinuz"><a class="markdownIt-Anchor" href="#获取-vmlinuz"></a> 获取 vmlinuz</h2>
+<h3 id="方式一"><a class="markdownIt-Anchor" href="#方式一"></a> 方式一</h3>
+<p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
+<p><img src="boxcn2cjTeNLk3cdxSy6yrkdxef.png" alt="" /></p>
 <span id="more"></span>
 <p>使用 DiskGenius 挂载虚拟磁盘，通过寻找 vmlinuz 文件的特征信息来确定具体文件</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2BG3thFFguLDkrSTwqWYec.png"></p>
+<p><img src="boxcn2BG3thFFguLDkrSTwqWYec.png" alt="" /></p>
 <p>一般情况 vmlinuz 文件头部 会含有上图中的字符串信息，或者通过头标识符也可以判断文件，所以 flatkc 就是该环境中的 vmlinuz 文件，右键导出即可。</p>
 <p>使用工具 <a target="_blank" rel="noopener" href="https://github.com/marin-m/vmlinux-to-elf">vmlinux-to-elf</a> 可以将内核文件转换为 elf 文件，方便我们接下来的逆向分析。</p>
 <p><strong>注意：请不要用该方法得到的 rootfs.gz 直接解压使用，否则后期打包时会出现问题！！！</strong></p>
-<h3 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h3><p>将虚拟磁盘挂载到其他虚拟机中，并启动虚拟机</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnqDzrAcy5Krj2XG5AtXfIYf.png"></p>
+<h3 id="方式二"><a class="markdownIt-Anchor" href="#方式二"></a> 方式二</h3>
+<p>将虚拟磁盘挂载到其他虚拟机中，并启动虚拟机</p>
+<p><img src="boxcnqDzrAcy5Krj2XG5AtXfIYf.png" alt="" /></p>
 <p>搜索并打开 <code>disk</code> 应用</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnrSJtNfKhxmlPUYySXku1fb.png"></p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnxDdp9wGX6NZjcGaHH1KPUd.png"></p>
+<p><img src="boxcnrSJtNfKhxmlPUYySXku1fb.png" alt="" /></p>
+<p><img src="boxcnxDdp9wGX6NZjcGaHH1KPUd.png" alt="" /></p>
 <p>找到新添加的硬盘后，点击启动按钮，接着硬盘会被挂载，进而得到 rootfs 和 vmlinuz</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnOVM9ShpKe6aUI4bRyywlde.png"></p>
-<h2 id="寻找断点函数"><a href="#寻找断点函数" class="headerlink" title="寻找断点函数"></a>寻找断点函数</h2><p>加载 vmlinux_elf 文件到 ida 中进行分析。</p>
+<p><img src="boxcnOVM9ShpKe6aUI4bRyywlde.png" alt="" /></p>
+<h2 id="寻找断点函数"><a class="markdownIt-Anchor" href="#寻找断点函数"></a> 寻找断点函数</h2>
+<p>加载 vmlinux_elf 文件到 ida 中进行分析。</p>
 <p>通常 vmlinuz 初始化流程中最后一步，内核会执行 init_post 函数。其中在该函数中最终会执行/sbin/init。</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnbwMuK4CGzX6yDzpIb9PuEf.png"></p>
+<p><img src="boxcnbwMuK4CGzX6yDzpIb9PuEf.png" alt="" /></p>
 <p>记录该函数地址 <code>FFFFFFFF807AC0E9</code> ,为了接下来调试做准备</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcnCjVKc5j2byi1YAp9jxrcWh.png"></p>
-<h2 id="配置-vm-调试信息"><a href="#配置-vm-调试信息" class="headerlink" title="配置 vm 调试信息"></a>配置 vm 调试信息</h2><pre><code>debugStub.listen.guest64 = &quot;TRUE&quot;
+<p><img src="boxcnCjVKc5j2byi1YAp9jxrcWh.png" alt="" /></p>
+<h2 id="配置-vm-调试信息"><a class="markdownIt-Anchor" href="#配置-vm-调试信息"></a> 配置 vm 调试信息</h2>
+<pre class="highlight"><code class="">debugStub.listen.guest64 = &quot;TRUE&quot;
 debugStub.listen.guest64.remote = &quot;TRUE&quot;
 debugStub.port.guest64 = &quot;12345&quot;
 debugStub.listen.guest32 = &quot;TRUE&quot;
 debugStub.listen.guest32.remote = &quot;TRUE&quot;
 debugStub.port.guest32 = &quot;12346&quot;
 </code></pre>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn54fRCjoOOehEJ0l7llpG6e.png"></p>
+<p><img src="boxcn54fRCjoOOehEJ0l7llpG6e.png" alt="" /></p>
 
         </div>
 
@@ -283,7 +298,7 @@ debugStub.port.guest32 = &quot;12346&quot;
 <nav class="article-nav">
   
     <a href="/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/" id="article-nav-newer" class="article-nav-link-wrap">
-      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-caption">prossimo</div>
       <div class="article-nav-title">
         
           利用VMware获取shell-进阶
@@ -293,7 +308,7 @@ debugStub.port.guest32 = &quot;12346&quot;
   
   
     <a href="/2023/02/06/ios%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3-%E7%8E%8B%E9%93%B2%E9%93%B2%E7%9A%84%E8%87%B4%E5%AF%8C%E4%B9%8B%E8%B7%AF/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-caption">precedente</div>
       <div class="article-nav-title">ios游戏破解-王铲铲的致富之路</div>
     </a>
   
@@ -301,7 +316,7 @@ debugStub.port.guest32 = &quot;12346&quot;
 
 
     <section class="share">
-        <div class="share-title">分享</div>
+        <div class="share-title">share</div>
         <a class="share-item" target="_blank"
             href="https://twitter.com/share?text=利用VMware获取shell - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F06%2F%25E5%2588%25A9%25E7%2594%25A8VMware%25E8%258E%25B7%25E5%258F%2596shell%2F">
             <ion-icon name="logo-twitter"></ion-icon>

@@ -181,7 +181,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clgkomm2t000g381wdrzxbvhh" class="article article-type-post" itemscope
+    <article id="post-clwdaw3a7000p1lnpc4j37j3l" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -233,7 +233,6 @@
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
             <p>需要满足以获取 shell，未获取请参考<a href="https://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/">利用VMware获取shell-进阶</a></p>
 <span id="more"></span>
-
 <ol>
 <li>下载 gdb-server static 版本，这里选择下载 <code>gdbserver-7.10.1-x64</code></li>
 </ol>
@@ -241,12 +240,12 @@
 <ol>
 <li>添加 gdb-server 到 rootfs 中并重打包</li>
 </ol>
-<pre><code>cp /path/to/gdbserver-7.10.1-x64 ./bin/gdbserver
+<pre class="highlight"><code class="">cp /path/to/gdbserver-7.10.1-x64 ./bin/gdbserver
 chmod 777 ./bin/gdbserver
 chroot . /sbin/ftar -cf bin.tar ./bin
 rm -rf bin.tar.xz
 chroot . /sbin/xz --check=sha256 -e bin.tar
-find . -path &#39;./bin&#39; -prune -o -print |cpio -H newc -o &gt; ../make/rootfs.raw
+find . -path './bin' -prune -o -print |cpio -H newc -o &gt; ../make/rootfs.raw
 cd ../make
 cat rootfs.raw | gzip &gt; rootfs.gz
 </code></pre>
@@ -254,17 +253,18 @@ cat rootfs.raw | gzip &gt; rootfs.gz
 <li>启动 shell</li>
 </ol>
 <p>注意我们能从外访问到内部的端口是有限的，建议用 ssh 22 端口和 telnet 的 23 端口</p>
-<pre><code>killall sshd &amp;&amp; /bin/busybox telnetd -l /bin/sh -b 0.0.0.0 -p 22
+<pre class="highlight"><code class="">killall sshd &amp;&amp; /bin/busybox telnetd -l /bin/sh -b 0.0.0.0 -p 22
 </code></pre>
 <p>默认 shell 是 22 端口 ,所以调试端口就用 23，使用 busybox ps -a 命令查看所有的进程 pid，确定 sslvpn 的 pid，接着并行执行两条命令附加调试</p>
-<pre><code>killall telnetd &amp;&amp; gdbserver :23 --attach 1
+<pre class="highlight"><code class="">killall telnetd &amp;&amp; gdbserver :23 --attach 1
 </code></pre>
 <p>接着用 gdb 远程连接即可</p>
-<pre><code>target remote 192.168.109.111:23
+<pre class="highlight"><code class="">target remote 192.168.109.111:23
 </code></pre>
 <p>最后就可以开启愉快地调试之旅了！！！</p>
-<p><img src="/2023/02/09/gdb-server%E9%85%8D%E7%BD%AE/boxcnwfkKKcpcZWwMd4RJsAnhWd.png"></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+<p><img src="boxcnwfkKKcpcZWwMd4RJsAnhWd.png" alt="" /></p>
+<h2 id=""><a class="markdownIt-Anchor" href="#"></a> </h2>
+
         </div>
 
     </div>
@@ -283,7 +283,7 @@ cat rootfs.raw | gzip &gt; rootfs.gz
 <nav class="article-nav">
   
     <a href="/2023/02/09/CVE-2022-42475/" id="article-nav-newer" class="article-nav-link-wrap">
-      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-caption">prossimo</div>
       <div class="article-nav-title">
         
           CVE-2022-42475
@@ -293,7 +293,7 @@ cat rootfs.raw | gzip &gt; rootfs.gz
   
   
     <a href="/2023/02/07/Note/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-caption">precedente</div>
       <div class="article-nav-title">Note</div>
     </a>
   
@@ -301,7 +301,7 @@ cat rootfs.raw | gzip &gt; rootfs.gz
 
 
     <section class="share">
-        <div class="share-title">分享</div>
+        <div class="share-title">share</div>
         <a class="share-item" target="_blank"
             href="https://twitter.com/share?text=gdb-server配置 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2023%2F02%2F09%2Fgdb-server%25E9%2585%258D%25E7%25BD%25AE%2F">
             <ion-icon name="logo-twitter"></ion-icon>

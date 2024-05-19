@@ -185,7 +185,9 @@ class="article article-type-post"
     </header>
     <div class="article-entry post-inner-html">
         
-        <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Iot-通用的通信架构"><a href="#Iot-通用的通信架构" class="headerlink" title="Iot 通用的通信架构"></a>Iot 通用的通信架构</h3><p>为了与设备外的输入进行交互，大多数物联网设备实现了类似的高级通信体系结构（如下图）。主要分为以下几个部分</p>
+        <h2 id="background"><a class="markdownIt-Anchor" href="#background"></a> Background</h2>
+<h3 id="iot-通用的通信架构"><a class="markdownIt-Anchor" href="#iot-通用的通信架构"></a> Iot 通用的通信架构</h3>
+<p>为了与设备外的输入进行交互，大多数物联网设备实现了类似的高级通信体系结构（如下图）。主要分为以下几个部分</p>
 <ol>
 <li>Sanitizer</li>
 </ol>
@@ -240,7 +242,9 @@ class="article article-type-post"
     </header>
     <div class="article-entry post-inner-html">
         
-        <h2 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><pre><code>sudo chroot . ./qemu-arm-static -E LD_PRELOAD=&quot;./libnvram.so&quot; ./usr/sbin/httpd
+        <h2 id="启动方式"><a class="markdownIt-Anchor" href="#启动方式"></a> 启动方式</h2>
+<h3 id="方式一"><a class="markdownIt-Anchor" href="#方式一"></a> 方式一</h3>
+<pre class="highlight"><code class="">sudo chroot . ./qemu-arm-static -E LD_PRELOAD=&quot;./libnvram.so&quot; ./usr/sbin/httpd
 </code></pre>
         
     </div>
@@ -296,7 +300,7 @@ class="article article-type-post"
 <li>使用交叉编译环境</li>
 <li>进行符号链接配置</li>
 </ol>
-<pre><code>sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+<pre class="highlight"><code class="">sudo ln -s ~/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
 echo &quot;PATH=\$PATH:/opt/brcm-arm/bin&quot; &gt;&gt; ~/.profile
 source ~/.profile
 </code></pre>
@@ -352,8 +356,9 @@ class="article article-type-post"
         
         <p>首先需要进行环境搭建参考<a href="https://ioo0s.art/2023/02/07/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell-%E8%BF%9B%E9%98%B6/">获取 shell 进阶</a></p>
 <p>以及调试环境搭建 <a href="https://ioo0s.art/2023/02/09/gdb-server%E9%85%8D%E7%BD%AE/">gdb-server 配置</a></p>
-<h2 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h2><p>根据文章 <a target="_blank" rel="noopener" href="https://wzt.ac.cn/2022/12/15/CVE-2022-42475/">https://wzt.ac.cn/2022/12/15/CVE-2022-42475/</a>，可以快速定位到可控制的溢出点，但是不同环境的原因 貌似溢出点地址有变，例如我 init 中在 <code>0000000001780BFB</code></p>
-<p><img src="/2023/02/09/CVE-2022-42475/static/boxcnX7t3Jx1WBzLwCgC1CWlFYf.png"></p>
+<h2 id="复现过程"><a class="markdownIt-Anchor" href="#复现过程"></a> 复现过程</h2>
+<p>根据文章 <a target="_blank" rel="noopener" href="https://wzt.ac.cn/2022/12/15/CVE-2022-42475/">https://wzt.ac.cn/2022/12/15/CVE-2022-42475/</a>，可以快速定位到可控制的溢出点，但是不同环境的原因 貌似溢出点地址有变，例如我 init 中在 <code>0000000001780BFB</code></p>
+<p><img src="static/boxcnX7t3Jx1WBzLwCgC1CWlFYf.png" alt="" /></p>
 <p>调试 exp 时建议在此处下断点，不是百分百触发该位置，因为有时会覆盖到其他 结构位置 在赋值时导致错误。</p>
         
     </div>
@@ -456,12 +461,14 @@ class="article article-type-post"
     </header>
     <div class="article-entry post-inner-html">
         
-        <h2 id="解包"><a href="#解包" class="headerlink" title="解包"></a>解包</h2><pre><code>gzip -d rootfs.gz
+        <h2 id="解包"><a class="markdownIt-Anchor" href="#解包"></a> 解包</h2>
+<pre class="highlight"><code class="">gzip -d rootfs.gz
 sudo cpio -idmv &lt; ./rootfs
 sudo chroot . /sbin/xz --check=sha256 -d /bin.tar.xz
 sudo chroot . /sbin/ftar -xf /bin.tar
 </code></pre>
-<h2 id="Patch-init-文件"><a href="#Patch-init-文件" class="headerlink" title="Patch init 文件"></a>Patch init 文件</h2><p>文件所在位置 <code>/bin/init</code> ,注意这个是解包后才能拿到的文件</p>
+<h2 id="patch-init-文件"><a class="markdownIt-Anchor" href="#patch-init-文件"></a> Patch init 文件</h2>
+<p>文件所在位置 <code>/bin/init</code> ,注意这个是解包后才能拿到的文件</p>
 <p>patch 位置在 <code>0x04518E5</code></p>
         
     </div>
@@ -513,8 +520,10 @@ class="article article-type-post"
     </header>
     <div class="article-entry post-inner-html">
         
-        <h2 id="获取-vmlinuz"><a href="#获取-vmlinuz" class="headerlink" title="获取 vmlinuz"></a>获取 vmlinuz</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
-<p><img src="/2023/02/06/%E5%88%A9%E7%94%A8VMware%E8%8E%B7%E5%8F%96shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png"></p>
+        <h2 id="获取-vmlinuz"><a class="markdownIt-Anchor" href="#获取-vmlinuz"></a> 获取 vmlinuz</h2>
+<h3 id="方式一"><a class="markdownIt-Anchor" href="#方式一"></a> 方式一</h3>
+<p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
+<p><img src="boxcn2cjTeNLk3cdxSy6yrkdxef.png" alt="" /></p>
         
     </div>
     </div>
@@ -565,7 +574,10 @@ class="article article-type-post"
     </header>
     <div class="article-entry post-inner-html">
         
-        <h2 id="游戏介绍"><a href="#游戏介绍" class="headerlink" title="游戏介绍"></a>游戏介绍</h2><p>版本：1.2.4<br>设备：xsmax<br>游戏环境：Unity</p>
+        <h2 id="游戏介绍"><a class="markdownIt-Anchor" href="#游戏介绍"></a> 游戏介绍</h2>
+<p>版本：1.2.4<br />
+设备：xsmax<br />
+游戏环境：Unity</p>
         
     </div>
     </div>

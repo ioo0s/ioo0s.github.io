@@ -13,3 +13,4 @@ import './gitalk'
 
 // Valine
 import './valine'
+import Artalk from 'artalk'
