@@ -1,0 +1,23 @@
+/* Homepage/article-list previews should not let article screenshots dominate the card. */
+.index .article .article-entry p:has(> img:only-child) {
+    margin: 14px 0 18px;
+}
+
+.index .article .article-entry img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 280px;
+    margin: 12px auto 18px;
+    border-radius: 6px;
+    border: 1px solid rgba(19, 80, 91, 0.12);
+    box-shadow: 0 8px 20px rgba(19, 80, 91, 0.08);
+    object-fit: contain;
+}
+
+@media screen and (max-width: 600px) {
+    .index .article .article-entry img {
+        max-height: 210px;
+        margin: 10px auto 14px;
+    }
+}

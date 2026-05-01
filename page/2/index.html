@@ -62,6 +62,10 @@
 <link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
 
 
+    
+<link rel="stylesheet" href="/stylesheets/blog-overrides.css">
+
+
     <script>
         window.isPost = false
         window.aomori = {
@@ -76,6 +80,7 @@
 
 <meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
 </head>
+
 
 <body>
 
@@ -354,7 +359,7 @@ class="article article-type-post"
 <p>以及调试环境搭建 <a href="https://ioo0s.art/2023/02/09/gdb-server%E9%85%8D%E7%BD%AE/">gdb-server 配置</a></p>
 <h2 id="复现过程"><a class="markdownIt-Anchor" href="#复现过程"></a> 复现过程</h2>
 <p>根据文章 <a target="_blank" rel="noopener" href="https://wzt.ac.cn/2022/12/15/CVE-2022-42475/">https://wzt.ac.cn/2022/12/15/CVE-2022-42475/</a>，可以快速定位到可控制的溢出点，但是不同环境的原因 貌似溢出点地址有变，例如我 init 中在 <code>0000000001780BFB</code></p>
-<p><img src="static/boxcnX7t3Jx1WBzLwCgC1CWlFYf.png" alt="" /></p>
+<p><img src="/2023/02/09/CVE-2022-42475/static/boxcnX7t3Jx1WBzLwCgC1CWlFYf.png" alt="" /></p>
 <p>调试 exp 时建议在此处下断点，不是百分百触发该位置，因为有时会覆盖到其他 结构位置 在赋值时导致错误。</p>
         
     </div>
@@ -519,7 +524,7 @@ class="article article-type-post"
         <h2 id="获取-vmlinuz"><a class="markdownIt-Anchor" href="#获取-vmlinuz"></a> 获取 vmlinuz</h2>
 <h3 id="方式一"><a class="markdownIt-Anchor" href="#方式一"></a> 方式一</h3>
 <p>对于 vmdk 没有加密的虚拟设备来说，可以直接通过挂载磁盘的方式提取出 vmlinuz 文件，但是要注意磁盘中的内核文件命名可能不同！！！</p>
-<p><img src="boxcn2cjTeNLk3cdxSy6yrkdxef.png" alt="" /></p>
+<p><img src="/2023/02/06/利用VMware获取shell/boxcn2cjTeNLk3cdxSy6yrkdxef.png" alt="" /></p>
         
     </div>
     </div>
@@ -707,7 +712,7 @@ class="article article-type-post"
     <!-- 开源不易，请勿删除 -->
     <div class="footer-wrap">
         <div class="footer-inner"> 
-            ioo0s&#39;s blog &copy; 2024<br>
+            ioo0s&#39;s blog &copy; 2026<br>
             Powered By Hexo · Theme By Aomori
             <span style="width:66%; display:inline-block"></span>
             <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
