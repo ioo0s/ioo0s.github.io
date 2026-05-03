@@ -54,6 +54,7 @@
     
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
     
 <link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
 
@@ -212,6 +213,67 @@
         </div>
 
     </div>
+
+</article>
+
+    
+  
+    
+      <article
+id="post-GCG-Journey（一）：从对抗样本到后缀搜索"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/">GCG Journey（一）：从对抗样本到后缀搜索</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <blockquote>
+<p>想写这个系列很久了从2024完成了部分内容，但一直没有时间梳理。乘着假期完善这个系列</p>
+</blockquote>
+<p>为什么给 prompt 拼接一段 suffix，就可能改变模型输出？这个 suffix 又是怎么被搜索出来的？这一章会按五个阶段推进并解答这些疑问。<br />
+从 CV 对抗样本抽出“输入侧扰动”这个共同结构，再把它迁移到 LLM 的 adversarial suffix；接着用 <code>GCG-random</code> 跑通最小搜索链路，然后进入梯度版 GCG；最后再讨论 full vocab、batch sampling、retokenization filter、generate 判定和吞吐优化这些优化策略的实现边界。</p>
+<figure class="post-figure">
+  <img src="/2026/05/02/GCG-Journey（一）：从对抗样本到后缀搜索/gcg-journey-roadmap.png" alt="GCG Journey chapter roadmap">
+  <figcaption>
+    Figure 0: 第一章路线图。主线是先理解后缀搜索的结构，再逐步替换候选生成与优化策略。
+  </figcaption>
+</figure>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2026-05-02T02:16:35.000Z" itemprop="datePublished">2026-05-02</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
 
 </article>
 
@@ -466,7 +528,7 @@ class="article article-type-post"
         
         <h2 id="环境搭建"><a class="markdownIt-Anchor" href="#环境搭建"></a> 环境搭建</h2>
 <p>按照<a target="_blank" rel="noopener" href="https://apollo.baidu.com/Apollo-Homepage-Document/Apollo_Doc_CN_8_0/%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85">apollo.baidu.com</a>中的教程进行创建</p>
-<pre class="highlight"><code class="">git clone https://github.com/ApolloAuto/apollo.git
+<pre class="hljs"><code class="">git clone https://github.com/ApolloAuto/apollo.git
 bashdocker/scripts/dev_start.sh
 
 </code></pre>
@@ -719,57 +781,6 @@ class="article article-type-post"
 
     
   
-    
-      <article
-id="post-FIoTFuzzer"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2023/02/22/FIoTFuzzer/">FIoTFuzzer</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <p>该论文是在 Snipuzz 实现的基础上做的改进优化，着重说明了有的节点和处理方法，最终获得了很好的效果。但是论文并没有附加开源项目，本人是基于该理论描述的 fuzz 架构做了具体的实现，开源时间待定。</p>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2023-02-22T03:02:51.000Z" itemprop="datePublished">2023-02-22</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">论文学习</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
@@ -804,7 +815,7 @@ class="article article-type-post"
   <div class="widget-wrap widget-tags">
     <div class="widget-title"><span>Tags</span></div>
     <div class="widget-inner">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
     </div>
   </div>
 
@@ -815,6 +826,10 @@ class="article article-type-post"
     <div class="widget-title"><span>Recent Posts</span></div>
     <div class="widget-inner">
       <ul>
+        
+          <li>
+            <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/">GCG Journey（一）：从对抗样本到后缀搜索</a>
+          </li>
         
           <li>
             <a href="/2024/05/03/ATF-FUZZ/">ATF-FUZZ</a>
@@ -832,10 +847,6 @@ class="article article-type-post"
             <a href="/2024/01/05/Apollo-8-0%E6%95%99%E7%A8%8B/">Apollo 8.0教程</a>
           </li>
         
-          <li>
-            <a href="/2023/03/15/CVE-2023-21608/">CVE-2023-21608</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -845,7 +856,7 @@ class="article article-type-post"
   <div class="widget-wrap widget-archive">
     <div class="widget-title"><span>Archive</span></div>
     <div class="widget-inner">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
     </div>
   </div>
 

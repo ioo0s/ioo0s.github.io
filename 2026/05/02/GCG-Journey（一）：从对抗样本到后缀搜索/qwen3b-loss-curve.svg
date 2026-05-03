@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="460" viewBox="0 0 920 460" role="img" aria-label="Qwen 3B random sampling loss curve">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#25313c;font-size:14px}
+.title{font-size:22px;font-weight:700}.axis{stroke:#25313c;stroke-width:1.4}.grid{stroke:#d8dee6;stroke-width:1}.line{fill:none;stroke:#d04a36;stroke-width:3}.dot{fill:#1f7a5c}.label{font-size:13px;fill:#53616f}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text class="title" x="76" y="26">Qwen2.5-3B-Instruct Random Sampling Loss</text>
+<line class="grid" x1="76" y1="390.00" x2="892" y2="390.00"/>
+<text class="label" x="66" y="394.00" text-anchor="end">0.02</text>
+<line class="grid" x1="76" y1="302.00" x2="892" y2="302.00"/>
+<text class="label" x="66" y="306.00" text-anchor="end">5.18</text>
+<line class="grid" x1="76" y1="214.00" x2="892" y2="214.00"/>
+<text class="label" x="66" y="218.00" text-anchor="end">10.33</text>
+<line class="grid" x1="76" y1="126.00" x2="892" y2="126.00"/>
+<text class="label" x="66" y="130.00" text-anchor="end">15.49</text>
+<line class="grid" x1="76" y1="38.00" x2="892" y2="38.00"/>
+<text class="label" x="66" y="42.00" text-anchor="end">20.64</text>
+<line class="grid" x1="76.00" y1="38" x2="76.00" y2="390"/>
+<text class="label" x="76.00" y="418" text-anchor="middle">0</text>
+<line class="grid" x1="224.36" y1="38" x2="224.36" y2="390"/>
+<text class="label" x="224.36" y="418" text-anchor="middle">2</text>
+<line class="grid" x1="446.91" y1="38" x2="446.91" y2="390"/>
+<text class="label" x="446.91" y="418" text-anchor="middle">5</text>
+<line class="grid" x1="669.45" y1="38" x2="669.45" y2="390"/>
+<text class="label" x="669.45" y="418" text-anchor="middle">8</text>
+<line class="grid" x1="892.00" y1="38" x2="892.00" y2="390"/>
+<text class="label" x="892.00" y="418" text-anchor="middle">11</text>
+<line class="axis" x1="76" y1="390" x2="892" y2="390"/>
+<line class="axis" x1="76" y1="38" x2="76" y2="390"/>
+<polyline class="line" points="76.00,38.00 150.18,106.94 224.36,174.59 298.55,213.52 372.73,232.24 446.91,338.78 521.09,347.76 595.27,353.31 669.45,357.11 743.64,386.05 817.82,389.40 892.00,390.00"/>
+<circle class="dot" cx="76.00" cy="38.00" r="4"><title>step 0: loss 20.6428, suffix ! ! ! ! ! ! ! !</title></circle>
+<circle class="dot" cx="150.18" cy="106.94" r="4"><title>step 1: loss 16.6036, suffix ! ! ! ! ! ! !q</title></circle>
+<circle class="dot" cx="224.36" cy="174.59" r="4"><title>step 2: loss 12.6403, suffix !k ! ! ! ! !q</title></circle>
+<circle class="dot" cx="298.55" cy="213.52" r="4"><title>step 3: loss 10.3597, suffix !k ! ! ! !Oq</title></circle>
+<circle class="dot" cx="372.73" cy="232.24" r="4"><title>step 4: loss 9.2628, suffix ok ! ! ! !Oq</title></circle>
+<circle class="dot" cx="446.91" cy="338.78" r="4"><title>step 5: loss 3.0209, suffix ok ! ! !(Oq</title></circle>
+<circle class="dot" cx="521.09" cy="347.76" r="4"><title>step 6: loss 2.4949, suffix ok ! ! !(OZ</title></circle>
+<circle class="dot" cx="595.27" cy="353.31" r="4"><title>step 7: loss 2.1695, suffix ok ! !/(OZ</title></circle>
+<circle class="dot" cx="669.45" cy="357.11" r="4"><title>step 8: loss 1.9472, suffix ok ! !/POZ</title></circle>
+<circle class="dot" cx="743.64" cy="386.05" r="4"><title>step 9: loss 0.2513, suffix ok ! !/KOZ</title></circle>
+<circle class="dot" cx="817.82" cy="389.40" r="4"><title>step 10: loss 0.0552, suffix ok ! !,KOZ</title></circle>
+<circle class="dot" cx="892.00" cy="390.00" r="4"><title>step 11: loss 0.0201, suffix ok ! !,KO0</title></circle>
+<text class="label" x="484.00" y="442" text-anchor="middle">step</text>
+<text class="label" x="22" y="214.00" text-anchor="middle" transform="rotate(-90 22 214.00)">target loss</text>
+</svg>

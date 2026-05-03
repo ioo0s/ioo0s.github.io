@@ -88,6 +88,7 @@
     
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
     
 <link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
 
@@ -202,7 +203,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clwdaw3a6000i1lnp2qokbpsq" class="article article-type-post" itemscope
+    <article id="post-cmopod5ix000pcjnp3p6q7e7v" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -268,7 +269,7 @@
 <li>
 <p>迷宫生成</p>
 <p>用于随机生成迷宫，或者加载一个生成好的迷宫。迷宫由<code>*</code> <code> </code> 构成，其中<code>*</code>代表墙，<code> </code>代表路，<code>S</code>代表起点，<code>E</code>代表终点</p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Maze</span>:
+<pre class="hljs"><code class="python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Maze</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, width, height</span>):
         self.width = width
         self.height = height
@@ -344,7 +345,7 @@
 <li>
 <p>移动判定</p>
 <p>理解为游戏的模拟输入，函数的输入为当前的坐标state(x,y)和接下来的行为action(u,d,l,f)。输出为执行完action后的坐标next_state，和奖励reward（用于判定是否达到终点）。</p>
-<pre class="highlight"><code class="python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_env_feedback</span>(<span class="hljs-params">self, state, action</span>):
+<pre class="hljs"><code class="python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_env_feedback</span>(<span class="hljs-params">self, state, action</span>):
         <span class="hljs-string">&quot;&quot;&quot;
         根据当前的状态和行动，返回下一个状态和奖励。
         state: 当前的状态，即当前的坐标 (x, y)
@@ -380,7 +381,7 @@
 <li>
 <p>索引转换</p>
 <p>用于将x,y坐标转换为q-table索引的辅助方法</p>
-<pre class="highlight"><code class="python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">state_to_index</span>(<span class="hljs-params">self, state</span>):
+<pre class="hljs"><code class="python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">state_to_index</span>(<span class="hljs-params">self, state</span>):
         <span class="hljs-string">&quot;&quot;&quot;
         将 (x, y) 坐标转换为 q_table 的索引。
         &quot;&quot;&quot;</span>
@@ -396,7 +397,7 @@
 <li>
 <p>创建q-leaning表</p>
 <p>参数为n_states：迷宫的长*宽，actions：[‘LEFT’, ‘RIGHT’, ‘UP’, ‘DOWN’]</p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_q_table</span>(<span class="hljs-params">n_states: <span class="hljs-built_in">int</span>, actions: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; pd.DataFrame:
+<pre class="hljs"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_q_table</span>(<span class="hljs-params">n_states: <span class="hljs-built_in">int</span>, actions: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; pd.DataFrame:
     table = pd.DataFrame(
         np.zeros((n_states, <span class="hljs-built_in">len</span>(actions))),
         columns=actions)
@@ -407,7 +408,7 @@
 <li>
 <p>行动决策</p>
 <p>首先获取当前位置(state_idx)的决策概率，例如state_idx=0时，state_actions = [0.0, 0.0, 0.0, 0.0]。这里有一个超参EPSILON，用于在行动决策中划分多少概率随机选择一次行动。如果不使用随机决策则会取当前state_actions中概率最大的一个决策。</p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">choose_action</span>(<span class="hljs-params">state_idx, q_table: pd.DataFrame</span>) -&gt; <span class="hljs-built_in">str</span>:
+<pre class="hljs"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">choose_action</span>(<span class="hljs-params">state_idx, q_table: pd.DataFrame</span>) -&gt; <span class="hljs-built_in">str</span>:
     <span class="hljs-comment"># 根据当前state状态和q_table选择action</span>
     state_actions: np.ndarray = q_table.iloc[state_idx, :]
 
@@ -423,7 +424,7 @@
 </ol>
 <h4 id="train"><a class="markdownIt-Anchor" href="#train"></a> Train</h4>
 <p>当Agent和Environment都实现后，可以开始编写q-leaning的训练了。</p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">save_q_table</span>(<span class="hljs-params">q_table</span>):
+<pre class="hljs"><code class="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">save_q_table</span>(<span class="hljs-params">q_table</span>):
     <span class="hljs-comment"># 获取当前日期并格式化为字符串</span>
     date_suffix = datetime.now().strftime(<span class="hljs-string">&quot;%Y-%m-%d&quot;</span>)
     filename = <span class="hljs-string">f&quot;q_table_<span class="hljs-subst">&#123;date_suffix&#125;</span>.npy&quot;</span>
@@ -475,7 +476,7 @@
 <ol>
 <li>
 <p>编写MazeGUI，为了让测试具像化，并且使用moves统计测试时使用的步骤</p>
-<pre class="highlight"><code class="">class MazeGUI:
+<pre class="hljs"><code class="">class MazeGUI:
     def __init__(self, maze):
         self.maze = maze
         self.root = tk.Tk()
@@ -561,7 +562,7 @@
 </li>
 <li>
 <p>编写eval函数，验证时不需要采用随机化决策，直接从q-table中获取每一步的最大值决策即可。</p>
-<pre class="highlight"><code class="">def eval(q_table, maze_gui):
+<pre class="hljs"><code class="">def eval(q_table, maze_gui):
     S = maze_gui.maze.start_local
     is_final = False
     maze_gui.reset()  # 重置迷宫到初始状态，并在GUI中更新
@@ -590,7 +591,7 @@
 </ol>
 <h4 id="完整实例"><a class="markdownIt-Anchor" href="#完整实例"></a> 完整实例</h4>
 <p><a target="_blank" rel="noopener" href="http://MazeGen.py">MazeGen.py</a></p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> random
+<pre class="hljs"><code class="python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> tkinter <span class="hljs-keyword">as</span> tk
 <span class="hljs-keyword">from</span> tkinter <span class="hljs-keyword">import</span> messagebox
 <span class="hljs-keyword">from</span> queue <span class="hljs-keyword">import</span> Queue
@@ -807,7 +808,7 @@
 
 </code></pre>
 <p><a target="_blank" rel="noopener" href="http://Q-leaning.py">Q-leaning.py</a></p>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> random
+<pre class="hljs"><code class="python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
 <span class="hljs-keyword">import</span> threading
@@ -953,7 +954,7 @@ random.seed(<span class="hljs-number">13</span>)
 <li>使用state_actions.sample(frac=1)来打乱action所在位置，<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sample.html">sample</a>函数用于随机样本获取。</li>
 <li>修改save_q_table时，依赖当前路径的总步数，保存最优解</li>
 </ol>
-<pre class="highlight"><code class="">class QLearning:
+<pre class="hljs"><code class="">class QLearning:
     def __init__(self, actions: list[str], learning_rate=0.1, reward_decay=0.9, epsilon=0.1):
         self.actions = actions  # 动作空间
         self.lr = learning_rate  # 学习率
@@ -1019,7 +1020,7 @@ random.seed(<span class="hljs-number">13</span>)
         self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  # 更新q-table
 </code></pre>
 <p>更新后的train，实时保存最优解</p>
-<pre class="highlight"><code class="">def train(maze):
+<pre class="hljs"><code class="">def train(maze):
     q_learning = QLearning(ACTIONS, learning_rate=ALPHA, reward_decay=LAMBDA, epsilon=EPSILON)
 
     for episode in range(STEP):
@@ -1065,7 +1066,7 @@ random.seed(<span class="hljs-number">13</span>)
 <p>与Q-learning完全一致</p>
 <h4 id="agent-2"><a class="markdownIt-Anchor" href="#agent-2"></a> <strong>Agent</strong></h4>
 <p>基本与Q-learning一致，只有learn函数需要修改为sarsa算法</p>
-<pre class="highlight"><code class="">class Sarsa:
+<pre class="hljs"><code class="">class Sarsa:
     def __init__(self, actions: list[str], learning_rate=0.1, reward_decay=0.9, epsilon=0.1):
         self.actions = actions  # 动作空间
         self.lr = learning_rate  # 学习率
@@ -1132,7 +1133,7 @@ random.seed(<span class="hljs-number">13</span>)
 </code></pre>
 <h4 id="train-2"><a class="markdownIt-Anchor" href="#train-2"></a> Train</h4>
 <p>需要将action计算放在初始轮中，并且迭代。</p>
-<pre class="highlight"><code class="">def train(maze):
+<pre class="hljs"><code class="">def train(maze):
     sarsa = Sarsa(ACTIONS, learning_rate=ALPHA, reward_decay=LAMBDA, epsilon=EPSILON)
 
     for episode in range(STEP):
@@ -1172,7 +1173,7 @@ random.seed(<span class="hljs-number">13</span>)
 <h4 id="evaluate-2"><a class="markdownIt-Anchor" href="#evaluate-2"></a> Evaluate</h4>
 <p>与q-learning完全一致</p>
 <h4 id="完整代码"><a class="markdownIt-Anchor" href="#完整代码"></a> 完整代码</h4>
-<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> random
+<pre class="hljs"><code class="python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> threading
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
@@ -1432,7 +1433,7 @@ random.seed(<span class="hljs-number">13</span>)
   <div class="widget-wrap widget-tags">
     <div class="widget-title"><span>Tags</span></div>
     <div class="widget-inner">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
     </div>
   </div>
 
@@ -1443,6 +1444,10 @@ random.seed(<span class="hljs-number">13</span>)
     <div class="widget-title"><span>Recent Posts</span></div>
     <div class="widget-inner">
       <ul>
+        
+          <li>
+            <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/">GCG Journey（一）：从对抗样本到后缀搜索</a>
+          </li>
         
           <li>
             <a href="/2024/05/03/ATF-FUZZ/">ATF-FUZZ</a>
@@ -1460,10 +1465,6 @@ random.seed(<span class="hljs-number">13</span>)
             <a href="/2024/01/05/Apollo-8-0%E6%95%99%E7%A8%8B/">Apollo 8.0教程</a>
           </li>
         
-          <li>
-            <a href="/2023/03/15/CVE-2023-21608/">CVE-2023-21608</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1473,7 +1474,7 @@ random.seed(<span class="hljs-number">13</span>)
   <div class="widget-wrap widget-archive">
     <div class="widget-title"><span>Archive</span></div>
     <div class="widget-inner">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
     </div>
   </div>
 
