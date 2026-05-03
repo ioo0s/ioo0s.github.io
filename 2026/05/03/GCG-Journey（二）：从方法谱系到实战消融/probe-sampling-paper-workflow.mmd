@@ -1,0 +1,35 @@
+graph LR
+    subgraph Legend
+        direction LR
+        L1[Target Model]
+        L2[Draft Model]
+        L3[Candidate Pool]
+        L4[Final Update]
+    end
+
+    START([Current Suffix]) --> GRAD[Target Model Gradient Proposal]
+    GRAD --> POOL[128 Candidate Suffixes]
+    POOL --> SCORE[Draft Model Rough Scoring]
+    SCORE --> PROBE[Probe Set Rank Agreement]
+    PROBE --> FILTER[Filtering Strength Decision]
+    FILTER --> TOPK[Keep Top-k Candidates]
+    TOPK --> LOSS[Target Model Exact Loss]
+    LOSS --> UPDATE[Greedy Update Suffix]
+
+    NOTE[Draft only filters, target model still decides update]
+    NOTE -.-> FILTER
+
+    style GRAD fill:#d1e9ff,stroke:#0056b3,stroke-width:2px
+    style POOL fill:#f0f0f0,stroke:#666666,stroke-width:2px
+    style SCORE fill:#ffe5b4,stroke:#ff8c00,stroke-width:2px
+    style PROBE fill:#ffe5b4,stroke:#ff8c00,stroke-width:2px
+    style FILTER fill:#ffe5b4,stroke:#ff8c00,stroke-width:2px
+    style TOPK fill:#f0f0f0,stroke:#666666,stroke-width:2px
+    style LOSS fill:#d5f5e3,stroke:#28a745,stroke-width:2px
+    style UPDATE fill:#d5f5e3,stroke:#28a745,stroke-width:2px
+    style NOTE fill:#fff,stroke:#333,stroke-dasharray: 5 5
+
+    style L1 fill:#d1e9ff,stroke:#0056b3
+    style L2 fill:#ffe5b4,stroke:#ff8c00
+    style L3 fill:#f0f0f0,stroke:#666666
+    style L4 fill:#d5f5e3,stroke:#28a745
