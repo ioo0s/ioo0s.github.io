@@ -1,0 +1,23 @@
+graph TB
+    A["外部输入<br/>query + suffix"] --> B["assistant 起手阶段<br/>token 级条件竞争"]
+
+    B --> R["拒绝轨迹<br/>I cannot / 对不起"]
+    B --> P["服从前缀<br/>Sure / 当然可以"]
+    B --> N["相邻服从模板<br/>当然，我可以..."]
+
+    P --> O["输出入口被改写<br/>文本 / 格式 / 业务标签<br/>沿新上下文展开"]
+    N --> O
+
+    B -.-> E["三条读数<br/>loss: 概率是否推近<br/>generate: 是否跨过门槛<br/>transfer: 边界是否保留"]
+    E --> V["本文观点<br/>越狱不是内容本身<br/>而是输出入口劫持"]
+    V --> D["下一篇<br/>模型指纹识别"]
+
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
+    style B fill:#fff3e0,stroke:#ef6c00,stroke-width:3px,color:#bf360c
+    style R fill:#eeeeee,stroke:#757575,stroke-width:2px,color:#424242
+    style P fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+    style N fill:#f1f8e9,stroke:#689f38,stroke-width:2px,color:#33691e
+    style O fill:#ede7f6,stroke:#5e35b1,stroke-width:2px,color:#4527a0
+    style E fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray: 5 5,color:#424242
+    style V fill:#ede7f6,stroke:#5e35b1,stroke-width:3px,color:#4527a0
+    style D fill:#fff8e1,stroke:#f9a825,stroke-width:2px,color:#8d6e00

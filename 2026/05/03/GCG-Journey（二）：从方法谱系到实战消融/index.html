@@ -52,18 +52,8 @@
     Figure 1: GCG 方法家族可以统一看成对 proposal、objective、forward evaluation、update 和 success evaluation 的不同改造。
   &lt;/figcaption&gt;
 &lt;/figure&gt;" />
-    <meta name="twitter:title" content="GCG Journey（二）：从方法谱系到实战消融 | ioo0s&#39;s blog"/>
-    <meta name="twitter:description" content="&lt;blockquote&gt;
-&lt;p&gt;将GCG概念从模型后缀搜索转移到离散空间优化&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;第一篇已经把 GCG 的最小主干拆开了：candidate proposal、target loss evaluation、greedy update。这里继续往前走一步，把 2024–2026 年围绕 GCG 展开的几条工作线放到同一个实验框架里。&lt;/p&gt;
-&lt;p&gt;这篇文章要回答的是：这些 GCG 变体到底改了哪一环？改完以后，是降低了计算成本，还是改变了优化目标，或者只是换了一套评估方式？&lt;/p&gt;
-&lt;figure class=&#34;post-figure&#34;&gt;
-  &lt;img src=&#34;/2026/05/03/GCG-Journey（二）：从方法谱系到实战消融/gcg-family-map.png&#34; alt=&#34;GCG method family map&#34;&gt;
-  &lt;figcaption&gt;
-    Figure 1: GCG 方法家族可以统一看成对 proposal、objective、forward evaluation、update 和 success evaluation 的不同改造。
-  &lt;/figcaption&gt;
-&lt;/figure&gt;"/>
+    <meta name="twitter:title" content="GCG Journey（二）：从方法谱系到实战消融 | ioo0s's blog">
+    <meta name="twitter:description" content="将GCG概念从模型后缀搜索转移到离散空间优化 第一篇已经把 GCG 的最小主干拆开了：candidate proposal、target loss evaluation、greedy update。这里继续往前走一步，把 2024–2026 年围绕 GCG 展开的几条工作线放到同一个实验框架里。 这篇文章要回答的是：这些 GCG 变体到底改了哪一环？改完以后，是降低了计算成本，还是改变了优化目标，">
     <script type="application/ld+json">
         {
             "description": "&lt;blockquote&gt;
@@ -144,6 +134,9 @@
     </script>
 
 <meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="http://ioo0s.art/images/og/gcg-journey-2-twitter-cover.png">
+    <meta name="twitter:image" content="http://ioo0s.art/images/og/gcg-journey-2-twitter-cover.png">
 </head>
 
 
@@ -233,7 +226,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-cmor9b7rm000osnnp1ft61wp5" class="article article-type-post" itemscope
+    <article id="post-cmpcuiam4000pqlnpbsp052cv" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -1749,6 +1742,15 @@ format-aware target 改变 loss 对齐的 token 边界；visited suffix 去重�
     
 <nav class="article-nav">
   
+    <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-title">
+        
+          GCG Journey（三）：模型越狱的第一道边界：条件竞争
+        
+      </div>
+    </a>
+  
   
     <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-caption">上一篇</div>
@@ -1839,6 +1841,14 @@ format-aware target 改变 loss 对齐的 token 边界；visited suffix 去重�
       <ul>
         
           <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/">GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
+          </li>
+        
+          <li>
             <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
           </li>
         
@@ -1848,14 +1858,6 @@ format-aware target 改变 loss 对齐的 token 边界；visited suffix 去重�
         
           <li>
             <a href="/2024/05/03/ATF-FUZZ/">ATF-FUZZ</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/10/Reinforcement-Learning-Note/">Reinforcement Learning Note</a>
-          </li>
-        
-          <li>
-            <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/">乔姆斯基生成语法分析笔记</a>
           </li>
         
       </ul>

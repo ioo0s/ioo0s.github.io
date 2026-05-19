@@ -1,0 +1,47 @@
+graph LR
+    subgraph TopLane ["可见行为指纹 (Visible Behavioral Fingerprints)"]
+        direction LR
+        A1["MiniMax / 马嘉祺 Probe"] --> A2["Surface Text"]
+        A2 --> A3["Token IDs"]
+        A3 --> A4["Phantom Edits"]
+        
+        A1_sub["稳定名字错误"]
+        A2_sub["同一人物 / 名字不稳"]
+        A3_sub["非唯一编码"]
+        A4_sub["文本像改了 / 表示没对齐"]
+    end
+
+    subgraph BottomLane ["隐藏 Token-level 指纹 (Hidden Token-level Fingerprints)"]
+        direction LR
+        B1["GCG Suffix"] --> B2["Target Loss"]
+        B2 --> B3["Loss Matrix"]
+        
+        B1_sub["来源模型局部优化"]
+        B2_sub["连续偏好"]
+        B3_sub["行内 argmin 归属"]
+    end
+
+    Bridge["表面文本只是最后一层; 身份信号还藏在 token ID, logits, template 路径里"]
+    
+    A2 -.-> Bridge
+    Bridge -.-> B2
+
+    style A1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style A1_sub fill:none,stroke:none,font-size:12px
+    style A2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style A2_sub fill:none,stroke:none,font-size:12px
+    style A3 fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    style A3_sub fill:none,stroke:none,font-size:12px
+    style A4 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style A4_sub fill:none,stroke:none,font-size:12px
+
+    style B1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style B1_sub fill:none,stroke:none,font-size:12px
+    style B2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style B2_sub fill:none,stroke:none,font-size:12px
+    style B3 fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    style B3_sub fill:none,stroke:none,font-size:12px
+
+    style Bridge fill:#ffffff,stroke:#333,stroke-dasharray: 5 5,font-style:italic
+    style TopLane fill:#fdfdfd,stroke:#999,stroke-width:1px
+    style BottomLane fill:#fdfdfd,stroke:#999,stroke-width:1px

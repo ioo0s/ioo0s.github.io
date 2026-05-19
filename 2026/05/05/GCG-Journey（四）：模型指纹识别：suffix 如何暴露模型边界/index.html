@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 | ioo0s&#39;s blog</title>
+
+    <meta name="description" content="&lt;blockquote&gt;
+&lt;p&gt;模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一个模型可能不会告诉你它是谁，但它会用错误暴露自己。&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="zh" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 | ioo0s&#39;s blog"  />
+    <meta property="og:description" content= "&lt;blockquote&gt;
+&lt;p&gt;模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一个模型可能不会告诉你它是谁，但它会用错误暴露自己。&lt;/p&gt;" />
+    <meta property="og:url" content="http://ioo0s.art/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="ios" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;blockquote&gt;
+&lt;p&gt;模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一个模型可能不会告诉你它是谁，但它会用错误暴露自己。&lt;/p&gt;" />
+    <meta name="twitter:title" content="GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 | ioo0s's blog">
+    <meta name="twitter:description" content="模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。 一个模型可能不会告诉你它是谁，但它会用错误暴露自己。">
+    <script type="application/ld+json">
+        {
+            "description": "&lt;blockquote&gt;
+&lt;p&gt;模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一个模型可能不会告诉你它是谁，但它会用错误暴露自己。&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "ios" },
+            "@type": "BlogPosting",
+            "url": "http://ioo0s.art/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://ioo0s.art/images/avatar.jpg"
+            },
+            "name": "ios"
+            },
+            "headline": "GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 | ioo0s&#39;s blog",
+            "datePublished": "2026-05-05T12:18:32.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://ioo0s.art/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦈</text></svg>">
+    
+
+    
+
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/stylesheets/blog-overrides.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = true
+        window.aomori_search_algolia = false
+
+    </script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ioo0s's blog" type="application/atom+xml">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="http://ioo0s.art/images/og/gcg-journey-4-twitter-cover-v2.png">
+    <meta name="twitter:image" content="http://ioo0s.art/images/og/gcg-journey-4-twitter-cover-v2.png">
+</head>
+
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-avatar avatar avatar-sm">
+                <img src="/images/avatar.jpg" alt="ios">
+            </div>
+            
+            <div class="header-type-inner">
+                
+                    <div id="typed-strings" style="display:none">
+                        <p>ioo0s&#39;s blog</p>
+                    </div>
+                    <a class="header-type-title" id="typed" href="/"></a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">主页</a>
+                
+                <a href="/archives">存档</a>
+                
+                <a href="/collection">收藏</a>
+                
+                <a href="/about">关于</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+    <a class="social" target="_blank" href="https://github.com/ioo0s">
+        <ion-icon name="logo-github"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="https://twitter.com/LiuIos">
+        <ion-icon name="logo-twitter"></ion-icon>
+    </a>
+
+    <a class="social" target="_blank" href="http://ioo0s.art/atom.xml">
+        <ion-icon name="logo-rss"></ion-icon>
+    </a>
+
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">主页</a>
+                    
+                    <a href="/archives">存档</a>
+                    
+                    <a href="/collection">收藏</a>
+                    
+                    <a href="/about">关于</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-cmpcuiam6000zqlnpeanfdo06" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2026-05-05T12:18:32.000Z" itemprop="datePublished">2026-05-05</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                <span id="busuanzi_value_page_pv">N</span> 人看过
+            </div>
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <blockquote>
+<p>模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。</p>
+</blockquote>
+<p>一个模型可能不会告诉你它是谁，但它会用错误暴露自己。</p>
+<span id="more"></span>
+<p>2026 年 3 月，MiniMax 因为一个很小的名字问题被拉进讨论：它似乎总是认不准「马嘉祺」。当时最值得注意的不是模型完全不知道这个人，而是人物履历、组合、作品这些背景信息大体能对上，姓名本身却在输出里反复变形。</p>
+<p>这不像普通的知识缺失。</p>
+<p>5 月 9 日，MiniMax 自己发布了完整排查说明。这个说明把结论收得更精确：问题不在于模型没有学到「马嘉祺」这个语义对象，也不只是 tokenizer 非唯一编码造成的 phantom edits，而是后训练阶段让一个低频 token 的输出能力退化了。</p>
+<p>MiniMax 的排查链路大致是这样：<code>马嘉祺</code> 会被切成 <code>['马', '嘉祺']</code> 两个 token，其中 <code>嘉祺</code> 是一个独立 token。embedding 统计显示，这个 token 在预训练阶段并不是未训练状态；预训练模型也能正常输出这个名字。但进入后训练后，包含 <code>嘉祺</code> 的样本不到 5 条。大量高频对话 token、工具调用标记、代码符号在 SFT 阶段持续更新，低频 token 没有足够生成练习，最后 <code>lm_head</code> 里的输出权重发生明显漂移。模型仍然能回答马嘉祺的信息，却更容易把名字输出成「佳琪」「琪琪」这类相邻或更常见的 token。</p>
+<aside class="method-core-block">
+  <div class="method-core-block__label">MiniMax 官方排查结论</div>
+  <p>MiniMax 把这个现象定位为稀疏 token 的后训练退化。它们扫描约 20 万 token 后发现，约 <code>4.9%</code> 的 token 发生显著退化；按语种统计，日语 token 的退化比例达到 <code>29.7%</code>，明显高于韩语 <code>3.3%</code>、俄语 <code>3.7%</code>、中文 <code>3.9%</code> 和英文 <code>3.5%</code>。此前日语回答混入俄语或韩语字符的问题，也可以放进同一框架：后训练数据覆盖不足时，某些 token 的输出参数会漂移，语言混杂和低频中文 token 遗忘都可能从这里出现。</p>
+<p>修复思路也对应到 token 层覆盖：用覆盖全词表的合成复读任务为每个 token 建立生成频率下限。官方报告里，日语回答混入俄文字符的比例从 <code>47%</code> 降到 <code>1%</code>，全词表 <code>lm_head</code> cosine similarity 的最低值从 <code>0.329</code> 提升到全部高于 <code>0.97</code>。</p>
+</aside>
+<p>这个 case 的关键不在于模型是否“认识”某个名字，而在于语义理解和 token 生成可以分开失效。模型能够定位人物信息，说明语义对象还在；模型不能稳定输出 <code>嘉祺</code>，说明输出头和 token-level 概率已经发生偏移。phantom edits 论文讨论的是另一类 tokenizer 路径异常，但两者共同指向同一个判断：很多看似发生在文本层的错误，真正的边界在 token ID、训练数据覆盖、<code>lm_head</code> 和 logits 选择里。</p>
+<figure class="post-figure">
+  <img src="tokenizer-phantom-edits-bridge.png" alt="Tokenizer phantom edits and model fingerprint bridge">
+  <figcaption>Figure 1: 从 MiniMax / 马嘉祺这样的可见行为指纹，到稀疏 token 的后训练退化和 <code>lm_head</code> / logits 漂移，再到 GCG suffix loss matrix。phantom edits 是相邻的 tokenizer 背景：它同样说明表面文本只是最后一层，模型身份还会藏在 token ID、<code>lm_head</code>、logits 和 template 共同定义的路径里。</figcaption>
+</figure>
+<p>上一篇看的是越狱前缀控制：suffix 可以改变 assistant 起手阶段的 token 级条件竞争。本篇把这个入口反过来用。MiniMax / 马嘉祺 case 说明，一个模型即使不暴露名称，也可能在稳定错误里留下身份线索。问题是，能不能从这种可见线索继续往下走，构造一组更细的 suffix probe，让模型在 token-level score 里暴露自己的局部偏好？</p>
+<p>本文沿着这条问题链往下走：</p>
+<table class="question-chain-table">
+  <thead>
+    <tr>
+      <th>问题</th>
+      <th>为什么要问</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>模型不说自己是谁，输出习惯能不能泄露身份？</strong></td>
+      <td>MiniMax / 马嘉祺 case 给了一个入口：稳定错误不只是“答错了”，它可能暴露 tokenizer、后训练覆盖和输出头偏差。LLMmap 和 Hide and Seek 这类黑盒指纹方法，关心的正是能否从可复现输出差异反推模型身份。</td>
+    </tr>
+    <tr>
+      <td><strong>只看模型最终输出的文本，够不够细？</strong></td>
+      <td>黑盒响应能提供入口，但它不是一个很稳定的测量面。同一个模型可以因为采样、system prompt、chat template、后处理和语义等价表达，给出不同文本；不同模型也可能在常规问答里收敛到相似回答。模型指纹如果只停在最终文本，就容易把解码噪声和真实模型边界混在一起。更细的读数应该靠近输出发生前的位置：token score、target loss、logits 偏好，都会比最终文本保留更多模型差异。</td>
+    </tr>
+    <tr>
+      <td><strong>GCG suffix 能不能从越狱后缀变成指纹识别特征？</strong></td>
+      <td>GCG 原始目标是用 suffix 压低目标 loss，让模型更靠近某个目标输出。问题在于，这条 suffix 到底只是完成了一次越狱优化，还是也携带了来源模型的局部偏好？如果它离开来源模型后仍能让不同候选模型产生不同的 loss 排序，suffix 才从攻击结果变成了可用的指纹特征。后文用固定目标 token <code>zebra</code> 来做这件事。</td>
+    </tr>
+    <tr>
+      <td><strong>把模型名遮住后，还能不能识别模型名称和参数规模？</strong></td>
+      <td>真实服务里模型名、路由名和实际后端可能不一致；同一家族内部也可能换规模、换快照或换 template。指纹必须能回答“像哪个家族”，也要能回答“同家族里的哪一个参数规模”。这个问题需要同时接受混合候选、跨家族和同家族规模三类检查，否则识别结果很容易停留在单一矩阵的偶然命中。</td>
+    </tr>
+    <tr>
+      <td><strong>这是真正的模型身份，还是一次条件巧合？</strong></td>
+      <td>模型指纹这个说法很容易被误读成身份认证：只要看到一次识别成功，就以为 suffix 已经变成了稳定标签。但 GCG suffix 不是训练时植入的水印，它依赖具体 query、target 和模板入口。边界条件决定了这个读数的含义：它可以说明当前协议下的模型偏好差异，不能直接替代通用身份认证。</td>
+    </tr>
+  </tbody>
+</table>
+<p>所以这篇的结论不是“GCG 找到了通用模型身份证”。更准确的说法是：<strong>GCG suffix 可以被改造成条件化的模型指纹探针。它能读出模型家族差异，也能读出同家族权重规模差异；但这个读数不是裸 suffix 的属性，而是 query、target、tokenizer、chat template 和 assistant prefix 共同定义出来的局部偏好。</strong></p>
+<h2 id="从黑盒行为到-loss-指纹"><a class="markdownIt-Anchor" href="#从黑盒行为到-loss-指纹"></a> 从黑盒行为到 loss 指纹</h2>
+<h3 id="黑盒指纹有用但不够细"><a class="markdownIt-Anchor" href="#黑盒指纹有用但不够细"></a> 黑盒指纹有用，但不够细</h3>
+<aside class="highlight-block" style="--highlight-accent: #119da4; --highlight-border: rgba(17, 157, 164, 0.22); --highlight-bg: rgba(17, 157, 164, 0.075)">
+  <div class="highlight-block__label">本节内容</div>
+  <div class="highlight-block__body"><p>黑盒行为指纹证明了一件事：模型身份可以从稳定输出差异里被读出来。它的限制也在这里：输出文本已经经过 prompt、采样、template、后处理和解码选择，很多 token-level 偏好被压成了一个最终回答。行为指纹回答的是“回复像谁”，loss 指纹补上的则是输出发生前的偏好差异。</p>
+</div>
+</aside>
+<p>模型指纹识别已经有不少研究。它们共同反对一件事：不要只相信 API 暴露出来的模型名，要从稳定行为里反推模型身份、模型归属或模型边界。</p>
+<p>LLMmap 是一个典型的主动黑盒识别工作。它不拿权重，只向目标应用发送精心挑选的 queries，再根据回复识别 LLM 版本。论文报告里，它用很少的交互就能在几十个模型版本中做识别，并且考虑了未知 system prompt、随机采样、RAG、Chain-of-Thought 这类应用层干扰。</p>
+<aside class="method-core-block">
+  <div class="method-core-block__label">论文方法：LLMmap</div>
+  <p>LLMmap 的核心可以写成一个黑盒匹配问题。先准备一组 probe queries：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mo>=</mo><mo stretchy="false">{</mo><msub><mi>q</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>q</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>q</mi><mi>k</mi></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">Q=\{q_1,q_2,\ldots,q_k\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span></span></p>
+<p>对未知目标模型 (M^{\star}) 查询得到响应：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>r</mi><mi>i</mi><mo lspace="0em" rspace="0em">⋆</mo></msubsup><mo>=</mo><msup><mi>M</mi><mo lspace="0em" rspace="0em">⋆</mo></msup><mo stretchy="false">(</mo><msub><mi>q</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mspace width="1em"/><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">r_i^{\star} = M^{\star}(q_i), \quad i=1,\ldots,k
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9856959999999999em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7386959999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span></p>
+<p>再把响应编码成行为指纹向量：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ϕ</mi><mo stretchy="false">(</mo><msup><mi>M</mi><mo lspace="0em" rspace="0em">⋆</mo></msup><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">[</mo><mtext> </mtext><mi>e</mi><mo stretchy="false">(</mo><msubsup><mi>r</mi><mn>1</mn><mo lspace="0em" rspace="0em">⋆</mo></msubsup><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>e</mi><mo stretchy="false">(</mo><msubsup><mi>r</mi><mn>2</mn><mo lspace="0em" rspace="0em">⋆</mo></msubsup><mo stretchy="false">)</mo><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>e</mi><mo stretchy="false">(</mo><msubsup><mi>r</mi><mi>k</mi><mo lspace="0em" rspace="0em">⋆</mo></msubsup><mo stretchy="false">)</mo><mtext> </mtext><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\phi(M^{\star}) = [\,e(r_1^{\star}), e(r_2^{\star}), \ldots, e(r_k^{\star})\,]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7386959999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7386959999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7386959999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mclose">]</span></span></span></span></span></p>
+<p>最后和候选模型库里的参考指纹做最近邻匹配：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>M</mi><mo>^</mo></mover><mo>=</mo><mi>arg</mi><mo>⁡</mo><munder><mo><mi>min</mi><mo>⁡</mo></mo><mrow><msub><mi>M</mi><mi>j</mi></msub><mo>∈</mo><mi mathvariant="script">C</mi></mrow></munder><mi>d</mi><mo fence="false">(</mo><mi>ϕ</mi><mo stretchy="false">(</mo><msup><mi>M</mi><mo lspace="0em" rspace="0em">⋆</mo></msup><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>ϕ</mi><mo stretchy="false">(</mo><msub><mi>M</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo fence="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{M}=\arg\min_{M_j \in \mathcal{C}} d\big(\phi(M^{\star}), \phi(M_j)\big)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9467699999999999em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9467699999999999em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span><span style="top:-3.25233em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.7916509999999999em;vertical-align:-0.941651em;"></span><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.355669em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3280857142857143em;"><span style="top:-2.357em;margin-left:-0.10903em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2818857142857143em;"><span></span></span></span></span></span></span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathcal mtight" style="margin-right:0.05834em;">C</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.941651em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mord"><span class="delimsizing size1">(</span></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">⋆</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord"><span class="delimsizing size1">)</span></span></span></span></span></span></p>
+<p>它的关键不是某一个 prompt，而是 probe 集合 (Q) 能否让不同模型在输出空间里拉开距离。</p>
+</aside>
+<p>Hide and Seek 的切入更像自动化红队。它让 Auditor LLM 生成更有区分度的 prompt，让 Detective LLM 读目标模型回复，再通过演化策略迭代 prompt。这个方法的目标是黑盒 family identification：只看输出文本，判断背后更像 Llama、Mistral、Gemma 还是别的家族。</p>
+<aside class="method-core-block">
+  <div class="method-core-block__label">论文方法：Hide and Seek</div>
+  <p>Hide and Seek 把 prompt 本身也当成可优化对象。第 (g) 轮里，Auditor 根据上一轮结果生成一组候选 prompts：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mi>g</mi></msub><mo>=</mo><mo stretchy="false">{</mo><msubsup><mi>p</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo separator="true">,</mo><msubsup><mi>p</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msubsup><mi>p</mi><mi>m</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">P_g=\{p_1^{(g)},p_2^{(g)},\ldots,p_m^{(g)}\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.311108em;vertical-align:-0.266308em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.433692em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.266308em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.433692em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.266308em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span></span></p>
+<p>每个候选模型 (M_j) 对 prompt 生成黑盒响应：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>y</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>t</mi></mrow><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo>=</mo><msub><mi>M</mi><mi>j</mi></msub><mo stretchy="false">(</mo><msubsup><mi>p</mi><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y_{j,t}^{(g)} = M_j(p_t^{(g)})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4577719999999998em;vertical-align:-0.412972em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.4231360000000004em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.330908em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.454244em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24575599999999997em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>Detective 只看 prompt 和响应，预测模型家族：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mover accent="true"><mi>c</mi><mo>^</mo></mover><mrow><mi>j</mi><mo separator="true">,</mo><mi>t</mi></mrow><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo>=</mo><mi>D</mi><mo stretchy="false">(</mo><msubsup><mi>p</mi><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo separator="true">,</mo><msubsup><mi>y</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>t</mi></mrow><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{c}_{j,t}^{(g)} = D(p_t^{(g)}, y_{j,t}^{(g)})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4577719999999998em;vertical-align:-0.412972em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.4231360000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.4577719999999998em;vertical-align:-0.412972em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.454244em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24575599999999997em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.4231360000000004em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>再用预测正确率给 prompt 打分，并把高分 prompt 送入下一轮演化：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><msubsup><mi>p</mi><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mn mathvariant="bold">1</mn><mrow><mo fence="true">[</mo><msubsup><mover accent="true"><mi>c</mi><mo>^</mo></mover><mrow><mi>j</mi><mo separator="true">,</mo><mi>t</mi></mrow><mrow><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></msubsup><mo>=</mo><msub><mi>c</mi><mi>j</mi></msub><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">S(p_t^{(g)})=\frac{1}{n}\sum_{j=1}^{n}\mathbf{1}\left[\hat{c}_{j,t}^{(g)}=c_j\right]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2948em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.454244em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24575599999999997em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0651740000000007em;vertical-align:-1.4137769999999998em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000007em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4137769999999998em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathbf">1</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">[</span></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.4231360000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">]</span></span></span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mrow><mi>g</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mrow><mi mathvariant="normal">E</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi></mrow><mrow><mo fence="true">(</mo><msub><mi>P</mi><mi>g</mi></msub><mo separator="true">,</mo><mi>S</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>g</mi></msub><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{g+1}=\mathrm{Evolve}\left(P_g,S(P_g)\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathrm">E</span><span class="mord mathrm" style="margin-right:0.01389em;">v</span><span class="mord mathrm">o</span><span class="mord mathrm">l</span><span class="mord mathrm" style="margin-right:0.01389em;">v</span><span class="mord mathrm">e</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
+<p>这套方法的关键，是让 prompt 主动寻找模型家族之间最容易暴露差异的语义区域。它仍然是输出行为指纹：识别信号来自生成文本，而不是 logits、loss 或梯度。</p>
+</aside>
+<p>这两条路线证明了“行为指纹”是可行的。但它们也暴露了一个限制：输出文本是最后一层结果，里面混进了 prompt、采样、系统提示、后处理和解码路径。MiniMax / 马嘉祺这样的 case 很适合作为可见行为指纹的起点，因为它把模型身份泄漏具体化成了一个反复出现的输出偏差；但如果要做更细粒度的判断，例如 Qwen2.5-0.5B 和 Qwen2.5-3B，单靠输出文本就不够稳。</p>
+<p>另一类工作绕过了纯文本输出。Instructional Fingerprinting 更偏所有权验证：把私钥式 instruction 植入模型，触发时输出特定响应。它和本文的关系比较远，点到即可。</p>
+<p>TensorGuard 更值得展开一点，因为它把指纹从“输出文本长什么样”推进到“模型内部响应如何变化”。这和本文的方向更接近：模型身份不只藏在自然语言回答里，也藏在梯度、参数响应和局部几何里。</p>
+<aside class="method-core-block">
+  <div class="method-core-block__label">论文方法：TensorGuard</div>
+  <p>TensorGuard 把模型看成软件工件，目标是做相似度检测和家族分类。它不依赖水印或训练数据，而是对输入加入随机扰动，观察模型在不同 tensor layers 上的梯度响应。</p>
+<p>设第 (t) 次扰动后的输入为：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>x</mi><mi>t</mi></msub><mo>=</mo><mi>x</mi><mo>+</mo><msub><mi>δ</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">x_t = x + \delta_t
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>在第 (l) 层记录梯度响应：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>g</mi><mrow><mi>l</mi><mo separator="true">,</mo><mi>t</mi></mrow></msub><mo stretchy="false">(</mo><mi>M</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi mathvariant="normal">∇</mi><msub><mi>θ</mi><mi>l</mi></msub></msub><mi mathvariant="script">L</mi><mo stretchy="false">(</mo><mi>M</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>t</mi></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g_{l,t}(M)=\nabla_{\theta_l}\mathcal{L}(M(x_t), y)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.00586em;vertical-align:-0.25586em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999985em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15122857142857138em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25586em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathcal">L</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span></p>
+<p>再把多层、多次扰动的统计特征聚合成高维指纹：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ψ</mi><mo stretchy="false">(</mo><mi>M</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">s</mi></mrow><mrow><mo fence="true">(</mo><mo stretchy="false">{</mo><msub><mi>g</mi><mrow><mi>l</mi><mo separator="true">,</mo><mi>t</mi></mrow></msub><mo stretchy="false">(</mo><mi>M</mi><mo stretchy="false">)</mo><msub><mo stretchy="false">}</mo><mrow><mi>l</mi><mo separator="true">,</mo><mi>t</mi></mrow></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\psi(M)=\mathrm{Stats}\left(\{g_{l,t}(M)\}_{l,t}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ψ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathrm">S</span><span class="mord mathrm">t</span><span class="mord mathrm">a</span><span class="mord mathrm">t</span><span class="mord mathrm">s</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span><span class="mclose"><span class="mclose">}</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
+<p>模型相似度可以直接用指纹距离度量：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mo stretchy="false">(</mo><msub><mi>M</mi><mi>a</mi></msub><mo separator="true">,</mo><msub><mi>M</mi><mi>b</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mrow><mo fence="true">∥</mo><mi>ψ</mi><mo stretchy="false">(</mo><msub><mi>M</mi><mi>a</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mi>ψ</mi><mo stretchy="false">(</mo><msub><mi>M</mi><mi>b</mi></msub><mo stretchy="false">)</mo><mo fence="true">∥</mo></mrow><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">d(M_a,M_b)=\left\|\psi(M_a)-\psi(M_b)\right\|_2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0497em;vertical-align:-0.29969999999999997em;"></span><span class="minner"><span class="minner"><span class="mopen delimcenter" style="top:0em;">∥</span><span class="mord mathnormal" style="margin-right:0.03588em;">ψ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ψ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">∥</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151408em;"><span style="top:-2.4003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29969999999999997em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>家族分类则可以把未知模型的 (\psi(M)) 放进聚类空间。论文报告在 Llama、Qwen、Gemma、Phi、Mistral 等模型族上做 family classification，说明模型身份可以从梯度响应里读出来。</p>
+</aside>
+<p>这些方法的差异，主要体现在指纹读数来自哪一层。</p>
+<table>
+<thead>
+<tr>
+<th>指纹层级</th>
+<th>代表思路</th>
+<th>需要什么能力</th>
+<th>主要回答的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输出行为</td>
+<td>LLMmap、Hide and Seek、MiniMax / 马嘉祺 probe</td>
+<td>只需要查询输出</td>
+<td>后端更像哪个模型家族</td>
+</tr>
+<tr>
+<td>私钥触发</td>
+<td>Instructional Fingerprinting、Chain &amp; Hash</td>
+<td>预置或持有触发 prompt</td>
+<td>这个模型是否属于某个所有者</td>
+</tr>
+<tr>
+<td>统计水印</td>
+<td>semantic watermark / token watermark</td>
+<td>能生成或检测统计模式</td>
+<td>文本或模型是否带有特定标记</td>
+</tr>
+<tr>
+<td>参数 / 表示</td>
+<td>TensorGuard、logit/subspace fingerprint</td>
+<td>需要梯度、logits 或本地评估</td>
+<td>模型边界和权重行为是否一致</td>
+</tr>
+<tr>
+<td>本文方法</td>
+<td>GCG suffix loss probe</td>
+<td>需要 target score / 本地 forward / 灰盒 logprob</td>
+<td>suffix 的局部优化方向更贴近哪个模型</td>
+</tr>
+</tbody>
+</table>
+<p>GCG suffix loss probe 落在中间位置。它不需要像 TensorGuard 那样比较整模型的梯度统计，也不是所有权水印那种预置触发器；它沿用 GCG 的 suffix 优化路径，把目标 token 前一刻的局部偏好读成 loss matrix。</p>
+<p>这也是从 MiniMax / 马嘉祺走到 GCG 的原因。可见行为指纹看的是解码后的文本结果；loss probe 看的是解码前的 token 偏好。它不要求模型真的输出 <code>zebra</code>，只比较当前上下文里 <code>zebra</code> 这个下一个 token 的 loss，因此更适合做细粒度模型边界识别。</p>
+<h3 id="从行为-probe-到-suffix-loss-probe"><a class="markdownIt-Anchor" href="#从行为-probe-到-suffix-loss-probe"></a> 从行为 probe 到 suffix loss probe</h3>
+<aside class="highlight-block" style="--highlight-accent: #119da4; --highlight-border: rgba(17, 157, 164, 0.22); --highlight-bg: rgba(17, 157, 164, 0.075)">
+  <div class="highlight-block__label">核心观点</div>
+  <div class="highlight-block__body"><p>模型指纹不是在找一个永远不变的标签，而是在找一组稳定复现的偏差。MiniMax / 马嘉祺是输出层面的可见指纹；GCG suffix loss matrix 则是 token-level 的隐藏指纹。</p>
+</div>
+</aside>
+<p>MiniMax case 里，人可以直接从输出文本看见异常。GCG 指纹把观测点下移到 token score 层：它不先看模型最终生成了什么，而是给不同候选模型喂同一条 suffix，再比较它们对目标 token 的 loss。</p>
+<p>两者的共同点是“稳定偏差”。</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>MiniMax / 马嘉祺 case</th>
+<th>GCG suffix 指纹</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表面现象</td>
+<td>特定名字在输出里不稳定</td>
+<td>特定 suffix 在 loss matrix 里形成排序</td>
+</tr>
+<tr>
+<td>观测对象</td>
+<td>生成文本</td>
+<td>target token loss</td>
+</tr>
+<tr>
+<td>底层路径</td>
+<td>tokenizer / token ID / detokenizer</td>
+<td>tokenizer / embedding / logits / template</td>
+</tr>
+<tr>
+<td>指纹含义</td>
+<td>可见错误可作为归属线索</td>
+<td>隐藏偏好可作为归属线索</td>
+</tr>
+</tbody>
+</table>
+<p>这件事值得研究，是因为真实部署里的“模型是谁”经常不是一个纯文档问题。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>模型指纹能回答什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>匿名模型评测</td>
+<td>后端是否像某个已知模型家族</td>
+</tr>
+<tr>
+<td>API 路由和灰度发布</td>
+<td>同一个入口背后是否换过模型或 template</td>
+</tr>
+<tr>
+<td>针对性攻击</td>
+<td>识别后端后选择更适配的 suffix bank、prompt strategy 或绕过路径</td>
+</tr>
+<tr>
+<td>安全测试</td>
+<td>越狱前缀、拒绝轨迹和风险 case 是否需要按模型家族分组</td>
+</tr>
+<tr>
+<td>供应链审计</td>
+<td>模型名、模型卡和实际行为是否一致</td>
+</tr>
+<tr>
+<td>防御监控</td>
+<td>是否有人在批量探测 token-level score、模型路由或安全边界</td>
+</tr>
+</tbody>
+</table>
+<p>在这个语境下，GCG suffix 不再只是越狱工具。它可以变成一个 probe：如果某条 suffix 在来源模型上把 <code>zebra</code> loss 压得很低，换到其他模型后 loss 排序发生分化，那么这条 suffix 就携带了来源模型的局部优化方向。</p>
+<p>这不是水印，也不是身份认证。它更像一个带条件的局部探针：先固定 query、target、chat template 和 assistant prefix，再观察同一条 suffix 在不同候选模型上会把目标 token 推到什么位置。排序越靠前，说明这条 suffix 越贴近该模型的局部响应路径。</p>
+<h2 id="指纹探针如何工作"><a class="markdownIt-Anchor" href="#指纹探针如何工作"></a> 指纹探针如何工作</h2>
+<p>统一输入很简单：</p>
+<pre class="hljs"><code class="text">Randomly output one animal word.
+</code></pre>
+<p>统一目标 token 是：</p>
+<pre class="hljs"><code class="text">zebra
+</code></pre>
+<p>整个方法分成两个阶段。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>输入</th>
+<th>输出</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建立 suffix bank</td>
+<td>来源模型 + query + target</td>
+<td>来源模型专属 suffix</td>
+<td>把目标 token loss 压低</td>
+</tr>
+<tr>
+<td>识别候选模型</td>
+<td>候选模型 + 来源 suffix bank</td>
+<td>target loss matrix</td>
+<td>行内 loss 最低的 suffix 作为预测来源</td>
+</tr>
+</tbody>
+</table>
+<figure class="post-figure">
+  <img src="fingerprint-protocol-flow.png" alt="GCG suffix fingerprint protocol flow">
+  <figcaption>Figure 2: GCG suffix 指纹协议。建库阶段在每个来源模型上优化 suffix；识别阶段冻结 suffix，把同一批 suffix 放到候选模型上重算 target loss，再用行内最低 loss 判断来源。</figcaption>
+</figure>
+<p>对应的两个假设也很清楚。</p>
+<table>
+<thead>
+<tr>
+<th>假设</th>
+<th>预期矩阵形态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>suffix 主要学到通用语义提示</td>
+<td>多个模型都能压低 loss，来源排序不清晰</td>
+</tr>
+<tr>
+<td>suffix 带有来源模型局部方向</td>
+<td>来源模型或相近模型 loss 更低，矩阵接近对角线</td>
+</tr>
+</tbody>
+</table>
+<p>这里不需要把实现讲成一串工程调用。核心机制只有两件事。</p>
+<p>第一，建库时使用 GCG 的梯度搜索。<code>backward()</code> 不是更新模型权重，而是拿 suffix token 的梯度，找哪些位置、哪些 token 替换会让目标 token 更容易出现。</p>
+<pre class="hljs"><code class="python">adv_onehot.requires_grad_(<span class="hljs-literal">True</span>)
+loss = target_loss_from_adv_embeds(
+    adv_embeds,
+    before_embeds,
+    after_embeds,
+    target_prefix_embeds,
+).mean()
+loss.backward()
+</code></pre>
+<p>第二，识别时不再继续优化 suffix。把来源模型上得到的 final suffix 放到候选模型里，用同一套 query、target 和 template 重算目标 token loss。</p>
+<pre class="hljs"><code class="python">suffix_ids = tokenizer(
+    source_suffix,
+    add_special_tokens=<span class="hljs-literal">False</span>,
+    return_tensors=<span class="hljs-string">&quot;pt&quot;</span>,
+).input_ids
+
+loss = evaluator.loss_for_suffixes(suffix_ids)[<span class="hljs-number">0</span>]
+</code></pre>
+<p>这一步必须记录 <code>retokenized_length</code>。同一段 suffix 文本在不同 tokenizer 或不同模型家族里可能切成不同 token 序列。没有这个字段，后面看到 loss 变化时很难判断是模型差异、tokenization 差异，还是两者共同造成的差异。</p>
+<p>在一次 fingerprint evaluation 里，模型看到的是：</p>
+<pre class="hljs"><code class="text">chat_template(user query + adversarial suffix) + assistant_prefix + target
+</code></pre>
+<p><code>loss_for_suffixes()</code> 关心的是目标 token 的负对数似然。对 <code>zebra</code> 来说，关键不是模型最后有没有完整输出一句话，而是在目标位置上，模型是否已经把 <code>zebra</code> 推到足够高的概率。</p>
+<p>更细一点，输入可以拆成五段。</p>
+<table>
+<thead>
+<tr>
+<th>片段</th>
+<th>是否固定</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chat_template</code> 前缀</td>
+<td>同一候选模型内固定</td>
+<td>决定 user / assistant 边界</td>
+</tr>
+<tr>
+<td>user query</td>
+<td>条件固定</td>
+<td>给出任务语义，例如输出一个动物词</td>
+</tr>
+<tr>
+<td>adversarial suffix</td>
+<td>每一列变化</td>
+<td>携带来源模型上优化出的局部方向</td>
+</tr>
+<tr>
+<td>assistant prefix</td>
+<td>必须记录</td>
+<td>决定 target token 前的上下文位置</td>
+</tr>
+<tr>
+<td>target token</td>
+<td>条件固定</td>
+<td>用 teacher-forcing 计算 NLL / CE loss</td>
+</tr>
+</tbody>
+</table>
+<p>这里使用 teacher forcing：评估时把 target token 接到上下文后面，取模型在目标位置上的 logits，再计算目标 token 的 negative log-likelihood。模型没有真的“自由生成”这个 token；它只是被问了一次：在这个上下文里，下一个 token 是 <code>zebra</code> 的代价有多大。</p>
+<p>这也解释了为什么它适合做指纹。<code>generate()</code> 会先取最大概率 token，再把后续采样或贪心路径展开；一旦第一步被离散选择截断，很多接近但未胜出的候选信息就看不见了。loss 保留了连续值，能看出 <code>1.3583</code> 和 <code>1.5416</code> 这种很接近的吸引关系。</p>
+<p>一次真实识别输入可以写成下面这样。矩阵单元格只显示 loss，但真正进入模型的是 <code>query + suffix</code>，再套上该模型自己的 chat template。</p>
+<table>
+<thead>
+<tr>
+<th>组成</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>query</td>
+<td><code>Randomly output one animal word.</code></td>
+</tr>
+<tr>
+<td>source suffix</td>
+<td><code>soever ! !zeph !：\n\n answer</code></td>
+</tr>
+<tr>
+<td>user content</td>
+<td><code>Randomly output one animal word.soev...</code>，完整后缀以 <code>soever ! !zeph</code> 开头</td>
+</tr>
+<tr>
+<td>target</td>
+<td><code>zebra</code></td>
+</tr>
+<tr>
+<td>识别读数</td>
+<td>候选模型在 target 位置上的 NLL / CE loss</td>
+</tr>
+</tbody>
+</table>
+<p>这里的 <code>source suffix</code> 不需要像自然语言提示。它只需要在来源模型的 tokenizer、embedding 和 logits 路径里，把目标 token 推到更容易出现的位置。识别时，问题变成：同一条奇怪 suffix 放到多个候选模型上，谁对 <code>zebra</code> 的 loss 最低。</p>
+<p>后面的矩阵里，每一个数都对应一次受控评估：</p>
+<pre class="hljs"><code class="text">loss(candidate_model_i, source_suffix_j, query, target, template)
+</code></pre>
+<p>读法只看行内排序：对每个候选模型，比较同一组来源 suffix 的 target loss，取最低的一列作为预测来源。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>suffix 是否更新</th>
+<th>读数</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GCG search</td>
+<td>更新</td>
+<td>当前 suffix / candidate suffix 的 target loss</td>
+<td>找到能压低目标 token 的后缀</td>
+</tr>
+<tr>
+<td>fingerprint eval</td>
+<td>不更新</td>
+<td>final suffix 在候选模型上的 target loss</td>
+<td>比较候选模型更贴近哪条来源路径</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实战四个匿名候选的指纹盲测"><a class="markdownIt-Anchor" href="#实战四个匿名候选的指纹盲测"></a> 实战：四个匿名候选的指纹盲测</h2>
+<p>先把方法放进一个更接近真实排查的问题里：现在有四个候选后端，它们来自不同家族和不同权重规模，但识别阶段不看模型名，只看同一组 suffix bank 在每个候选上的 <code>zebra</code> loss 排序。</p>
+<aside class="highlight-block" style="--highlight-accent: #d08b16; --highlight-border: rgba(208, 139, 22, 0.22); --highlight-bg: rgba(208, 139, 22, 0.075)">
+  <div class="highlight-block__label">关键判断</div>
+  <div class="highlight-block__body"><p>模型指纹识别不一定要等模型给出某个具体响应。更细的指纹，往往藏在 loss 下降过程中形成的响应路径里：同一条 suffix 放到不同候选模型上，谁更愿意沿着这条路径靠近目标 token，谁就暴露了更接近的模型边界。</p>
+</div>
+</aside>
+<p>候选集合是：</p>
+<table>
+<thead>
+<tr>
+<th>匿名候选</th>
+<th>实际模型</th>
+<th>识别目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Qwen2.5-0.5B-Instruct</td>
+<td>同家族小规模</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Qwen2.5-3B-Instruct</td>
+<td>同家族大规模</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Qwen3-0.6B</td>
+<td>新一代 Qwen 路线</td>
+</tr>
+<tr>
+<td>D</td>
+<td>SmolLM3-3B</td>
+<td>非 Qwen 家族</td>
+</tr>
+</tbody>
+</table>
+<p>来源 suffix bank 也只保留四条 final suffix：Qwen2.5-0.5B、Qwen2.5-3B、Qwen3-0.6B、SmolLM3-3B。识别时不再更新 suffix，也不让模型自由生成解释，只做一件事：每个候选模型面对四条 suffix，哪一条给出的 target loss 最低。</p>
+<figure class="post-figure">
+  <img src="practical-4way-fingerprint-matrix.png" alt="4-way practical fingerprint blind test matrix">
+  <figcaption>Figure 3: 4-way 指纹盲测矩阵。绿色格子是每一行的最低 loss；四个候选都被自己的来源 suffix 命中，说明同一组 suffix bank 可以在一次混合候选评估里同时读出模型家族和权重规模。</figcaption>
+</figure>
+<p>完整数值如下。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">Qwen2.5-0.5B suffix</th>
+<th style="text-align:right">Qwen2.5-3B suffix</th>
+<th style="text-align:right">Qwen3-0.6B suffix</th>
+<th style="text-align:right">SmolLM3-3B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right"><strong>0.8298</strong></td>
+<td style="text-align:right">1.4687</td>
+<td style="text-align:right">2.8340</td>
+<td style="text-align:right">6.2427</td>
+<td>Qwen2.5-0.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td style="text-align:right">4.4236</td>
+<td style="text-align:right"><strong>1.0425</strong></td>
+<td style="text-align:right">2.9592</td>
+<td style="text-align:right">5.5094</td>
+<td>Qwen2.5-3B</td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td style="text-align:right">5.2539</td>
+<td style="text-align:right">8.2074</td>
+<td style="text-align:right"><strong>0.0494</strong></td>
+<td style="text-align:right">9.2232</td>
+<td>Qwen3-0.6B</td>
+</tr>
+<tr>
+<td>SmolLM3-3B</td>
+<td style="text-align:right">10.7629</td>
+<td style="text-align:right">11.1123</td>
+<td style="text-align:right">11.9002</td>
+<td style="text-align:right"><strong>9.6591</strong></td>
+<td>SmolLM3-3B</td>
+</tr>
+</tbody>
+</table>
+<h3 id="怎么读这张矩阵"><a class="markdownIt-Anchor" href="#怎么读这张矩阵"></a> 怎么读这张矩阵</h3>
+<p>这张矩阵的核心不是跨行比较绝对值，而是看每一行内部哪条 suffix 给出的 target loss 最低。不同模型的 tokenizer、词表、logits calibration 和默认 template 都可能不同，跨行绝对值不一定有可比性；同一个候选模型面对同一组 suffix 时的相对排序，才是更稳定的指纹信号。</p>
+<table>
+<thead>
+<tr>
+<th>矩阵读法</th>
+<th>可以说明什么</th>
+<th>不能说明什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行内最低 loss 落在 self suffix</td>
+<td>该候选模型更贴近该来源 suffix 的局部方向</td>
+<td>不能证明模型权重完全相同</td>
+</tr>
+<tr>
+<td>对角线清晰</td>
+<td>当前候选集可区分</td>
+<td>不能外推到任意 target / query</td>
+</tr>
+<tr>
+<td>非对角 loss 接近 self loss</td>
+<td>候选模型之间有共享方向</td>
+<td>不能简单判定失败</td>
+</tr>
+<tr>
+<td>换 target 后对角线消失</td>
+<td>suffix 强依赖目标 token</td>
+<td>不能说明模型没有身份特征</td>
+</tr>
+</tbody>
+</table>
+<p>套到这次 4-way 矩阵里，结果是 <code>4/4</code>。Qwen2.5-0.5B 的 self loss 是 <code>0.8298</code>，第二名 Qwen2.5-3B suffix 是 <code>1.4687</code>，margin 只有 <code>0.6389</code>；SmolLM3 的 self loss 仍有 <code>9.6591</code>，但它比其他三条 suffix 都低。也就是说，指纹识别读的是“更像谁”，不是“这个 suffix 是否总能把目标 token 压到接近零”。</p>
+<p>这组结果比单独看 Qwen2.5 三分类或 Qwen3 三分类更接近真实使用场景，因为候选集里同时存在“同家族不同规模”和“跨家族不同路线”两种混淆项。</p>
+<p>对应的实际输入输出也要一起看。下面不是重新优化，而是把同一条来源 suffix 直接贴到候选模型的 query 后面，让模型自由生成 8 个 token。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th>采用的来源 suffix</th>
+<th>user content 片段</th>
+<th>generate 输出</th>
+<th>loss 判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td>Qwen2.5-0.5B suffix</td>
+<td><code>...soever ! !zeph !：\n\n answer</code></td>
+<td><code>zebra</code></td>
+<td>命中 Qwen2.5-0.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td>Qwen2.5-3B suffix</td>
+<td><code>...$string ! !zel ! ,;\n !</code></td>
+<td><code>zebra</code></td>
+<td>命中 Qwen2.5-3B</td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td>Qwen3-0.6B suffix</td>
+<td><code>...non ! !__))\nзеebra']:\n/*---</code></td>
+<td><code>zebra</code></td>
+<td>命中 Qwen3-0.6B</td>
+</tr>
+<tr>
+<td>SmolLM3-3B</td>
+<td>SmolLM3-3B suffix</td>
+<td><code>...개 ! ! ! ! ! Examinerดาห</code></td>
+<td><code>&lt;think&gt;\nOkay, the user wants me</code></td>
+<td>命中 SmolLM3-3B</td>
+</tr>
+</tbody>
+</table>
+<p>这张表能解释一个容易误会的点：<strong>指纹命中不等于可见输出必须包含 <code>zebra</code>。</strong> 前三行的 diagonal suffix 同时命中了 loss 和输出；SmolLM3 这一行没有输出 <code>zebra</code>，但它面对自己的 suffix 仍然是行内最低 loss。因此 loss 指纹读的是目标 token 偏好排序，而不是肉眼看到的最后文本。</p>
+<p>把这个结果转成实际判断，就是：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>盲测给出的答案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>这是不是 Qwen 路线</td>
+<td>Qwen2.5 / Qwen3 行和 SmolLM3 行明显分开</td>
+</tr>
+<tr>
+<td>如果是 Qwen2.5，是 0.5B 还是 3B</td>
+<td>两行最低 loss 分别落到各自规模 suffix</td>
+</tr>
+<tr>
+<td>如果只看输出文本是否足够</td>
+<td>不足够，判断依赖连续 loss 排序</td>
+</tr>
+<tr>
+<td>当前证据能否外推到所有模型</td>
+<td>不能，需要把候选模型纳入同一套 bank 后再测</td>
+</tr>
+</tbody>
+</table>
+<p>这组结果把 GCG suffix 的角色从“诱导模型说出 <code>zebra</code>”推进了一步：冻结后的 suffix bank 可以变成一组可比较的探针。只要候选模型面对同一组 suffix 的 loss 排序稳定，模型身份就会在排序里显出来。</p>
+<h3 id="权重规模指纹同一家族内部也能分开"><a class="markdownIt-Anchor" href="#权重规模指纹同一家族内部也能分开"></a> 权重规模指纹：同一家族内部也能分开</h3>
+<p>先看 Qwen2.5-0.5B / 1.5B / 3B。这个部分回答的是权重规模问题：同一个模型家族里，不同参数量的模型是否会留下不同的 suffix loss 指纹。</p>
+<p>三条来源 suffix 都先把来源模型上的 <code>zebra</code> loss 压到 <code>0.05</code> 左右。</p>
+<table>
+<thead>
+<tr>
+<th>来源模型</th>
+<th style="text-align:right">initial loss</th>
+<th style="text-align:right">optimized loss</th>
+<th style="text-align:right">steps</th>
+<th>final generate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right">3.6201</td>
+<td style="text-align:right">0.0432</td>
+<td style="text-align:right">10</td>
+<td><code>zebra</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td style="text-align:right">5.5544</td>
+<td style="text-align:right">0.0459</td>
+<td style="text-align:right">22</td>
+<td><code>zebra</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td style="text-align:right">4.6339</td>
+<td style="text-align:right">0.0474</td>
+<td style="text-align:right">5</td>
+<td><code>zebra</code></td>
+</tr>
+</tbody>
+</table>
+<p>来源 suffix 保留原始文本。它们来自 tokenizer、embedding 和 logits 共同定义的优化路径，记录的是目标 token loss 被压低时形成的局部方向。</p>
+<table>
+<thead>
+<tr>
+<th>来源模型</th>
+<th>suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td><code>soever ! !zeph !：\n\n answer</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td><code>.Random ! cruiser ! prompt &lt;&lt;-nzeuisse</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td><code>$string ! !zel ! ,;\n !</code></td>
+</tr>
+</tbody>
+</table>
+<p>从轨迹上看，三条 suffix 都不是一步到位，而是在少数关键 token 上快速靠近 <code>zebra</code>。</p>
+<table>
+<thead>
+<tr>
+<th>来源模型</th>
+<th>早期轨迹</th>
+<th>中间轨迹</th>
+<th>final suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td><code>! ! ! ! ! ! ! !</code> -&gt; <code>! ! !se ! ! ! !</code></td>
+<td><code>soever ! !zeph !!\n\n\n answer</code></td>
+<td><code>soever ! !zeph !：\n\n answer</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td><code>! ! ! ! ! ! ! !</code></td>
+<td><code>Raise ! cruiser ! prompt &lt;&lt;-nzeuisse</code></td>
+<td><code>.Random ! cruiser ! prompt &lt;&lt;-nzeuisse</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td><code>! ! ! ! ! ! ! !</code></td>
+<td><code>$string ! !zel !_.;\n !</code></td>
+<td><code>$string ! !zel ! ,;\n !</code></td>
+</tr>
+</tbody>
+</table>
+<p>这里能看到一个很典型的 GCG 现象：suffix 不需要变成自然语言提示，也可以把目标 token 的 loss 压下去。<code>ze</code>、<code>zel</code>、<code>zeph</code> 这类片段看起来像目标词的影子，但它们不是完整语义解释。它们更像是在当前 tokenizer 和 embedding 空间里找到了一条局部近路。</p>
+<p>把这三条 suffix 放到三个候选模型上重算 <code>zebra</code> loss，得到的矩阵是 <code>3/3</code>。</p>
+<figure class="post-figure">
+  <img src="fingerprint-loss-matrix.png" alt="Qwen2.5 fingerprint loss matrix">
+  <figcaption>Figure 4: Qwen2.5 0.5B / 1.5B / 3B 的权重规模指纹矩阵。每一行代表候选模型，每一列代表来源 suffix；对角线 loss 最低，说明行内 argmin 可以正确识别来源规模。</figcaption>
+</figure>
+<p>完整数值如下。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">0.5B suffix</th>
+<th style="text-align:right">1.5B suffix</th>
+<th style="text-align:right">3B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right"><strong>1.3583</strong></td>
+<td style="text-align:right">4.6696</td>
+<td style="text-align:right">1.5416</td>
+<td>0.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td style="text-align:right">3.8274</td>
+<td style="text-align:right"><strong>0.0462</strong></td>
+<td style="text-align:right">4.0534</td>
+<td>1.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td style="text-align:right">3.2667</td>
+<td style="text-align:right">4.6776</td>
+<td style="text-align:right"><strong>0.0470</strong></td>
+<td>3B</td>
+</tr>
+</tbody>
+</table>
+<p>这组结果支持“同家族不同参数量可以被 suffix loss 排序区分”，但需要和行内 margin 一起看：0.5B 的 self-match loss 是 <code>1.3583</code>，没有像 1.5B / 3B 那样低到 <code>0.05</code>，但它仍然是该行最低。</p>
+<p>所以指纹矩阵不要求每个 self-match 都绝对低。真正要看的是相对排序：这条 suffix 在候选集合里最贴近谁。</p>
+<p>3B suffix 放到 0.5B 上也能得到 <code>1.5416</code>，离 0.5B self-match 的 <code>1.3583</code> 很近。这说明同家族内部存在共享方向；fingerprint bank 质量不够时，矩阵容易被相近模型吸引。</p>
+<p>把行内 margin 单独列出来，这个现象更明显。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th>best suffix</th>
+<th>second best suffix</th>
+<th style="text-align:right">margin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td>0.5B suffix <code>1.3583</code></td>
+<td>3B suffix <code>1.5416</code></td>
+<td style="text-align:right"><code>0.1833</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td>1.5B suffix <code>0.0462</code></td>
+<td>0.5B suffix <code>3.8274</code></td>
+<td style="text-align:right"><code>3.7812</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td>3B suffix <code>0.0470</code></td>
+<td>0.5B suffix <code>3.2667</code></td>
+<td style="text-align:right"><code>3.2197</code></td>
+</tr>
+</tbody>
+</table>
+<p>0.5B 这一行的 margin 很小，说明它虽然预测正确，但边界并不宽。后面 query 改写后，3B 行被 1.5B suffix 吸走，正是这种相近方向的另一种表现。指纹矩阵不能只看 accuracy，也要看 margin。</p>
+<p>Qwen3 的规模指纹也成立。0.6B、1.7B、4B 三个规模的矩阵同样是 <code>3/3</code>。</p>
+<table>
+<thead>
+<tr>
+<th>来源模型</th>
+<th style="text-align:right">source loss drop</th>
+<th style="text-align:right">self-match loss</th>
+<th>other losses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3-0.6B</td>
+<td style="text-align:right">7.6032 -&gt; 0.0152</td>
+<td style="text-align:right">0.0145</td>
+<td>8.5571 / 8.7155</td>
+</tr>
+<tr>
+<td>Qwen3-1.7B</td>
+<td style="text-align:right">2.8794 -&gt; 0.0537</td>
+<td style="text-align:right">0.6668</td>
+<td>6.4704 / 11.7018</td>
+</tr>
+<tr>
+<td>Qwen3-4B</td>
+<td style="text-align:right">8.7887 -&gt; 0.0126</td>
+<td style="text-align:right">0.0169</td>
+<td>3.2564 / 9.5175</td>
+</tr>
+</tbody>
+</table>
+<figure class="post-figure">
+  <img src="qwen3-scale-fingerprint-matrix.png" alt="Qwen3 scale fingerprint loss matrix">
+  <figcaption>Figure 5: Qwen3 0.6B / 1.7B / 4B 的权重规模指纹矩阵。三行的最低 loss 都落在对应来源 suffix 上，说明 thinking template 下的 Qwen3 规模差异也能被 suffix loss 排序读出。</figcaption>
+</figure>
+<p>这一节的结论可以收得更明确：<strong>GCG suffix loss 不只是能让某个目标词更容易出现，它也携带来源模型的局部优化方向；这个方向在 Qwen2.5 和 Qwen3 两个家族内都足以区分不同权重规模。</strong></p>
+<h3 id="模型家族指纹不只是在分大小"><a class="markdownIt-Anchor" href="#模型家族指纹不只是在分大小"></a> 模型家族指纹：不只是在分大小</h3>
+<p>规模识别成立后，再把候选集合换成不同模型家族：</p>
+<pre class="hljs"><code class="text">Qwen2.5-0.5B
+Qwen3-0.6B
+SmolLM3-3B
+</code></pre>
+<p>跨家族矩阵是：</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">Qwen2.5 suffix</th>
+<th style="text-align:right">Qwen3 suffix</th>
+<th style="text-align:right">SmolLM3 suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right"><strong>1.3583</strong></td>
+<td style="text-align:right">2.2955</td>
+<td style="text-align:right">6.2830</td>
+<td>Qwen2.5</td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td style="text-align:right">5.0731</td>
+<td style="text-align:right"><strong>0.0151</strong></td>
+<td style="text-align:right">9.3213</td>
+<td>Qwen3</td>
+</tr>
+<tr>
+<td>SmolLM3-3B</td>
+<td style="text-align:right">11.2841</td>
+<td style="text-align:right">12.0104</td>
+<td style="text-align:right"><strong>9.1287</strong></td>
+<td>SmolLM3</td>
+</tr>
+</tbody>
+</table>
+<figure class="post-figure">
+  <img src="cross-family-fingerprint-matrix.png" alt="Cross-family fingerprint loss matrix">
+  <figcaption>Figure 6: 跨家族指纹矩阵。Qwen2.5、Qwen3、SmolLM3 三类候选的行内最低 loss 分别落在自己的来源 suffix 上，说明 suffix loss 不只是在分模型大小，也在读模型家族差异。</figcaption>
+</figure>
+<p>结果仍然是 <code>3/3</code>。这说明 suffix loss 不只携带参数量差异，也能携带模型家族差异。</p>
+<p>这组结果支撑“模型类型识别”这个核心观点。当前候选集是 Qwen2.5、Qwen3、SmolLM3；在这三类模型之间，GCG suffix loss 可以形成可读排序。未纳入候选集的家族不能直接外推，例如 GLM、Llama、Mistral、DeepSeek 还需要各自建 bank 后再进入同一张矩阵。</p>
+<p>SmolLM3 这组命中需要单独解释。它的来源 suffix 在 SmolLM3 上并没有把 <code>zebra</code> loss 压到很低，self-match loss 仍然是 <code>9.1266</code>。但在识别阶段，判断依据不是绝对 loss 是否接近 0，而是同一候选模型面对不同来源 suffix 时的行内排序。SmolLM3 行里，自己的 suffix 仍然给出最低 loss，所以它在当前候选集里被正确识别。</p>
+<p>因此跨家族结果支持的是一个有限但重要的结论：<strong>在当前候选集合、当前 query/target/template 下，suffix loss 排序可以同时读出模型家族和权重规模。</strong> 它不是通用水印，但已经足够说明 GCG 可以作为模型指纹识别工具的雏形。</p>
+<h3 id="为什么-generate-不能替代-loss"><a class="markdownIt-Anchor" href="#为什么-generate-不能替代-loss"></a> 为什么 generate 不能替代 loss</h3>
+<p>指纹识别的核心信号是 loss，不是 <code>generate()</code> 的自然语言输出。deterministic <code>generate()</code> 更适合作为输出层对照，用来观察 loss 命中是否会转化成可见文本。</p>
+<p>在来源模型上，三条 final suffix 的 deterministic output 都命中了 <code>zebra</code>：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>initial suffix output</th>
+<th>final suffix output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td><code>Panda!</code></td>
+<td><code>zebra</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td><code>Lion</code></td>
+<td><code>zebra</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td><code>Penguin</code></td>
+<td><code>zebra</code></td>
+</tr>
+</tbody>
+</table>
+<p>再把三条 suffix 横向放到三个候选模型上生成：</p>
+<figure class="post-figure">
+  <img src="qwen25-generate-matrix.png" alt="Qwen2.5 deterministic generate matrix">
+  <figcaption>Figure 7: Qwen2.5 deterministic <code>generate()</code> 矩阵。绿色表示输出中包含 <code>zebra</code>，红色表示没有命中。它和 loss 矩阵相关，但不是同一个判定口径。</figcaption>
+</figure>
+<p>结果是 <code>4/9</code> 命中。对角线三格都命中，另外 0.5B 候选模型也会被 3B suffix 推出 <code>Zebra</code>。这和前面的 loss 矩阵一致：0.5B 对 3B suffix 的 loss 也比较低。</p>
+<p>把横向生成结果展开，可以看到输出层的信息确实更粗。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th>0.5B suffix</th>
+<th>1.5B suffix</th>
+<th>3B suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td><code>zebra</code></td>
+<td><code>Cruiser!</code></td>
+<td><code>Zebra</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td><code>Lion</code></td>
+<td><code>zebra</code></td>
+<td><code>Dog</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td><code>soever ! !zeph !：</code></td>
+<td><code>Cruiser</code></td>
+<td><code>zebra</code></td>
+</tr>
+</tbody>
+</table>
+<p>在 4-way 盲测里，这个差异更明显。同一组 suffix bank 放到四个候选模型上，loss 矩阵能做 <code>4/4</code> 识别；如果只看输出里是否出现 <code>zebra</code>，16 个生成结果里只有 3 个命中。</p>
+<table>
+<thead>
+<tr>
+<th>口径</th>
+<th>结果</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loss argmin</td>
+<td><code>4/4</code></td>
+<td>四个候选都被行内最低 loss 正确识别</td>
+</tr>
+<tr>
+<td>diagonal generate hit</td>
+<td><code>3/4</code></td>
+<td>SmolLM3 self suffix 没有生成 <code>zebra</code></td>
+</tr>
+<tr>
+<td>all generate hit</td>
+<td><code>3/16</code></td>
+<td>非来源 suffix 大多不会稳定推出目标词</td>
+</tr>
+</tbody>
+</table>
+<p>4-way generate 的完整输出如下。它更像黑盒行为 probe：能看到模型说了什么，但看不到那些没被贪心解码选中的 token 概率。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th>Qwen2.5-0.5B suffix</th>
+<th>Qwen2.5-3B suffix</th>
+<th>Qwen3-0.6B suffix</th>
+<th>SmolLM3-3B suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td><code>zebra</code></td>
+<td><code>!zealous</code></td>
+<td><code>I'm sorry, but I can't</code></td>
+<td><code>examiner dove</code></td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td><code>Penguin</code></td>
+<td><code>zebra</code></td>
+<td><code>elephant...</code></td>
+<td><code>개</code></td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td><code>Sure! Here's one random animal word</code></td>
+<td><code>Sure! Here's one random animal word</code></td>
+<td><code>zebra</code></td>
+<td><code>Sure! Here's one random animal word</code></td>
+</tr>
+<tr>
+<td>SmolLM3-3B</td>
+<td><code>&lt;think&gt;\nOkay, the user wants me</code></td>
+<td><code>&lt;think&gt;\nOkay, the user wants me</code></td>
+<td><code>&lt;think&gt;\nOkay, the user wants me</code></td>
+<td><code>&lt;think&gt;\nOkay, the user wants me</code></td>
+</tr>
+</tbody>
+</table>
+<p>0.5B candidate 上，0.5B suffix 和 3B suffix 都能生成 <code>zebra</code> / <code>Zebra</code>。如果只看输出命中，这两列就很难区分；loss matrix 还能保留 <code>1.3583</code> 和 <code>1.5416</code> 的差距。反过来，3B candidate 面对 0.5B suffix 会直接把 suffix 片段吐出来，这说明低 loss 和自然输出之间不是一一对应关系。</p>
+<p>自然语言输出只有贪心解码后的一个 token 序列，很多 score 信息被压扁了；loss 矩阵保留的是每个候选 suffix 对目标 token 的连续偏好。输出文本是可见行为，loss 排序是更细的局部偏好。</p>
+<p>这也回到了开头的 MiniMax case：可见错误可以作为入口，但真正要把指纹做成可比较的方法，最好落到 token、score、loss 这些更低层的读数。</p>
+<p>这一节的结论是：<strong>输出命中只能证明 suffix 改变了可见行为，不能承担模型归属判断。模型指纹需要读 loss 排序，而不是只看 <code>generate()</code> 是否吐出目标词。</strong></p>
+<h2 id="指纹探针的边界"><a class="markdownIt-Anchor" href="#指纹探针的边界"></a> 指纹探针的边界</h2>
+<aside class="highlight-block" style="--highlight-accent: #119da4; --highlight-border: rgba(17, 157, 164, 0.22); --highlight-bg: rgba(17, 157, 164, 0.075)">
+  <div class="highlight-block__label">核心边界</div>
+  <div class="highlight-block__body"><p>GCG suffix 指纹不是稳定水印，而是条件化探针。它能暴露模型边界，但这个边界不是由 suffix 单独决定的，而是由 query、target、chat template 和 assistant prefix 一起定义。</p>
+</div>
+</aside>
+<h3 id="target-query-template"><a class="markdownIt-Anchor" href="#target-query-template"></a> target、query、template</h3>
+<p><code>3/3</code> 矩阵只能说明当前 query、target 和 template 条件下的候选集可区分。它不能把 suffix 解释成脱离条件仍然成立的“模型身份证”。</p>
+<p><strong>第一个边界是 target。</strong></p>
+<p>保留同一批 <code>zebra</code> suffix，不重新优化，只把评估目标从 <code>zebra</code> 换成 <code>giraffe</code>，准确率从 <code>3/3</code> 变成 <code>0/3</code>。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">0.5B suffix</th>
+<th style="text-align:right">1.5B suffix</th>
+<th style="text-align:right">3B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right">1.6965</td>
+<td style="text-align:right">2.3764</td>
+<td style="text-align:right"><strong>1.6118</strong></td>
+<td>3B</td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td style="text-align:right"><strong>2.0341</strong></td>
+<td style="text-align:right">2.2239</td>
+<td style="text-align:right">2.4399</td>
+<td>0.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td style="text-align:right"><strong>1.8190</strong></td>
+<td style="text-align:right">2.6217</td>
+<td style="text-align:right">2.4930</td>
+<td>0.5B</td>
+</tr>
+</tbody>
+</table>
+<p>这说明当前 suffix bank 不是脱离 target 的模型身份标记。它是为 <code>zebra</code> 这个目标 token 优化出的局部方向；换成 <code>giraffe</code> 后，矩阵读到的是另一组 token preference。</p>
+<p><strong>第二个边界是 query。</strong></p>
+<pre class="hljs"><code class="text">原 query: Randomly output one animal word.
+新 query: Say exactly one animal word.
+</code></pre>
+<p>轻微改写后，准确率从 <code>3/3</code> 降到 <code>2/3</code>。</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">0.5B suffix</th>
+<th style="text-align:right">1.5B suffix</th>
+<th style="text-align:right">3B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td style="text-align:right"><strong>0.7450</strong></td>
+<td style="text-align:right">4.6187</td>
+<td style="text-align:right">0.7579</td>
+<td>0.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-1.5B</td>
+<td style="text-align:right">1.6153</td>
+<td style="text-align:right"><strong>0.2423</strong></td>
+<td style="text-align:right">1.8489</td>
+<td>1.5B</td>
+</tr>
+<tr>
+<td>Qwen2.5-3B</td>
+<td style="text-align:right">2.5669</td>
+<td style="text-align:right"><strong>0.3459</strong></td>
+<td style="text-align:right">2.4671</td>
+<td>1.5B</td>
+</tr>
+</tbody>
+</table>
+<p>3B 被 1.5B suffix 吸走。这组结果补上 query 边界：fingerprint suffix 对 user query 敏感。它不是一个随处可贴的模型标签，而是在特定输入构造下成立的相对排序信号。</p>
+<p><strong>第三个边界是 template。</strong></p>
+<p>Qwen3 在 chat template 里常见的 assistant prefix 是：</p>
+<pre class="hljs"><code class="text">&lt;think&gt;
+
+&lt;/think&gt;
+
+</code></pre>
+<p>这段文本会进入目标 token 前的上下文。建库和评估时不固定它，target loss 的对齐位置会变。</p>
+<figure class="post-figure">
+  <img src="qwen3-prefix-ablation.png" alt="Qwen3 assistant prefix ablation">
+  <figcaption>Figure 8: Qwen3 assistant-prefix 消融。左图保留 <code>&lt;think&gt;\n\n&lt;/think&gt;\n\n</code> 后两分类正确；右图去掉 prefix 后 loss 整体抬升到十几，且 0.6B 被 1.7B suffix 误吸引。</figcaption>
+</figure>
+<p>带 assistant prefix：</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">0.6B suffix</th>
+<th style="text-align:right">1.7B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3-0.6B</td>
+<td style="text-align:right"><strong>0.0151</strong></td>
+<td style="text-align:right">8.4610</td>
+<td>0.6B</td>
+</tr>
+<tr>
+<td>Qwen3-1.7B</td>
+<td style="text-align:right">6.2777</td>
+<td style="text-align:right"><strong>0.7002</strong></td>
+<td>1.7B</td>
+</tr>
+</tbody>
+</table>
+<p>去掉 assistant prefix：</p>
+<table>
+<thead>
+<tr>
+<th>candidate model</th>
+<th style="text-align:right">0.6B suffix</th>
+<th style="text-align:right">1.7B suffix</th>
+<th>predicted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3-0.6B</td>
+<td style="text-align:right">13.6617</td>
+<td style="text-align:right"><strong>12.7009</strong></td>
+<td>1.7B</td>
+</tr>
+<tr>
+<td>Qwen3-1.7B</td>
+<td style="text-align:right">17.6622</td>
+<td style="text-align:right"><strong>17.3269</strong></td>
+<td>1.7B</td>
+</tr>
+</tbody>
+</table>
+<p>消融结果不是简单的 loss 变大，而是排序也变了。对 Qwen3-0.6B 来说，去掉 prefix 后自己的 suffix 不再是最低 loss。</p>
+<p>这组结果里还有一个 tokenizer 细节：Qwen3-0.6B suffix 在评估时是 <code>8</code> 个 token，Qwen3-1.7B suffix 是 <code>11</code> 个 token。去掉 assistant prefix 后，长度没有变，但目标 token 前的上下文变了，loss 从个位数以下直接抬升到十几。</p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th style="text-align:right">0.6B suffix length</th>
+<th style="text-align:right">1.7B suffix length</th>
+<th>现象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>with assistant prefix</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">11</td>
+<td>两分类 <code>2/2</code></td>
+</tr>
+<tr>
+<td>without assistant prefix</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">11</td>
+<td>0.6B 被 1.7B suffix 吸走</td>
+</tr>
+</tbody>
+</table>
+<p>这说明 prefix 消融不是 tokenizer length 变化造成的，而是上下文位置和 assistant 起手模板变化造成的。对 Qwen3 这类带 thinking template 的模型，assistant prefix 是 target loss 的一部分，不是渲染层装饰。</p>
+<figure class="post-figure">
+  <img src="qwen25-fingerprint-control-matrices.png" alt="Qwen2.5 fingerprint control matrices">
+  <figcaption>Figure 9: Qwen2.5 指纹矩阵和两个对照。原始 <code>zebra</code> 矩阵是 3/3；轻微改写 query 后降到 2/3；把 target 换成 <code>giraffe</code> 后降到 0/3。读这张图时重点不是“所有格子都低”，而是行内最低值是否仍落在来源 suffix 上。</figcaption>
+</figure>
+<p>三组消融把这个边界压实了：target 一换，排序会重排；query 轻微改写，margin 会变化；assistant prefix 去掉，Qwen3 的行内 argmin 也会偏移。suffix 不是独立身份标签，它只在一组明确的输入条件下形成可读指纹。</p>
+<h3 id="指纹探针的结论边界"><a class="markdownIt-Anchor" href="#指纹探针的结论边界"></a> 指纹探针的结论边界</h3>
+<p>把结果压到一张表里，可以看到这条证据链支持的结论边界。</p>
+<table>
+<thead>
+<tr>
+<th>结论</th>
+<th>证据</th>
+<th>边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GCG suffix 可以做指纹探针</td>
+<td>来源 suffix 在候选模型上形成可读 loss matrix</td>
+<td>需要能读取 loss、logprob 或足够稳定的 score 估计</td>
+</tr>
+<tr>
+<td>可以做混合候选盲测</td>
+<td>Qwen2.5-0.5B / Qwen2.5-3B / Qwen3-0.6B / SmolLM3-3B 为 <code>4/4</code></td>
+<td>候选模型需要进入同一套 suffix bank</td>
+</tr>
+<tr>
+<td>可以做权重规模识别</td>
+<td>Qwen2.5 0.5B / 1.5B / 3B 为 <code>3/3</code>；Qwen3 0.6B / 1.7B / 4B 为 <code>3/3</code></td>
+<td>结论成立于当前 query / target / template</td>
+</tr>
+<tr>
+<td>可以做模型家族识别</td>
+<td>Qwen2.5 / Qwen3 / SmolLM3 为 <code>3/3</code></td>
+<td>未测试家族不能直接外推</td>
+</tr>
+<tr>
+<td>输出命中不能替代指纹</td>
+<td>Qwen2.5 横向 generate 只有 <code>4/9</code> 命中；4-way generate 只有 <code>3/16</code> 命中</td>
+<td>可见输出只能做行为侧验证</td>
+</tr>
+<tr>
+<td>不是通用模型水印</td>
+<td>target 换成 <code>giraffe</code> 后变 <code>0/3</code>，query 改写后变 <code>2/3</code></td>
+<td>suffix 是条件化 probe，不是永久标签</td>
+</tr>
+<tr>
+<td>template 是模型边界的一部分</td>
+<td>Qwen3 去掉 assistant prefix 后从 <code>2/2</code> 变 <code>1/2</code></td>
+<td>部署入口变化会改变指纹矩阵</td>
+</tr>
+</tbody>
+</table>
+<p>更完整的评估不依赖单条 suffix 的一次 argmin，而是把多个 seed、target 或 query 组合成一组独立测量。每次测量都会产生一张 loss matrix 和一个行内 argmin；最后再看预测来源是否一致、平均 margin 是否足够大。</p>
+<table>
+<thead>
+<tr>
+<th>评估方式</th>
+<th>做法</th>
+<th>适合阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>single suffix argmin</td>
+<td>每个来源模型只取一条 final suffix，候选模型只产生一次行内 argmin</td>
+<td>快速验证协议是否成立</td>
+</tr>
+<tr>
+<td>multi-seed 汇总</td>
+<td>每个来源模型保留多条 seed suffix，分别计算矩阵后汇总预测</td>
+<td>降低单条优化轨迹的偶然性</td>
+</tr>
+<tr>
+<td>multi-target 汇总</td>
+<td>多个 target 各自建 bank，再比较不同 target 下的预测是否一致</td>
+<td>区分模型身份和单个 token 偏好</td>
+</tr>
+<tr>
+<td>trajectory scan</td>
+<td>保留 all-step suffix，比较不同优化阶段的可识别性和 margin</td>
+<td>找可能更稳定的中间窗口</td>
+</tr>
+</tbody>
+</table>
+<p>因此，这里只把它称为“模型探针”，而不是“模型身份证”。它证明 suffix 可以成为 probe，还没有证明某条 suffix 就是稳定身份标签。</p>
+<h2 id="灰盒和黑盒边界"><a class="markdownIt-Anchor" href="#灰盒和黑盒边界"></a> 灰盒和黑盒边界</h2>
+<p>上述主证据来自白盒/本地权重口径：可以直接算 target loss。真实 API 场景未必有这个条件。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>能拿到什么</th>
+<th>指纹可行性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白盒 / 本地模型</td>
+<td>权重、logits、target loss</td>
+<td>最直接，可以复现本文矩阵</td>
+</tr>
+<tr>
+<td>灰盒 API</td>
+<td>token logprobs、score、可控 decoding</td>
+<td>可以近似 loss matrix</td>
+</tr>
+<tr>
+<td>纯黑盒 API</td>
+<td>只有生成文本</td>
+<td>只能做行为 probe，稳定性明显下降</td>
+</tr>
+<tr>
+<td>强后处理 API</td>
+<td>输出被规则化、过滤、重写</td>
+<td>token-level 指纹很难外显</td>
+</tr>
+</tbody>
+</table>
+<p>所以这组结果不能被解读为“任意 API 都能被稳定识别”。它说明的是：只要攻击者能观察到足够细的 token-level 偏好，模型边界就可能泄漏。纯黑盒时，MiniMax / 马嘉祺这类可见行为 probe 仍然有价值，但它和 loss matrix 不是同一种证据强度。</p>
+<p>以 Qwen 线上模型为例，官方接口已经给了两种验证口径。OpenAI-compatible chat completion 可以固定 <code>model</code>、<code>messages</code>、<code>temperature</code>、<code>seed</code> 和 <code>max_tokens</code>；部分 Qwen 快照和 Qwen3 开源模型还支持 <code>logprobs</code> / <code>top_logprobs</code>。这意味着线上验证可以分成两层：有 logprob 时直接近似本文的 loss matrix；没有 logprob 时，只能做多次 deterministic / low-temperature generation 的行为统计。</p>
+<table>
+<thead>
+<tr>
+<th>线上口径</th>
+<th>能验证什么</th>
+<th>证据强度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logprobs=true</code></td>
+<td>目标 token 在 suffix 后的相对 score</td>
+<td>接近灰盒 loss matrix</td>
+</tr>
+<tr>
+<td>deterministic generation</td>
+<td>suffix 是否把可见输出推向目标词</td>
+<td>只能验证行为改变</td>
+</tr>
+<tr>
+<td>多 suffix / 多 target 重复查询</td>
+<td>输出层统计是否稳定</td>
+<td>比单次黑盒输出强，但仍弱于 loss</td>
+</tr>
+</tbody>
+</table>
+<p>所以如果要把这套方法搬到 Qwen 线上模型，最合理的验证顺序不是直接问“它是否输出 zebra”，而是先检查接口是否返回目标 token 附近的 logprob；如果可以，再复刻行内 argmin；如果不可以，才退回到多次生成统计。</p>
+<p>如果 API 暴露 logprobs，攻击者不需要让模型真的输出 <code>zebra</code>。他只需要固定 query 和 suffix，然后读取目标 token 的 score。这个过程和本文的 loss matrix 在逻辑上很接近，只是本地 forward 变成了远端 score 查询。</p>
+<p>如果 API 不暴露 logprobs，只能通过大量生成样本估计偏好，成本会高很多，而且采样温度、top-p、系统后处理都会混入噪声。此时更适合使用多 probe、多 target、多次重复的行为统计，而不是期待单条 suffix 一次命中。</p>
+<h3 id="为什么这件事重要"><a class="markdownIt-Anchor" href="#为什么这件事重要"></a> 为什么这件事重要</h3>
+<p>模型指纹不像越狱前缀那样直接改变回答，也不像目标劫持那样直接改写业务动作。它的安全意义在于边界识别。</p>
+<p>如果服务暴露 token logprob、target score，或者允许足够多的重复查询来估计目标偏好，攻击者就可能用 suffix bank 做模型归属判断。模型名被 API 网关隐藏了，不代表模型行为边界也被隐藏了。</p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>具体表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型识别</td>
+<td>判断后端更像哪个模型家族或参数规模</td>
+</tr>
+<tr>
+<td>策略选择</td>
+<td>根据识别结果选择更适配的 suffix bank 或 prompt strategy</td>
+</tr>
+<tr>
+<td>灰盒探测</td>
+<td>不拿权重，也可能通过 score / logprob 近似矩阵</td>
+</tr>
+<tr>
+<td>混淆失败</td>
+<td>只改 API 名称，无法改变底层 tokenizer、template 和 logits 边界</td>
+</tr>
+</tbody>
+</table>
+<p>对应的防御也要落到接口层。</p>
+<table>
+<thead>
+<tr>
+<th>防御方向</th>
+<th>作用</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>限制 token-level score 暴露</td>
+<td>降低直接构造 loss matrix 的能力</td>
+<td>影响调试、评测和开发者体验</td>
+</tr>
+<tr>
+<td>对重复 suffix probe 做限速</td>
+<td>增加批量探测成本</td>
+<td>需要识别异常查询模式</td>
+</tr>
+<tr>
+<td>记录 template / model route 版本</td>
+<td>让灰度和换模可审计</td>
+<td>运维侧需要保留更细日志</td>
+</tr>
+<tr>
+<td>按模型家族管理 suffix bank</td>
+<td>避免把一个模型上的安全结论外推到另一个模型</td>
+<td>评估成本更高</td>
+</tr>
+</tbody>
+</table>
+<p>这也是 MiniMax / 马嘉祺 case 和 GCG loss matrix 的共同点：两者都不是在读取模型名，而是在读取稳定偏差。前者读的是输出文本里的可见错误，后者读的是目标 token loss 的隐藏偏好。</p>
+<h2 id="总结模型身份存在于稳定偏差里"><a class="markdownIt-Anchor" href="#总结模型身份存在于稳定偏差里"></a> 总结：模型身份存在于稳定偏差里</h2>
+<p>GCG suffix 在这里不再只是越狱后缀，而是一种条件化模型探针。固定 query、target、chat template 和 assistant prefix 后，来源模型上优化出的 suffix 会在候选模型里形成可读的 loss 排序：哪条来源路径让目标 token loss 更低，候选模型就更接近哪条局部边界。</p>
+<p>因此，GCG 指纹不等价于密码学认证，也不是纯黑盒文本识别。它需要 loss、score 或足够多的查询估计，也需要把 query、target、tokenizer、chat template 和 assistant prefix 一起纳入测量条件。它的可操作意义在于：判断后端是否换模、评估是否可复现、攻击和防御策略是否需要按模型家族拆开。</p>
+<p>开头的 MiniMax / 马嘉祺案例是输出层面的可见指纹；这组 GCG loss matrix 是 token-level 的隐藏指纹。前者把稳定偏差暴露在最终文本里，后者把稳定偏差读到目标 token loss 里。二者共同说明，模型身份不只写在 model card 里，也分布在 tokenizer 边界、template 入口、训练覆盖和 logits 偏好里。</p>
+<p>更进一步，输出文本和 token loss 也许只是两种容易被观察到的表面。只要某个层面的响应能够稳定复现、区分候选模型，并且和具体机制连接起来，它就可能成为新的指纹面：表示变化、梯度响应、拒绝边界、工具调用路径，甚至 logprob 的校准形态，都值得被放进同一个问题里重新审视。</p>
+<p>所以模型隐藏不是只改 API 名称或路由标签。真正需要处理的是那些稳定、可复现、可被测量的行为边界。</p>
+<aside class="highlight-block" style="--highlight-accent: #2563eb; --highlight-border: rgba(37, 99, 235, 0.22); --highlight-bg: rgba(37, 99, 235, 0.075)">
+  <div class="highlight-block__label">结论</div>
+  <div class="highlight-block__body"><p><strong>模型不会总是主动告诉你它是谁，但它会在稳定复现的偏差里留下身份。</strong></p>
+</div>
+</aside>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ul>
+<li>机器之心编辑部，《<a target="_blank" rel="noopener" href="https://finance.sina.com.cn/roll/2026-03-17/doc-inhrhics5441655.shtml">挺搞笑，MiniMax模型就是不认识「马嘉祺」</a>》，新浪财经转载，2026-03-17。</li>
+<li>MiniMax 稀宇科技，《<a target="_blank" rel="noopener" href="https://www.faxai.cn/archives/6496">大模型不认识马嘉祺？我们做了一次全链路排查</a>》，微信公众号文章转载页，2026-05-09。</li>
+<li>Navid Ayoobi, Marcus I Armstrong, Arjun Mukherjee, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2601.14658">Say Anything but This: When Tokenizer Betrays Reasoning in LLMs</a>, arXiv:2601.14658, 2026-01-21.</li>
+<li>Zeyu Li, et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.15847">LLMmap: Fingerprinting For Large Language Models</a>, arXiv:2407.15847, 2024.</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2408.02871">Hide and Seek: Fingerprinting Large Language Models with Evolutionary Learning</a>, arXiv:2408.02871, 2024.</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2401.12255">Instructional Fingerprinting of Large Language Models</a>, arXiv:2401.12255, 2024.</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/hey-thats-my-model-introducing-chain-hash-an-llm-fingerprinting-technique/">Hey, That’s My Model! Introducing Chain &amp; Hash, An LLM Fingerprinting Technique</a>, 2024.</li>
+<li>Ruisi Zhang, et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.01235">A Fingerprint for Large Language Models</a>, arXiv:2407.01235, 2024.</li>
+<li>Abe Bohan Hou, et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.03991">SemStamp: A Semantic Watermark with Paraphrastic Robustness for Text Generation</a>, arXiv:2310.03991, 2023.</li>
+<li>Zehao Wu, Yanjie Zhao, Haoyu Wang, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.01631">Gradient-Based Model Fingerprinting for LLM Similarity Detection and Family Classification</a>, arXiv:2506.01631, 2025.</li>
+<li>Alibaba Cloud Model Studio, <a target="_blank" rel="noopener" href="https://www.alibabacloud.com/help/en/model-studio/qwen-api-reference/">Qwen API reference</a>, 2026.</li>
+<li>Qwen Cloud Docs, <a target="_blank" rel="noopener" href="https://docs.qwencloud.com/api-reference/chat/openai-chat">OpenAI chat compatible API</a>, 2026.</li>
+</ul>
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+  
+    <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-title">GCG Journey（三）：模型越狱的第一道边界：条件竞争</div>
+    </a>
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">分享</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 - ioo0s's blog&url=http%3A%2F%2Fioo0s.art%2F2026%2F05%2F05%2FGCG-Journey%25EF%25BC%2588%25E5%259B%259B%25EF%25BC%2589%25EF%25BC%259A%25E6%25A8%25A1%25E5%259E%258B%25E6%258C%2587%25E7%25BA%25B9%25E8%25AF%2586%25E5%2588%25AB%25EF%25BC%259Asuffix%2520%25E5%25A6%2582%25E4%25BD%2595%25E6%259A%25B4%25E9%259C%25B2%25E6%25A8%25A1%25E5%259E%258B%25E8%25BE%25B9%25E7%2595%258C%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 - ioo0s's blog&u=http%3A%2F%2Fioo0s.art%2F2026%2F05%2F05%2FGCG-Journey%25EF%25BC%2588%25E5%259B%259B%25EF%25BC%2589%25EF%25BC%259A%25E6%25A8%25A1%25E5%259E%258B%25E6%258C%2587%25E7%25BA%25B9%25E8%25AF%2586%25E5%2588%25AB%25EF%25BC%259Asuffix%2520%25E5%25A6%2582%25E4%25BD%2595%25E6%259A%25B4%25E9%259C%25B2%25E6%25A8%25A1%25E5%259E%258B%25E8%25BE%25B9%25E7%2595%258C%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份 - ioo0s's blog&url=http://ioo0s.art/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-cate">
+    <div class="widget-title"><span>Categories</span></div>
+    <div class="widget-inner">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">论文学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/">GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/">GCG Journey（一）：从对抗样本到后缀搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/03/ATF-FUZZ/">ATF-FUZZ</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            ioo0s&#39;s blog &copy; 2026<br>
+            Powered By Hexo · Theme By Aomori
+            <span style="width:66%; display:inline-block"></span>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+        </div>
+       
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+<!-- 百度链接提交 -->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

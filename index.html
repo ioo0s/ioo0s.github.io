@@ -220,6 +220,121 @@
   
     
       <article
+id="post-GCG-Journey（四）：模型指纹识别：suffix 如何暴露模型边界"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/">GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <blockquote>
+<p>模型身份不只写在 model card 里，也会写在 tokenizer 的边界、chat template 的入口、logits 的局部偏好，以及那些稳定复现的错误里。</p>
+</blockquote>
+<p>一个模型可能不会告诉你它是谁，但它会用错误暴露自己。</p>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2026-05-05T12:18:32.000Z" itemprop="datePublished">2026-05-05</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
+id="post-GCG-Journey（三）：从后缀搜索到安全边界探测"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <blockquote>
+<p>从 <code>Sure, here's</code> 开始，GCG 越狱首先攻击的不是完整回答，而是 assistant 起手阶段的拒绝边界。</p>
+</blockquote>
+<p>GCG 越狱最容易被误读成一个结果：模型有没有输出完整有害内容。这个口径太粗。GCG 原论文里常见的 <code>Sure, here is ...</code>，本质上先攻击的是更靠前的一道边界：模型能不能离开拒绝模板，进入 affirmative response 前缀。</p>
+<p>这个判断不是凭空来的。GCG 原论文把 suffix 的优化目标写得很明确：提高模型生成 affirmative response 的概率，而不是 refusal。后来 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2603.08234">continuation-triggered jailbreak</a> 的机制分析也把这类现象解释成 continuation drive 和 safety refusal 之间的竞争。换句话说，越狱最先发生变化的位置，往往不是完整内容，而是 assistant 起手阶段的条件竞争。</p>
+<p>所以本文关心三件事：英文经典 case 里拒绝轨迹如何被推开；中文 target prefix 下 loss 和 generate 为什么会错位；同一批中文 suffix 换模型后，前缀控制是否还能保留。</p>
+<p>这也是本文最重要的评估口径：<strong>loss 只能说明目标前缀概率被推近，generate 才说明模型真的跨过了输出门槛。</strong> 如果换模型后只看到 loss 变化或相邻服从模板，那只能算弱迁移信号，不能直接写成稳定越狱迁移。</p>
+<figure class="post-figure">
+  <img src="/2026/05/05/GCG-Journey（三）：从后缀搜索到安全边界探测/jailbreak-prefix-entrypoint-map.png" alt="GCG jailbreak prefix entrypoint map">
+  <figcaption>Figure 1: 本篇的核心口径。suffix 不是直接决定完整回答，而是先影响 assistant 起手阶段的 token 级条件竞争；loss、generate 和 transfer 分别从不同侧面读这个入口变化。</figcaption>
+</figure>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2026-05-05T12:08:32.000Z" itemprop="datePublished">2026-05-05</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
 id="post-GCG-Journey（二）：从方法谱系到实战消融"
 class="article article-type-post"
 >
@@ -683,115 +798,10 @@ class="article article-type-post"
 
     
   
-    
-      <article
-id="post-GNS3-mipsel-环境搭建"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2023/03/06/GNS3-mipsel-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">GNS3-mipsel-环境搭建</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <h2 id="配置过程"><a class="markdownIt-Anchor" href="#配置过程"></a> 配置过程</h2>
-<h3 id="gns3-vm-配置"><a class="markdownIt-Anchor" href="#gns3-vm-配置"></a> GNS3-vm 配置</h3>
-<p>gns3-vm 服务默认只支持 x86-x64 系列模拟，并不支持其他架构如：arm、mips 等等。</p>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2023-03-06T00:54:24.000Z" itemprop="datePublished">2023-03-06</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
-    
-      <article
-id="post-juniper-1day-任意目录读"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2023/02/24/juniper-1day-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E8%AF%BB/">juniper-1day-任意目录读</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <h2 id="测试版本"><a class="markdownIt-Anchor" href="#测试版本"></a> 测试版本</h2>
-<p>junos-vsrx3-x86-64-20.3R1.8.ide.ova</p>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2023-02-24T12:25:01.000Z" itemprop="datePublished">2023-02-24</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next</a>
     </nav>
   
 </div>
@@ -835,6 +845,14 @@ class="article article-type-post"
       <ul>
         
           <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB%EF%BC%9Asuffix%20%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2%E6%A8%A1%E5%9E%8B%E8%BE%B9%E7%95%8C/">GCG Journey（四）：模型指纹识别：让 suffix 读出模型身份</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
+          </li>
+        
+          <li>
             <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
           </li>
         
@@ -844,14 +862,6 @@ class="article article-type-post"
         
           <li>
             <a href="/2024/05/03/ATF-FUZZ/">ATF-FUZZ</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/10/Reinforcement-Learning-Note/">Reinforcement Learning Note</a>
-          </li>
-        
-          <li>
-            <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/">乔姆斯基生成语法分析笔记</a>
           </li>
         
       </ul>
