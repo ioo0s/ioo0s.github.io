@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="788" viewBox="0 0 1120 788">
+<rect width="100%" height="100%" fill="#fbfaf7"/>
+<text x="36" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#1d2433">Parser-Aligned Multi-Context GCG 稳定性</text>
+<text x="36" y="72" font-family="Inter, Arial, sans-serif" font-size="15" fill="#4b5565">同一组 6 个上下文下，比较首 token margin 多 seed 与行为验收重排。</text>
+<text x="36" y="100" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#2f6f73">首 token 完整命中：3/10 · 控制位命中：33/60</text>
+<text x="368" y="132" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#46505f">文本重算最大 objective</text>
+<text x="758" y="132" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#46505f">行为命中</text>
+<text x="914" y="132" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#46505f">判断</text>
+<rect x="28" y="132" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="153" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed8</text>
+<rect x="368" y="140" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="140" width="7" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="154" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.0836</text>
+<rect x="758" y="134" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="154" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">5/6</text>
+<text x="914" y="154" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="190" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="211" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed9</text>
+<rect x="368" y="198" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="198" width="181" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="212" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">1.9910</text>
+<rect x="758" y="192" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="212" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">2/6</text>
+<text x="914" y="212" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="248" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="269" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed10</text>
+<rect x="368" y="256" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="256" width="147" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="270" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">1.6219</text>
+<rect x="758" y="250" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="270" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">1/6</text>
+<text x="914" y="270" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="306" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="327" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">行为验收 seed11</text>
+<rect x="368" y="314" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="314" width="300" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="328" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">3.2995</text>
+<rect x="758" y="308" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="328" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">1/6</text>
+<text x="914" y="328" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="364" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="385" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed12</text>
+<rect x="368" y="372" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="372" width="88" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="386" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.9768</text>
+<rect x="758" y="366" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="386" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">1/6</text>
+<text x="914" y="386" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="422" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="443" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed13</text>
+<rect x="368" y="430" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="430" width="77" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="444" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.8479</text>
+<rect x="758" y="424" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="444" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">2/6</text>
+<text x="914" y="444" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="480" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="501" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed14</text>
+<rect x="368" y="488" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="488" width="124" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="502" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">1.3644</text>
+<rect x="758" y="482" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="502" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">1/6</text>
+<text x="914" y="502" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="538" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="559" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">首 token seed15</text>
+<rect x="368" y="546" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="546" width="147" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="560" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">1.6230</text>
+<rect x="758" y="540" width="96" height="30" rx="15" fill="#b65f2a" opacity="0.14"/>
+<text x="790" y="560" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65f2a">3/6</text>
+<text x="914" y="560" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">未稳定</text>
+<rect x="28" y="596" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="617" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">深搜 seed8</text>
+<rect x="368" y="604" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="604" width="22" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="618" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.2509</text>
+<rect x="758" y="598" width="96" height="30" rx="15" fill="#2f6f73" opacity="0.14"/>
+<text x="790" y="618" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#2f6f73">6/6</text>
+<text x="914" y="618" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">命中</text>
+<rect x="28" y="654" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="675" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">深搜 seed16</text>
+<rect x="368" y="662" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="662" width="0" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="676" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.0037</text>
+<rect x="758" y="656" width="96" height="30" rx="15" fill="#2f6f73" opacity="0.14"/>
+<text x="790" y="676" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#2f6f73">6/6</text>
+<text x="914" y="676" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">命中</text>
+<rect x="28" y="712" width="1064" height="46" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+<text x="48" y="733" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f2937">深搜 seed17</text>
+<rect x="368" y="720" width="300" height="16" rx="4" fill="#eee9df"/>
+<rect x="368" y="720" width="1" height="16" rx="4" fill="#6f8f72"/>
+<text x="690" y="734" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">0.0153</text>
+<rect x="758" y="714" width="96" height="30" rx="15" fill="#2f6f73" opacity="0.14"/>
+<text x="790" y="734" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#2f6f73">6/6</text>
+<text x="914" y="734" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">命中</text>
+</svg>

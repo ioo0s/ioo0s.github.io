@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760">
+  <style>
+    .title { font: 700 30px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172033; }
+    .subtitle { font: 400 16px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #5b6475; }
+    .label { font: 700 17px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #1f2937; }
+    .hit { font: 800 20px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #111827; }
+    .meta { font: 400 14px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #64748b; }
+    .footer { font: 500 16px Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #334155; }
+  </style>
+  <rect width="1280" height="760" fill="#f8fafc" />
+  <text x="64" y="62" class="title">多目标 GCG 的影响范围如何被逐步扩大</text>
+  <text x="64" y="94" class="subtitle">同一 suffix 在 source / target 两个模型、triage / review 两个业务控制面、六种上下文表达上的 combined 命中</text>
+  <line x1="330" y1="124" x2="1050" y2="124" stroke="#cbd5e1" />
+  <text x="330" y="118" class="meta">0</text>
+  <text x="678" y="118" class="meta">6</text>
+  <text x="1028" y="118" class="meta">12</text>
+  
+  <text x="80" y="172" class="label">source suffix 直迁移</text>
+  <rect x="330" y="150" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="150" width="540.0" height="28" rx="8" fill="#64748b" />
+  <text x="1072" y="172" class="hit">9/12</text>
+  <text x="330" y="204" class="meta">source 6/6 / target 3/6 · target triage 卡住</text>
+
+  <text x="80" y="244" class="label">target 分阶段修复</text>
+  <rect x="330" y="222" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="222" width="420.0" height="28" rx="8" fill="#f97316" />
+  <text x="1072" y="244" class="hit">7/12</text>
+  <text x="330" y="276" class="meta">source 1/6 / target 6/6 · target 可修好，但 source 掉落</text>
+
+  <text x="80" y="316" class="label">model-group repair</text>
+  <rect x="330" y="294" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="294" width="540.0" height="28" rx="8" fill="#f59e0b" />
+  <text x="1072" y="316" class="hit">9/12</text>
+  <text x="330" y="348" class="meta">source 4/6 / target 5/6 · 恢复 source，但仍互相牺牲</text>
+
+  <text x="80" y="388" class="label">multi-frontier repair</text>
+  <rect x="330" y="366" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="366" width="600.0" height="28" rx="8" fill="#2563eb" />
+  <text x="1072" y="388" class="hit">10/12</text>
+  <text x="330" y="420" class="meta">source 5/6 / target 5/6 · 保留互补状态，突破平台</text>
+
+  <text x="80" y="460" class="label">protected repair</text>
+  <rect x="330" y="438" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="438" width="600.0" height="28" rx="8" fill="#7c3aed" />
+  <text x="1072" y="460" class="hit">10/12</text>
+  <text x="330" y="492" class="meta">source 5/6 / target 5/6 · 暴露最后阶段冲突</text>
+
+  <text x="80" y="532" class="label">frontier recombination</text>
+  <rect x="330" y="510" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="510" width="660.0" height="28" rx="8" fill="#0d9488" />
+  <text x="1072" y="532" class="hit">11/12</text>
+  <text x="330" y="564" class="meta">source 6/6 / target 5/6 · 组合父代 token，推进到 11/12</text>
+
+  <text x="80" y="604" class="label">final protected repair</text>
+  <rect x="330" y="582" width="720" height="28" rx="8" fill="#e5e7eb" />
+  <rect x="330" y="582" width="720.0" height="28" rx="8" fill="#16a34a" />
+  <text x="1072" y="604" class="hit">12/12</text>
+  <text x="330" y="636" class="meta">source 6/6 / target 6/6 · 保护 11 个状态，完成 12/12</text>
+
+  <rect x="64" y="682" width="1152" height="46" rx="10" fill="#ffffff" stroke="#d8dee8" />
+  <text x="88" y="711" class="footer">结论：有效路径不是单次 joint loss，而是 risk-interface frontier → token recombination → protected repair。</text>
+</svg>

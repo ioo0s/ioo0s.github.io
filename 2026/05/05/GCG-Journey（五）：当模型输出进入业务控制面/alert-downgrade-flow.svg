@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+  <title id="title">高危告警降级链路对照</title>
+  <desc id="desc">对比原始日志和 comment 字段被 suffix 污染后的两条告警处理路径。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#334155"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfbf8; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 16; }
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 2.1; rx: 14; }
+      .blue { fill: #eff6ff; stroke: #2563eb; }
+      .orange { fill: #fff7ed; stroke: #ea580c; }
+      .red { fill: #fef2f2; stroke: #dc2626; }
+      .green { fill: #f0fdf4; stroke: #16a34a; }
+      .gray { fill: #f8fafc; stroke: #64748b; }
+      .arrow { stroke: #334155; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .title { font: 700 28px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #0f172a; }
+      .label { font: 700 19px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #0f172a; }
+      .text { font: 16px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #334155; }
+      .small { font: 14px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #475569; }
+      .mono { font: 15px "DejaVu Sans Mono", Consolas, monospace; fill: #334155; }
+      .badge { font: 700 20px "DejaVu Sans Mono", Consolas, monospace; }
+      .high { fill: #dc2626; }
+      .low { fill: #16a34a; }
+      .row-title { font: 700 18px "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #1e293b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1180" height="520"/>
+  <text class="title" x="44" y="48">同一条高危日志，两条处置路径</text>
+  <text class="text" x="44" y="78">高危信号没有变化；变化只发生在日志的 comment 字段，以及模型输出后的业务动作。</text>
+
+  <rect class="panel" x="42" y="108" width="1096" height="154"/>
+  <text class="row-title" x="66" y="140">原始路径：日志没有 suffix</text>
+
+  <rect class="box blue" x="66" y="160" width="230" height="72"/>
+  <text class="label" x="86" y="190">高危登录日志</text>
+  <text class="small" x="86" y="216">cloud_admin / US -> RU / 无 MFA</text>
+
+  <rect class="box gray" x="354" y="160" width="210" height="72"/>
+  <text class="label" x="374" y="190">告警分级 Agent</text>
+  <text class="small" x="374" y="216">读取同一条日志记录</text>
+
+  <rect class="box green" x="622" y="160" width="180" height="72"/>
+  <text class="label" x="642" y="190">模型输出</text>
+  <text class="badge high" x="642" y="219">HIGH</text>
+
+  <rect class="box green" x="860" y="160" width="230" height="72"/>
+  <text class="label" x="880" y="190">处置剧本</text>
+  <text class="small" x="880" y="216">escalate_incident</text>
+
+  <path class="arrow" d="M296 196 C316 196, 334 196, 354 196"/>
+  <path class="arrow" d="M564 196 C584 196, 602 196, 622 196"/>
+  <path class="arrow" d="M802 196 C822 196, 840 196, 860 196"/>
+
+  <rect class="panel" x="42" y="302" width="1096" height="174"/>
+  <text class="row-title" x="66" y="334">污染路径：只有 comment 字段被追加 suffix</text>
+
+  <rect class="box blue" x="66" y="356" width="230" height="82"/>
+  <text class="label" x="86" y="386">同一条高危日志</text>
+  <text class="small" x="86" y="412">高危信号保持不变</text>
+  <text class="mono" x="86" y="432">comment="...suffix"</text>
+
+  <rect class="box orange" x="354" y="356" width="210" height="82"/>
+  <text class="label" x="374" y="386">日志字段污染</text>
+  <text class="small" x="374" y="412">suffix 进入上下文</text>
+  <text class="small" x="374" y="432">没有改系统提示词</text>
+
+  <rect class="box red" x="622" y="356" width="180" height="82"/>
+  <text class="label" x="642" y="386">模型输出</text>
+  <text class="badge low" x="642" y="416">LOW</text>
+  <text class="small" x="642" y="436">高危告警被降级</text>
+
+  <rect class="box red" x="860" y="356" width="230" height="82"/>
+  <text class="label" x="880" y="386">处置剧本</text>
+  <text class="small" x="880" y="412">close_alert</text>
+  <text class="small" x="880" y="432">告警自动关闭</text>
+
+  <path class="arrow" d="M296 397 C316 397, 334 397, 354 397"/>
+  <path class="arrow" d="M564 397 C584 397, 602 397, 622 397"/>
+  <path class="arrow" d="M802 397 C822 397, 840 397, 860 397"/>
+</svg>

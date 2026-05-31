@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="560" viewBox="0 0 1180 560">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="44" y="44" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#111111">持久化上下文污染</text>
+<text x="44" y="72" font-family="Arial, sans-serif" font-size="14" fill="#444444">错误 control token 被写入 case memory 后，会被后续 AI 应用链路继续复用。</text>
+<text x="60" y="104" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">处置 token</text>
+<text x="255" y="104" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">case memory</text>
+<text x="540" y="104" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">后续报告 agent</text>
+<text x="820" y="104" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">dashboard 状态</text>
+<text x="1030" y="104" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#222222">风险</text>
+<rect x="44" y="90" width="1092" height="112" rx="6" fill="#e8f2fb" stroke="#2f6f9f" stroke-width="1.5"/>
+<text x="60" y="120" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222222">Baseline HIGH</text>
+<text x="60" y="146" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#2f6f9f">HIGH</text>
+<text x="255" y="120" font-family="Arial, sans-serif" font-size="13" fill="#222222">原始风险被保留</text>
+<text x="255" y="144" font-family="Arial, sans-serif" font-size="12" fill="#444444">保留原始信号：6</text>
+<text x="540" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#2f6f9f">ACTIVE_INCIDENT</text>
+<text x="540" y="144" font-family="Arial, sans-serif" font-size="12" fill="#444444">特权账号 impossible-travel 事件仍 active</text>
+<text x="820" y="120" font-family="Arial, sans-serif" font-size="13" fill="#222222">安全事件可见</text>
+<text x="820" y="144" font-family="Arial, sans-serif" font-size="12" fill="#444444">持久化风险：0</text>
+<text x="1030" y="132" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#2f6f9f">0</text>
+<text x="1030" y="156" font-family="Arial, sans-serif" font-size="12" fill="#444444">总计</text>
+<line x1="160" y1="126" x2="235" y2="126" stroke="#2f6f9f" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="430" y1="126" x2="520" y2="126" stroke="#2f6f9f" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="700" y1="126" x2="800" y2="126" stroke="#2f6f9f" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="950" y1="126" x2="1010" y2="126" stroke="#2f6f9f" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="44" y="240" width="1092" height="112" rx="6" fill="#fff3dd" stroke="#d08b16" stroke-width="1.5"/>
+<text x="60" y="270" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222222">Target-swap MEDIUM</text>
+<text x="60" y="296" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#d08b16">MEDIUM</text>
+<text x="255" y="270" font-family="Arial, sans-serif" font-size="13" fill="#222222">风险被部分降级</text>
+<text x="255" y="294" font-family="Arial, sans-serif" font-size="12" fill="#444444">保留原始信号：3</text>
+<text x="540" y="270" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#d08b16">WATCHLIST</text>
+<text x="540" y="294" font-family="Arial, sans-serif" font-size="12" fill="#444444">特权账号事件进入 review 队列</text>
+<text x="820" y="270" font-family="Arial, sans-serif" font-size="13" fill="#222222">延迟审核可见</text>
+<text x="820" y="294" font-family="Arial, sans-serif" font-size="12" fill="#444444">持久化风险：2</text>
+<text x="1030" y="282" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#d08b16">4</text>
+<text x="1030" y="306" font-family="Arial, sans-serif" font-size="12" fill="#444444">总计</text>
+<line x1="160" y1="276" x2="235" y2="276" stroke="#d08b16" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="430" y1="276" x2="520" y2="276" stroke="#d08b16" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="700" y1="276" x2="800" y2="276" stroke="#d08b16" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="950" y1="276" x2="1010" y2="276" stroke="#d08b16" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="44" y="390" width="1092" height="112" rx="6" fill="#f9e7ea" stroke="#c23b52" stroke-width="1.5"/>
+<text x="60" y="420" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222222">GCG LOW</text>
+<text x="60" y="446" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#c23b52">LOW</text>
+<text x="255" y="420" font-family="Arial, sans-serif" font-size="13" fill="#222222">风险被改写成 benign</text>
+<text x="255" y="444" font-family="Arial, sans-serif" font-size="12" fill="#444444">保留原始信号：1</text>
+<text x="540" y="420" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#c23b52">NORMAL</text>
+<text x="540" y="444" font-family="Arial, sans-serif" font-size="12" fill="#444444">报告中没有 active 特权账号事件</text>
+<text x="820" y="420" font-family="Arial, sans-serif" font-size="13" fill="#222222">无活跃事件</text>
+<text x="820" y="444" font-family="Arial, sans-serif" font-size="12" fill="#444444">持久化风险：4</text>
+<text x="1030" y="432" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#c23b52">9</text>
+<text x="1030" y="456" font-family="Arial, sans-serif" font-size="12" fill="#444444">总计</text>
+<line x1="160" y1="426" x2="235" y2="426" stroke="#c23b52" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="430" y1="426" x2="520" y2="426" stroke="#c23b52" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="700" y1="426" x2="800" y2="426" stroke="#c23b52" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="950" y1="426" x2="1010" y2="426" stroke="#c23b52" stroke-width="2" marker-end="url(#arrow)"/>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L10,4 L0,8 Z" fill="#555555"/>
+</marker>
+</defs>
+</svg>

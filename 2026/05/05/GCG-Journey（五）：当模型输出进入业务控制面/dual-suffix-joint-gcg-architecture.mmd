@@ -1,0 +1,29 @@
+flowchart LR
+  S["共享后缀 S / adv_ids"]
+  PA["上下文 A：告警分级\nslot: comment"]
+  PB["上下文 B：复核 Agent 路由\nslot: review_agent_note"]
+  TA["目标 token: MEDIUM\nHIGH -> MEDIUM"]
+  TB["目标 token: LS\nNOOP -> LS"]
+  LA["L_A = CE(fθ(P_A(S)), MEDIUM)"]
+  LB["L_B = CE(fθ(P_B(S)), LS)"]
+  L["联合 loss\nL(S) = L_A + L_B"]
+  G["对共享后缀 embedding 求梯度"]
+  K["TopK 候选 token"]
+  F["重编码稳定过滤"]
+  U["更新共享后缀 S"]
+  V["行为验收\ngenerate(A)=MEDIUM\ngenerate(B)=LS"]
+
+  S --> PA
+  S --> PB
+  PA --> TA
+  PB --> TB
+  TA --> LA
+  TB --> LB
+  LA --> L
+  LB --> L
+  L --> G
+  G --> K
+  K --> F
+  F --> U
+  U --> S
+  F --> V

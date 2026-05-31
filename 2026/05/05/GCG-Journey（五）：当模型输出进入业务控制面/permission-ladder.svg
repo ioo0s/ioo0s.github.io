@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="440" viewBox="0 0 1040 440">
+  <rect width="1040" height="440" fill="#ffffff"/>
+  <text x="48" y="44" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111111">工具路由权限梯度</text>
+  <text x="48" y="72" font-family="Arial, sans-serif" font-size="14" fill="#444444">同一个只读任务、同一个工具枚举、不同优化目标。baseline 和 step0 都保持 READ。</text>
+
+  <g font-family="Arial, sans-serif">
+    <line x1="130" y1="182" x2="900" y2="182" stroke="#c7c7c7" stroke-width="4"/>
+    <circle cx="150" cy="182" r="34" fill="#e8f2fb" stroke="#2f6f9f" stroke-width="2"/>
+    <text x="150" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4f73">READ</text>
+    <text x="150" y="236" text-anchor="middle" font-size="13" fill="#333333">基线</text>
+
+    <circle cx="390" cy="182" r="34" fill="#fff3dd" stroke="#d08b16" stroke-width="2"/>
+    <text x="390" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a0d">WRITE</text>
+    <text x="390" y="236" text-anchor="middle" font-size="13" fill="#333333">step 4 命中</text>
+    <text x="390" y="258" text-anchor="middle" font-size="12" fill="#555555">0.7157 -> 0.0420</text>
+
+    <circle cx="640" cy="182" r="34" fill="#f9e7ea" stroke="#c23b52" stroke-width="2"/>
+    <text x="640" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#8f2738">SEND</text>
+    <text x="640" y="236" text-anchor="middle" font-size="13" fill="#333333">未命中 SEND</text>
+    <text x="640" y="258" text-anchor="middle" font-size="12" fill="#555555">最终偏到 WRITE</text>
+
+    <circle cx="890" cy="182" r="34" fill="#ece8f8" stroke="#7a4bc2" stroke-width="2"/>
+    <text x="890" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#58368f">RUN</text>
+    <text x="890" y="236" text-anchor="middle" font-size="13" fill="#333333">loss-only</text>
+    <text x="890" y="258" text-anchor="middle" font-size="12" fill="#555555">最终仍是 READ</text>
+
+    <path d="M188 182 C250 132, 310 132, 352 182" fill="none" stroke="#d08b16" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M426 182 C490 112, 570 112, 606 182" fill="none" stroke="#c23b52" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <path d="M676 182 C740 102, 820 102, 856 182" fill="none" stroke="#7a4bc2" stroke-width="2.5" stroke-dasharray="6 5"/>
+  </g>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#d08b16"/>
+    </marker>
+  </defs>
+
+  <rect x="48" y="316" width="944" height="72" fill="#f7f9fb" stroke="#dddddd"/>
+  <text x="68" y="346" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222222">读法</text>
+  <text x="68" y="370" font-family="Arial, sans-serif" font-size="13" fill="#333333">WRITE 可达并会修改工作区；SEND/RUN 权限更高，但这组干净实验里没有成为确定性工具选择。</text>
+</svg>

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="720" viewBox="0 0 1180 720">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="58" y="44" font-family="Arial, 'Noto Sans CJK SC', sans-serif" font-size="28" font-weight="850" fill="#111827">AI 应用风险界面：从外部文本到业务状态</text>
+  <text x="58" y="75" font-family="Arial, 'Noto Sans CJK SC', sans-serif" font-size="15" fill="#475569">风险不是某个字段本身，而是外部文本被读取、生成 token、解析执行、写回状态的整条数据流转链路。</text>
+  
+    <g>
+      <rect x="58" y="112" width="202" height="154" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <rect x="58" y="112" width="202" height="38" rx="9" fill="#2563eb"/>
+      <text x="76" y="138" font-size="17" font-weight="850" fill="#ffffff">暴露面</text>
+      <text x="76" y="176" font-size="13" font-weight="700" fill="#2563eb">第 1 环</text>
+      <text x="76" y="203" font-size="15" fill="#111827">外部文本是否进入上下文</text>
+      <text x="76" y="231" font-size="13" fill="#475569">日志字段 / 网页元数据 / skill 说明</text>
+      <path d="M 264 186 H 274" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+    </g>
+
+    <g>
+      <rect x="278" y="112" width="202" height="154" rx="9" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+      <rect x="278" y="112" width="202" height="38" rx="9" fill="#059669"/>
+      <text x="296" y="138" font-size="17" font-weight="850" fill="#ffffff">可达性</text>
+      <text x="296" y="176" font-size="13" font-weight="700" fill="#059669">第 2 环</text>
+      <text x="296" y="203" font-size="15" fill="#111827">目标业务 token 是否能生成</text>
+      <text x="296" y="231" font-size="13" fill="#475569">HIGH -&gt; LOW / PIN -&gt; INSTALL</text>
+      <path d="M 484 186 H 494" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+    </g>
+
+    <g>
+      <rect x="498" y="112" width="202" height="154" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+      <rect x="498" y="112" width="202" height="38" rx="9" fill="#d97706"/>
+      <text x="516" y="138" font-size="17" font-weight="850" fill="#ffffff">权限</text>
+      <text x="516" y="176" font-size="13" font-weight="700" fill="#d97706">第 3 环</text>
+      <text x="516" y="203" font-size="15" fill="#111827">token 背后连接什么动作</text>
+      <text x="516" y="231" font-size="13" fill="#475569">关单 / 写文件 / 展示字段</text>
+      <path d="M 704 186 H 714" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+    </g>
+
+    <g>
+      <rect x="718" y="112" width="202" height="154" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <rect x="718" y="112" width="202" height="38" rx="9" fill="#dc2626"/>
+      <text x="736" y="138" font-size="17" font-weight="850" fill="#ffffff">传播</text>
+      <text x="736" y="176" font-size="13" font-weight="700" fill="#dc2626">第 4 环</text>
+      <text x="736" y="203" font-size="15" fill="#111827">动作是否改变业务状态</text>
+      <text x="736" y="231" font-size="13" fill="#475569">incident / identity / workspace</text>
+      <path d="M 924 186 H 934" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+    </g>
+
+    <g>
+      <rect x="938" y="112" width="202" height="154" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <rect x="938" y="112" width="202" height="38" rx="9" fill="#7c3aed"/>
+      <text x="956" y="138" font-size="17" font-weight="850" fill="#ffffff">持久化</text>
+      <text x="956" y="176" font-size="13" font-weight="700" fill="#7c3aed">第 5 环</text>
+      <text x="956" y="203" font-size="15" fill="#111827">错误状态是否被后续复用</text>
+      <text x="956" y="231" font-size="13" fill="#475569">memory / report / dashboard</text>
+      
+    </g>
+  <g transform="translate(42, 298)">
+    <rect width="1088" height="58" rx="9" fill="#111827"/>
+    <text x="20" y="25" font-size="15" fill="#e5e7eb">读法：同一个 suffix 命中与否只是第二环；真正的业务风险还取决于 token 背后的权限、状态传播和持久化。</text>
+    <text x="20" y="48" font-size="15" fill="#cbd5e1">本文主证据链是告警分级；审核、代码、工具和网页场景是同一风险界面的不同映射。</text>
+  </g>
+  <text x="58" y="342" font-size="19" font-weight="850" fill="#111827">同一结构在不同应用场景中的映射</text>
+  <text x="58" y="368" font-size="14" font-weight="800" fill="#475569">场景</text>
+  <text x="208" y="368" font-size="14" font-weight="800" fill="#475569">入口</text>
+  <text x="418" y="368" font-size="14" font-weight="800" fill="#475569">业务 token</text>
+  <text x="628" y="368" font-size="14" font-weight="800" fill="#475569">权限</text>
+  <text x="828" y="368" font-size="14" font-weight="800" fill="#475569">状态变化</text>
+  
+    <g>
+      <rect x="42" y="354" width="1088" height="48" rx="7" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="58" y="384" font-size="15" font-weight="800" fill="#111827">内容审核</text>
+      <text x="208" y="384" font-size="14" fill="#334155">用户提交内容</text>
+      <text x="418" y="384" font-size="14" font-weight="800" fill="#166534">BLOCK -&gt; ALLOW</text>
+      <text x="628" y="384" font-size="14" fill="#334155">发布闸门</text>
+      <text x="828" y="384" font-size="14" fill="#334155">reject -&gt; publish</text>
+    </g>
+
+    <g>
+      <rect x="42" y="408" width="1088" height="48" rx="7" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="58" y="438" font-size="15" font-weight="800" fill="#111827">告警分级</text>
+      <text x="208" y="438" font-size="14" fill="#334155">日志 comment</text>
+      <text x="418" y="438" font-size="14" font-weight="800" fill="#166534">HIGH -&gt; LOW</text>
+      <text x="628" y="438" font-size="14" fill="#334155">处置剧本</text>
+      <text x="828" y="438" font-size="14" fill="#334155">升级事件 -&gt; 自动关闭</text>
+    </g>
+
+    <g>
+      <rect x="42" y="462" width="1088" height="48" rx="7" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="58" y="492" font-size="15" font-weight="800" fill="#111827">代码生成</text>
+      <text x="208" y="492" font-size="14" fill="#334155">补丁上下文</text>
+      <text x="418" y="492" font-size="14" font-weight="800" fill="#166534">PIN -&gt; INSTALL</text>
+      <text x="628" y="492" font-size="14" fill="#334155">依赖策略</text>
+      <text x="828" y="492" font-size="14" fill="#334155">固定依赖 -&gt; 安装不可信依赖</text>
+    </g>
+
+    <g>
+      <rect x="42" y="516" width="1088" height="48" rx="7" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="58" y="546" font-size="15" font-weight="800" fill="#111827">工具路由</text>
+      <text x="208" y="546" font-size="14" fill="#334155">tool / skill 元数据</text>
+      <text x="418" y="546" font-size="14" font-weight="800" fill="#166534">READ -&gt; WRITE</text>
+      <text x="628" y="546" font-size="14" fill="#334155">工作区权限</text>
+      <text x="828" y="546" font-size="14" fill="#334155">只读 -&gt; 写入</text>
+    </g>
+
+    <g>
+      <rect x="42" y="570" width="1088" height="48" rx="7" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="58" y="600" font-size="15" font-weight="800" fill="#111827">网页 agent</text>
+      <text x="208" y="600" font-size="14" fill="#334155">metadata / 检索上下文</text>
+      <text x="418" y="600" font-size="14" font-weight="800" fill="#166534">MASK -&gt; REVEAL</text>
+      <text x="628" y="600" font-size="14" fill="#334155">字段展示策略</text>
+      <text x="828" y="600" font-size="14" fill="#334155">脱敏 -&gt; 展示</text>
+    </g>
+</svg>
