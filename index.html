@@ -217,6 +217,60 @@
   
     
       <article
+id="post-GCG-Journey（六）：多目标 GCG —— 让一段后缀打穿整条链路"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E5%A4%9A%E7%9B%AE%E6%A0%87%20GCG%20%E2%80%94%E2%80%94%20%E8%AE%A9%E4%B8%80%E6%AE%B5%E5%90%8E%E7%BC%80%E6%89%93%E7%A9%BF%E6%95%B4%E6%9D%A1%E9%93%BE%E8%B7%AF/">GCG Journey（六）：多目标 GCG —— 让一段后缀打穿整条链路</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <blockquote>
+<p>真正想拿下的那个 agent，往往不在链路最前面。攻击者只能在最前面注入一次，可这段后缀要穿过整条链路、精准命中深处的目标，并在那里执行。</p>
+</blockquote>
+<p>第五篇的双重后缀已经露出苗头：同一段文本，先在 triage agent 那里把告警从 <code>HIGH</code> 压成 <code>MEDIUM</code>、路由进 <code>review_agent</code>，再在 review agent 里吐出 <code>os.system('ls')</code>。一段外部文本，连开了两个控制面。</p>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2026-05-05T12:38:32.000Z" itemprop="datePublished">2026-05-05</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
 id="post-GCG-Journey（五）：当模型输出进入业务控制面"
 class="article article-type-post"
 >
@@ -384,67 +438,6 @@ class="article article-type-post"
 
     
   
-    
-      <article
-id="post-GCG-Journey（二）：从方法谱系到实战消融"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <blockquote>
-<p>将GCG概念从模型后缀搜索转移到离散空间优化</p>
-</blockquote>
-<p>第一篇已经把 GCG 的最小主干拆开了：candidate proposal、target loss evaluation、greedy update。这里继续往前走一步，把 2024–2026 年围绕 GCG 展开的几条工作线放到同一个实验框架里。</p>
-<p>这篇文章要回答的是：这些 GCG 变体到底改了哪一环？改完以后，是降低了计算成本，还是改变了优化目标，或者只是换了一套评估方式？</p>
-<figure class="post-figure">
-  <img src="/2026/05/03/GCG-Journey（二）：从方法谱系到实战消融/gcg-family-map.png" alt="GCG method family map">
-  <figcaption>
-    Figure 1: GCG 方法家族可以统一看成对 proposal、objective、forward evaluation、update 和 success evaluation 的不同改造。
-  </figcaption>
-</figure>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2026-05-03T12:48:44.000Z" itemprop="datePublished">2026-05-03</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
@@ -492,6 +485,10 @@ class="article article-type-post"
       <ul>
         
           <li>
+            <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E5%A4%9A%E7%9B%AE%E6%A0%87%20GCG%20%E2%80%94%E2%80%94%20%E8%AE%A9%E4%B8%80%E6%AE%B5%E5%90%8E%E7%BC%80%E6%89%93%E7%A9%BF%E6%95%B4%E6%9D%A1%E9%93%BE%E8%B7%AF/">GCG Journey（六）：多目标 GCG —— 让一段后缀打穿整条链路</a>
+          </li>
+        
+          <li>
             <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E5%BD%93%E6%A8%A1%E5%9E%8B%E8%BE%93%E5%87%BA%E8%BF%9B%E5%85%A5%E4%B8%9A%E5%8A%A1%E6%8E%A7%E5%88%B6%E9%9D%A2/">GCG Journey（五）：从短 token 到业务动作：GCG 如何改写 AI 应用控制面</a>
           </li>
         
@@ -505,10 +502,6 @@ class="article article-type-post"
         
           <li>
             <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/02/GCG-Journey%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E5%88%B0%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2/">GCG Journey（一）：从对抗样本到后缀搜索</a>
           </li>
         
       </ul>
