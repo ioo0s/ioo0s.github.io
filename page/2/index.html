@@ -169,6 +169,67 @@
   
     
       <article
+id="post-GCG-Journey（三）：从后缀搜索到安全边界探测"
+class="article article-type-post"
+>
+
+
+
+<div class="article-inner">
+    
+
+    <div class="article-body">
+    <header class="article-title">
+        <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
+    </header>
+    <div class="article-entry post-inner-html">
+        
+        <blockquote>
+<p>从 <code>Sure, here's</code> 开始，GCG 越狱首先攻击的不是完整回答，而是 assistant 起手阶段的拒绝边界。</p>
+</blockquote>
+<p>GCG 越狱最容易被误读成一个结果：模型有没有输出完整有害内容。这个口径太粗。GCG 原论文里常见的 <code>Sure, here is ...</code>，本质上先攻击的是更靠前的一道边界：模型能不能离开拒绝模板，进入 affirmative response 前缀。</p>
+<p>这个判断不是凭空来的。GCG 原论文把 suffix 的优化目标写得很明确：提高模型生成 affirmative response 的概率，而不是 refusal。后来 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2603.08234">continuation-triggered jailbreak</a> 的机制分析也把这类现象解释成 continuation drive 和 safety refusal 之间的竞争。换句话说，越狱最先发生变化的位置，往往不是完整内容，而是 assistant 起手阶段的条件竞争。</p>
+<p>所以本文关心三件事：英文经典 case 里拒绝轨迹如何被推开；中文 target prefix 下 loss 和 generate 为什么会错位；同一批中文 suffix 换模型后，前缀控制是否还能保留。</p>
+<p>这也是本文最重要的评估口径：<strong>loss 只能说明目标前缀概率被推近，generate 才说明模型真的跨过了输出门槛。</strong> 如果换模型后只看到 loss 变化或相邻服从模板，那只能算弱迁移信号，不能直接写成稳定越狱迁移。</p>
+<figure class="post-figure">
+  <img src="/2026/05/05/GCG-Journey（三）：从后缀搜索到安全边界探测/jailbreak-prefix-entrypoint-map.png" alt="GCG jailbreak prefix entrypoint map">
+  <figcaption>Figure 1: 本篇的核心口径。suffix 不是直接决定完整回答，而是先影响 assistant 起手阶段的 token 级条件竞争；loss、generate 和 transfer 分别从不同侧面读这个入口变化。</figcaption>
+</figure>
+        
+    </div>
+    </div>
+
+    <div class="article-badge">
+        
+        
+    </div>
+
+</div>
+
+<footer class="article-footer">
+    <div class="article-more-info">
+    <div class="article-date">
+  <time datetime="2026-05-05T12:08:32.000Z" itemprop="datePublished">2026-05-05</time>
+</div>
+    
+        <div class="article-category">
+        <a class="article-category-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a>,<a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+        </div>
+    
+    
+        <div class="article-tag">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+        </div>
+    
+    </div>
+</footer>
+
+</article>
+
+    
+  
+    
+      <article
 id="post-GCG-Journey（二）：从方法谱系到实战消融"
 class="article article-type-post"
 >
@@ -402,123 +463,6 @@ class="article article-type-post"
 
     
   
-    
-      <article
-id="post-乔姆斯基生成语法分析笔记"
-class="article article-type-post"
->
-
-
-
-<div class="article-inner">
-    
-
-    <div class="article-body">
-    <header class="article-title">
-        <a href="/2024/02/04/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E7%94%9F%E6%88%90%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/">乔姆斯基生成语法分析笔记</a>
-    </header>
-    <div class="article-entry post-inner-html">
-        
-        <h2 id="常见短语"><a class="markdownIt-Anchor" href="#常见短语"></a> 常见短语</h2>
-<table>
-<thead>
-<tr>
-<th>短语缩写</th>
-<th>构成</th>
-<th>例子</th>
-<th>中文名称</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>NP</td>
-<td>NP-&gt;NN</td>
-<td>武器</td>
-<td>名词短语</td>
-</tr>
-<tr>
-<td>DP</td>
-<td>D+NP</td>
-<td>那书</td>
-<td>限定词短语</td>
-</tr>
-<tr>
-<td>AP</td>
-<td>ADJ+NP</td>
-<td>干净的水</td>
-<td>形容词短语</td>
-</tr>
-<tr>
-<td>AP</td>
-<td>ADV+ADJP</td>
-<td>很晚</td>
-<td>副词短语</td>
-</tr>
-<tr>
-<td>VP</td>
-<td>V+DP</td>
-<td>读书</td>
-<td>动词短语</td>
-</tr>
-<tr>
-<td>PP</td>
-<td>P+DP</td>
-<td>在桌子上</td>
-<td>介词短语</td>
-</tr>
-<tr>
-<td>ConJP</td>
-<td>DP+Conj+DP</td>
-<td>一支笔和一本书</td>
-<td>并列结构连词短语</td>
-</tr>
-<tr>
-<td>S（IP）</td>
-<td>DP+VP</td>
-<td></td>
-<td>句子/通常会用TP代替IP带时态</td>
-</tr>
-<tr>
-<td>IP</td>
-<td>D+I+V+D+N<br />代词 + 动词 + 曲折变化 + 代词 + 名词</td>
-<td></td>
-<td>句子/其中I 指曲折变化</td>
-</tr>
-</tbody>
-</table>
-        
-    </div>
-    </div>
-
-    <div class="article-badge">
-        
-        
-    </div>
-
-</div>
-
-<footer class="article-footer">
-    <div class="article-more-info">
-    <div class="article-date">
-  <time datetime="2024-02-04T04:06:00.000Z" itemprop="datePublished">2024-02-04</time>
-</div>
-    
-        <div class="article-category">
-        <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
-        </div>
-    
-    
-        <div class="article-tag">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
-        </div>
-    
-    </div>
-</footer>
-
-</article>
-
-    
-  
 
   
     <nav class="pagination">
@@ -543,7 +487,7 @@ class="article article-type-post"
   <div class="widget-wrap widget-cate">
     <div class="widget-title"><span>分类</span></div>
     <div class="widget-inner">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">论文学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI%E5%AE%89%E5%85%A8/">AI安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%8D%E7%8E%B0/">复现</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/">漏洞挖掘</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">论文学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></li></ul>
     </div>
   </div>
 
@@ -553,7 +497,7 @@ class="article article-type-post"
   <div class="widget-wrap widget-tags">
     <div class="widget-title"><span>标签</span></div>
     <div class="widget-inner">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASUS/" rel="tag">ASUS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATF/" rel="tag">ATF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Acrobat-Reader/" rel="tag">Acrobat Reader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adobe/" rel="tag">Adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Adversarial-Attack/" rel="tag">Adversarial Attack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent-Safety/" rel="tag">Agent Safety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apollo8-0/" rel="tag">Apollo8.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FUZZ/" rel="tag">FUZZ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FortiGate/" rel="tag">FortiGate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fuzz/" rel="tag">Fuzz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCG/" rel="tag">GCG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Guardrail/" rel="tag">Guardrail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Juniper/" rel="tag">Juniper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NLP/" rel="tag">NLP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/World-Model/" rel="tag">World Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios%E9%80%86%E5%90%91/" rel="tag">ios逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%B4%E8%A7%A3/" rel="tag">游戏破解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag">自动驾驶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a></li></ul>
     </div>
   </div>
 
@@ -564,6 +508,10 @@ class="article article-type-post"
     <div class="widget-title"><span>最新文章</span></div>
     <div class="widget-inner">
       <ul>
+        
+          <li>
+            <a href="/2026/08/12/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E8%83%BD%E7%BB%99LLM-Agent%E5%BD%93%E6%8A%A4%E6%A0%8F%E5%90%97-DreamGuard%E5%A4%8D%E7%8E%B0%E4%B8%8E%E8%BF%81%E7%A7%BB%E6%80%A7%E8%AF%81%E4%BC%AA/">世界模型能给 LLM Agent 当护栏吗?——DreamGuard 复现与迁移性证伪</a>
+          </li>
         
           <li>
             <a href="/2026/05/05/GCG-Journey%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E5%A4%9A%E7%9B%AE%E6%A0%87%20GCG%20%E2%80%94%E2%80%94%20%E8%AE%A9%E4%B8%80%E6%AE%B5%E5%90%8E%E7%BC%80%E6%89%93%E7%A9%BF%E6%95%B4%E6%9D%A1%E9%93%BE%E8%B7%AF/">GCG Journey（六）：多目标 GCG —— 让一段后缀打穿整条链路</a>
@@ -579,10 +527,6 @@ class="article article-type-post"
         
           <li>
             <a href="/2026/05/05/GCG-Journey%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%90%8E%E7%BC%80%E6%90%9C%E7%B4%A2%E5%88%B0%E5%AE%89%E5%85%A8%E8%BE%B9%E7%95%8C%E6%8E%A2%E6%B5%8B/">GCG Journey（三）：模型越狱的第一道边界：条件竞争</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/03/GCG-Journey%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%96%B9%E6%B3%95%E8%B0%B1%E7%B3%BB%E5%88%B0%E5%AE%9E%E6%88%98%E6%B6%88%E8%9E%8D/">GCG Journey（二）：从方法谱系到实战消融</a>
           </li>
         
       </ul>
@@ -670,7 +614,78 @@ class="article article-type-post"
 
 
 
-    <script defer src="/javascripts/blog-enhancements.js"></script>
+<style>
+.md-mermaid svg,.post-figure img{cursor:zoom-in}
+.cv-overlay{position:fixed;inset:0;background:#fff;z-index:9999;visibility:hidden;opacity:0;transition:opacity .2s ease,visibility .2s ease;overflow:hidden;cursor:grab}
+.cv-overlay.active{visibility:visible;opacity:1}
+.cv-overlay.dragging{cursor:grabbing}
+.cv-content{position:absolute;transform-origin:0 0}
+.cv-content svg{background:#fff;padding:1.5em;border:1px solid #ebebeb;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.cv-content img{border-radius:6px;border:1px solid #ebebeb;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.cv-close{position:fixed;top:16px;right:20px;z-index:10000;width:36px;height:36px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(0,0,0,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#666;user-select:none;transition:background .15s}
+.cv-close:hover{background:rgba(245,245,245,.9)}
+.cv-ctrl{position:fixed;bottom:20px;right:20px;z-index:10000;display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(0,0,0,.06);border-radius:10px;padding:4px}
+.cv-btn{width:32px;height:32px;border:none;background:transparent;cursor:pointer;font-size:16px;color:#555;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.cv-btn:hover{background:rgba(0,0,0,.05)}
+.cv-zoom{font-size:12px;color:#999;min-width:42px;text-align:center;user-select:none}
+.cv-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10000;color:#ccc;font-size:12px;pointer-events:none}
+</style>
+<div id="dg-cv" class="cv-overlay">
+  <div class="cv-close" id="cv-close">&times;</div>
+  <div class="cv-content" id="cv-content"></div>
+  <div class="cv-ctrl">
+    <div class="cv-btn" id="cv-out">&minus;</div>
+    <div class="cv-zoom" id="cv-zoom">100%</div>
+    <div class="cv-btn" id="cv-in">&plus;</div>
+    <div class="cv-btn" id="cv-fit" title="适配窗口">&#9635;</div>
+  </div>
+  <div class="cv-hint">滚轮缩放 &middot; 拖动 &middot; ESC 退出</div>
+</div>
+<script>
+(function(){
+  var ov=document.getElementById("dg-cv"),ct=document.getElementById("cv-content");
+  var zm=document.getElementById("cv-zoom");
+  var scale=1,x=0,y=0,drag=false,dx=0,dy=0;
+  function apply(){ct.style.transform="translate("+x+"px,"+y+"px) scale("+scale+")";zm.textContent=Math.round(scale*100)+"%"}
+  function fit(el){
+    ct.innerHTML="";ct.appendChild(el.cloneNode(true));
+    ct.style.transform="translate(0,0) scale(1)";
+    requestAnimationFrame(function(){
+      var r=ct.getBoundingClientRect(),vw=window.innerWidth,vh=window.innerHeight;
+      scale=Math.min(vw*0.8/r.width,vh*0.8/r.height,1);
+      x=(vw-r.width*scale)/2;y=(vh-r.height*scale)/2;apply();
+    });
+  }
+  function open(el){ct.style.transition="none";fit(el);ov.classList.add("active")}
+  function close(){ov.classList.remove("active")}
+  function zoom(d,cx,cy){
+    var ns=Math.max(.1,Math.min(8,scale+d));
+    if(cx!==undefined){x=cx-(cx-x)*(ns/scale);y=cy-(cy-y)*(ns/scale)}
+    scale=ns;apply();
+  }
+  document.addEventListener("click",function(e){
+    if(ov.classList.contains("active"))return;
+    var t=e.target.closest(".md-mermaid svg, .post-figure img");
+    if(t){e.preventDefault();open(t)}
+  });
+  document.getElementById("cv-close").addEventListener("click",close);
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ov.classList.contains("active"))close()});
+  ov.addEventListener("mousedown",function(e){
+    if(e.target.closest(".cv-close, .cv-ctrl"))return;
+    drag=true;dx=e.clientX-x;dy=e.clientY-y;ov.classList.add("dragging");ct.style.transition="none";
+  });
+  document.addEventListener("mousemove",function(e){if(!drag)return;x=e.clientX-dx;y=e.clientY-dy;apply()});
+  document.addEventListener("mouseup",function(){if(!drag)return;drag=false;ov.classList.remove("dragging");ct.style.transition=""});
+  ov.addEventListener("wheel",function(e){
+    if(!ov.classList.contains("active"))return;e.preventDefault();
+    ct.style.transition="none";zoom(e.deltaY>0?-.1:.1,e.clientX,e.clientY);
+  },{passive:false});
+  document.getElementById("cv-in").addEventListener("click",function(){ct.style.transition="transform .2s cubic-bezier(.2,0,.2,1)";zoom(.2,innerWidth/2,innerHeight/2);setTimeout(function(){ct.style.transition=""},250)});
+  document.getElementById("cv-out").addEventListener("click",function(){ct.style.transition="transform .2s cubic-bezier(.2,0,.2,1)";zoom(-.2,innerWidth/2,innerHeight/2);setTimeout(function(){ct.style.transition=""},250)});
+  document.getElementById("cv-fit").addEventListener("click",function(){ct.style.transition="transform .3s cubic-bezier(.2,0,.2,1)";var s=ct.querySelector("svg,img");if(s)fit(s);setTimeout(function(){ct.style.transition=""},350)});
+  ov.addEventListener("dblclick",function(){var s=ct.querySelector("svg,img");if(s){ct.style.transition="transform .3s cubic-bezier(.2,0,.2,1)";fit(s);setTimeout(function(){ct.style.transition=""},350)}});
+})();
+</script>    <script defer src="/javascripts/blog-enhancements.js"></script>
 </body>
 
 </html>
