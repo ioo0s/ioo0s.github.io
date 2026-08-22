@@ -9,7 +9,7 @@
     <title>世界模型能给 LLM Agent 当护栏吗?——DreamGuard 复现与迁移性证伪 | ioo0s&#39;s blog</title>
 
     <meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&amp;quot;小数据训出来、零样本跨域最优&amp;quot;的主张,在复现条件下未能得到支持。&lt;/p&gt;
+&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&amp;quot;小数据训练、零样本跨域最优&amp;quot;的主张,受数据来源所限,未能在复现中得到验证。&lt;/p&gt;
 &lt;/blockquote&gt;">
     <meta name="keywords" content="">
 
@@ -19,23 +19,23 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content= "世界模型能给 LLM Agent 当护栏吗?——DreamGuard 复现与迁移性证伪 | ioo0s&#39;s blog"  />
     <meta property="og:description" content= "&lt;blockquote&gt;
-&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&amp;quot;小数据训出来、零样本跨域最优&amp;quot;的主张,在复现条件下未能得到支持。&lt;/p&gt;
+&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&amp;quot;小数据训练、零样本跨域最优&amp;quot;的主张,受数据来源所限,未能在复现中得到验证。&lt;/p&gt;
 &lt;/blockquote&gt;" />
     <meta property="og:url" content="http://ioo0s.art/2026/08/12/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E8%83%BD%E7%BB%99LLM-Agent%E5%BD%93%E6%8A%A4%E6%A0%8F%E5%90%97-DreamGuard%E5%A4%8D%E7%8E%B0%E4%B8%8E%E8%BF%81%E7%A7%BB%E6%80%A7%E8%AF%81%E4%BC%AA/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="ios" />
     <meta property="article:publisher" content="" />
     <meta property="og:description" content="&lt;blockquote&gt;
-&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&amp;quot;小数据训出来、零样本跨域最优&amp;quot;的主张,在复现条件下未能得到支持。&lt;/p&gt;
+&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&amp;quot;小数据训练、零样本跨域最优&amp;quot;的主张,受数据来源所限,未能在复现中得到验证。&lt;/p&gt;
 &lt;/blockquote&gt;" />
     <meta name="twitter:title" content="世界模型能给 LLM Agent 当护栏吗?——DreamGuard 复现与迁移性证伪 | ioo0s&#39;s blog"/>
     <meta name="twitter:description" content="&lt;blockquote&gt;
-&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&amp;quot;小数据训出来、零样本跨域最优&amp;quot;的主张,在复现条件下未能得到支持。&lt;/p&gt;
+&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&amp;quot;小数据训练、零样本跨域最优&amp;quot;的主张,受数据来源所限,未能在复现中得到验证。&lt;/p&gt;
 &lt;/blockquote&gt;"/>
     <script type="application/ld+json">
         {
             "description": "&lt;blockquote&gt;
-&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&amp;quot;小数据训出来、零样本跨域最优&amp;quot;的主张,在复现条件下未能得到支持。&lt;/p&gt;
+&lt;p&gt;用一个被训练去&amp;quot;预测未来&amp;quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&amp;quot;小数据训练、零样本跨域最优&amp;quot;的主张,受数据来源所限,未能在复现中得到验证。&lt;/p&gt;
 &lt;/blockquote&gt;",
             "author": { "@type": "Person", "name": "ios" },
             "@type": "BlogPosting",
@@ -190,7 +190,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-cmt42k46200574qnp6c5le9ce" class="article article-type-post" itemscope
+    <article id="post-cmt42pfx3002aq7np0dk5cqlv" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -241,7 +241,7 @@
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
             <blockquote>
-<p>用一个被训练去&quot;预测未来&quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏——DreamGuard 的思路很诱人。作者在受限条件下做了一次复现:域内,世界模型能比反应式护栏更早一步拦下危险;但论文&quot;小数据训出来、零样本跨域最优&quot;的主张,在复现条件下未能得到支持。</p>
+<p>用一个被训练去&quot;预测未来&quot;的小型世界模型,给 LLM agent 的每一步动作当实时护栏,这是 DreamGuard 的思路。作者在受限条件下完成了一次完整复现:在自建测试集上,世界模型能比只看当前步的护栏更早拦下危险,且不误伤正常任务;论文&quot;小数据训练、零样本跨域最优&quot;的主张,受数据来源所限,未能在复现中得到验证。</p>
 </blockquote>
 <span id="more"></span>
 <h2 id="一-世界模型"><a class="markdownIt-Anchor" href="#一-世界模型"></a> 一、世界模型</h2>
